@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Menu - The Social Manila Bakehouse</title>
+    <meta name="description" content="Explore the full artisanal pastry menu at The Social Manila Bakehouse.">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            /* Override vars using the provided image palette */
+            --color-bg: #FBF5EA;
+            /* Cream */
+            --color-bg-alt: #FCD26C;
+            /* Yellow */
+            --color-white: #FFFFFF;
+            --color-text: #A9241C;
+            /* Dark Red */
+            --color-text-muted: #F56C42;
+            /* Orange */
+            --color-accent: #A9241C;
+            /* Dark Red */
+            --color-accent-hover: #F56C42;
+            /* Orange */
+            --color-dark: #A9241C;
+            /* Dark Red */
+            --color-border: #F59D96;
+            /* Pink */
+        }
+
+        /* Maroon Theme Overrides */
+        .site-header {
+            background-color: var(--color-accent);
+            border-bottom-color: var(--color-accent);
+        }
+
+        .site-header a,
+        .site-header .mega-menu-trigger summary,
+        .site-logo a,
+        .site-header .nav-menu li a {
+            color: var(--color-white) !important;
+        }
+
+        .site-header .mega-menu-trigger:after,
+        .site-header a:after {
+            background-color: var(--color-white);
+        }
+
+        .site-header.scrolled {
+            background-color: rgba(169, 36, 28, 0.98);
+        }
+
+        .mobile-toggle span {
+            background-color: var(--color-white);
+        }
+
+        .site-footer {
+            background-color: var(--color-accent);
+            color: var(--color-white);
+        }
+
+        .site-footer p,
+        .site-footer a {
+            color: var(--color-white) !important;
+        }
+
+        /* Utility bar */
+        .utility-bar {
+            background-color: var(--color-accent);
+            border-bottom-color: var(--color-accent);
+        }
+
+        .utility-bar .filter-btn {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .utility-bar .filter-btn.active,
+        .utility-bar .filter-btn:hover {
+            color: var(--color-white);
+        }
+
+        .utility-bar .filter-btn:after {
+            background-color: var(--color-white);
+        }
+
+        .utility-bar .search-input {
+            color: var(--color-white);
+            border-bottom-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .utility-bar .search-input:focus {
+            border-bottom-color: var(--color-white);
+        }
+
+        .utility-bar .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Hero Banner Settings */
+        .menu-hero {
+            height: 40vh;
+            background-color: var(--color-bg-alt);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-hero img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+            z-index: 1;
+        }
+
+        .menu-hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .menu-hero-content h1 {
+            font-size: 48px;
+            font-family: var(--font-heading);
+            color: var(--color-white);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Utility Bar (Search & Filter) */
+        .utility-bar {
+            padding: 30px 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--color-border);
+            background-color: var(--color-bg);
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .category-filters {
+            display: flex;
+            gap: 25px;
+        }
+
+        .filter-btn {
+            background: none;
+            border: none;
+            font-family: var(--font-body);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            padding-bottom: 5px;
+            position: relative;
+            transition: color var(--transition-base);
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            color: var(--color-text);
+        }
+
+        .filter-btn:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--color-text);
+            transition: width var(--transition-base);
+        }
+
+        .filter-btn.active:after {
+            width: 100%;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-input {
+            padding: 10px 0;
+            border: none;
+            border-bottom: 1px solid var(--color-border);
+            background: transparent;
+            font-family: var(--font-body);
+            font-size: 14px;
+            width: 250px;
+            color: var(--color-text);
+            transition: border-color var(--transition-base);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-bottom-color: var(--color-text);
+        }
+
+        .search-input::placeholder {
+            color: var(--color-text-light);
+        }
+
+        /* Product Card Overrides (Image Swap) */
+        .products-grid {
+            padding: 60px 10%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            background-color: var(--color-bg);
+        }
+
+        .product-card {
+            text-decoration: none;
+            display: block;
+            position: relative;
+            background: var(--color-white);
+            padding-bottom: 20px;
+        }
+
+        .product-card-img {
+            position: relative;
+            aspect-ratio: 3/4;
+            overflow: hidden;
+            background-color: var(--color-bg-alt);
+        }
+
+        .product-img-primary,
+        .product-img-hover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.5s ease;
+        }
+
+        .product-img-hover {
+            opacity: 0;
+        }
+
+        .product-card:hover .product-img-primary {
+            opacity: 0;
+        }
+
+        .product-card:hover .product-img-hover {
+            opacity: 1;
+        }
+
+        /* Quick Add Button */
+        .quick-add {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: var(--color-white);
+            color: var(--color-text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 300;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            z-index: 10;
+        }
+
+        .product-card:hover .quick-add {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .quick-add:hover {
+            background: var(--color-text);
+            color: var(--color-white);
+        }
+
+        /* Details */
+        .product-card-info {
+            display: block;
+            padding: 20px 0 0;
+            text-align: center;
+        }
+
+        .product-card-brand {
+            font-family: var(--font-body);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--color-text-muted);
+            margin-bottom: 8px;
+        }
+
+        .product-card-name {
+            font-family: var(--font-heading);
+            font-size: 16px;
+            color: var(--color-text);
+            margin-bottom: 5px;
+        }
+
+        .product-card-price {
+            font-family: var(--font-body);
+            font-weight: 500;
+            color: var(--color-text);
+            font-size: 14px;
+        }
+
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 50px 0;
+            font-family: var(--font-heading);
+            font-size: 24px;
+            color: var(--color-text-muted);
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header class="site-header" id="site-header">
+        <div class="header-inner">
+            <nav class="main-nav left-nav" id="left-nav">
+                <ul class="nav-menu">
+                    <li>
+                        <a href="index.html"
+                            style="display: flex; flex-direction: column; align-items: center; line-height: 1.2;">
+                            The Social Manila
+                            <span class="logo-subtitle" style="margin-top: 4px; font-size: 8px;">LIFESTYLE</span>
+                        </a>
+                    </li>
+                    <li><a href="bakehouse.html">Back to Bakehouse</a></li>
+                </ul>
+            </nav>
+            <div class="site-logo">
+                <a href="bakehouse.html">
+                    The Social Manila
+                    <span class="logo-subtitle">BAKEHOUSE</span>
+                </a>
+            </div>
+            <nav class="main-nav right-nav" id="right-nav">
+                <ul class="nav-menu">
+                    <li><a href="#" aria-label="Search">Search</a></li>
+                    <li><a href="#" aria-label="Cart">Cart (0)</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-toggle" id="mobile-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="menu-hero">
+        <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=1920&auto=format&fit=crop"
+            alt="Bakery Background">
+        <div class="menu-hero-content fade-in">
+            <h1>Our Collection</h1>
+        </div>
+    </section>
+
+    <!-- UTILITY BAR -->
+    <section class="utility-bar">
+        <div class="category-filters">
+            <button class="filter-btn active" data-filter="all">All Pastries</button>
+            <button class="filter-btn" data-filter="viennoiserie">Viennoiserie</button>
+            <button class="filter-btn" data-filter="tarts">Tarts & Cakes</button>
+            <button class="filter-btn" data-filter="macarons">Macarons</button>
+        </div>
+        <div class="search-container">
+            <input type="text" id="menu-search" class="search-input" placeholder="Search our menu...">
+        </div>
+    </section>
+
+    <!-- PRODUCT GRID -->
+    <section class="products-grid" id="menu-grid">
+
+        <!-- Viennoiserie -->
+        <a href="#" class="product-card" data-category="viennoiserie">
+            <div class="product-card-img">
+                <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=600&auto=format&fit=crop"
+                    class="product-img-primary" alt="Signature Croissant">
+                <img src="https://images.unsplash.com/photo-1549557617-e9a9fd0edbb0?q=80&w=600&auto=format&fit=crop"
+                    class="product-img-hover" alt="Signature Croissant Lifestyle">
+                <div class="quick-add">+</div>
+            </div>
+            <div class="product-card-info">
+                <div class="product-card-brand">Viennoiserie</div>
+                <div class="product-card-name">Signature Butter Croissant</div>
+                <div class="product-card-price">₱180.00</div>
+            </div>
+        </a>
+
+        <a href="#" class="product-card" data-category="viennoiserie">
+            <div class="product-card-img">
+                <img src="https://images.unsplash.com/photo-1608198093002-ad4e005484ec?q=80&w=600&auto=format&fit=crop"
+                    class="product-img-primary" alt="Pain au Chocolat">
+                <img src="https://images.unsplash.com/photo-1549557617-e9a9fd0edbb0?q=80&w=600&auto=format&fit=crop"
+                    class="product-img-hover" alt="Pain au Chocolat Hover">
+                <div class="quick-add">+</div>
+            </div>
+            <div class="product-card-info">
+                <div class="product-card-brand">Viennoiserie</div>
+                <div class="product-card-name">Classic Pain au Chocolat</div>
+                <div class="product-card-price">₱220.00</div>
+            </div>
+        </a>
+
+        <a href="#" class="product-card" data-category="viennoiserie">
+            <div class="product-card-img">
+                <img src="https://images.unsplash.com/photo-1623334044303-241021148842?q=80&w=600&auto=format&fit=crop"
+                    class="product-img-primary" alt="Almond Croissant">
+                <img src="https://images.unsplash.com/photo-1579698583489-0f666b6c0e86?q=80&w=600&auto=format&fit=crop"
+                    class="product-img-hover" alt="Almond Croissant Plated">
+                <div class="quick-add">+</div>
+            </div>
+            <div class="product-card-info">
+                <div class="product-card-brand">Viennoiserie</div>
+                <div class="product-card-name">Double Almond Croissant</div>
+                <div class="product-card-price">₱250.00</div>
+            </div>
+        </a>
+
+        <!-- Tarts & Cakes -->
+        <a href="#" class="product-card" data-category="tarts">
+            <div class="product-card-img">
+                <img src="https://images.unsplash.com/photo-1519915028121-7d3463d20b13?q=80&w=600&auto=format&fit=crop"
+                    class="product-img-primary" alt="Almond Tart">
+                <img src="https://images.unsplash.com/photo-1619864205510-cdbc9c3a37ab?q=80&w=600&auto=format&fit=crop"
+                    class="product-img-hover" alt="Tart Slice">
+                <div class="quick-add">+</div>
+            </div>
+            <div class="product-card-info">
+                <div class="product-card-brand">Tarts & Cakes</div>
+                <div class="product-card-name">Almond & Pear Tart</div>
+                <div class="product-card-price">₱280.00</div>
+            </div>
+        </a>
+
+        <a href="#" class="product-card" data-category="tarts">
+            <div class="product-card-img">
+                <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=600&auto=format&fit=crop"
+                    class="product-img-primary" alt="Chocolate Cake">
+                <img src="https://images.unsplash.com/photo-1557308536-ee471ef2c390?q=80&w=600&auto=format&fit=crop"
+                    class="product-img-hover" alt="Chocolate Cake Slice">
+                <div class="quick-add">+</div>
+            </div>
+            <div class="product-card-info">
+                <div class="product-card-brand">Tarts & Cakes</div>
+                <div class="product-card-name">Gâteau au Chocolat</div>
+                <div class="product-card-price">₱350.00</div>
+            </div>
+        </a>
+
+        <a href="#" class="product-card" data-category="tarts">
+            <div class="product-card-img">
+                <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?q=80&w=600&auto=format&fit=crop"
+                    class="product-img-primary" alt="Fruit Tart">
+                <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?q=80&w=600&auto=format&fit=crop"
+                    class="product-img-hover" alt="Fruit Tart Top View">
+                <div class="quick-add">+</div>
+            </div>
+            <div class="product-card-info">
+                <div class="product-card-brand">Tarts & Cakes</div>
+                <div class="product-card-name">Seasonal Fruit Tartlette</div>
+                <div class="product-card-price">₱320.00</div>
+            </div>
+        </a>
+
+        <!-- Macarons -->
+        <a href="#" class="product-card" data-category="macarons">
+            <div class="product-card-img">
+                <img src="https://images.unsplash.com/photo-1569864358642-9d1684040f43?q=80&w=600&auto=format&fit=crop"
+                    class="product-img-primary" alt="Macaron Box">
+                <img src="https://images.unsplash.com/photo-1558326567-98ae2405596b?q=80&w=600&auto=format&fit=crop"
+                    class="product-img-hover" alt="Macarons Close Up">
+                <div class="quick-add">+</div>
+            </div>
+            <div class="product-card-info">
+                <div class="product-card-brand">Macarons</div>
+                <div class="product-card-name">Assorted Macarons (Box of 6)</div>
+                <div class="product-card-price">₱650.00</div>
+            </div>
+        </a>
+
+        <a href="#" class="product-card" data-category="macarons">
+            <div class="product-card-img">
+                <img src="https://images.unsplash.com/photo-1522066898715-f5840ecea8e4?q=80&w=600&auto=format&fit=crop"
+                    class="product-img-primary" alt="Pink Macarons">
+                <img src="https://images.unsplash.com/photo-1558326567-98ae2405596b?q=80&w=600&auto=format&fit=crop"
+                    class="product-img-hover" alt="Pink Macarons Stacked">
+                <div class="quick-add">+</div>
+            </div>
+            <div class="product-card-info">
+                <div class="product-card-brand">Macarons</div>
+                <div class="product-card-name">Rose & Raspberry Macarons</div>
+                <div class="product-card-price">₱700.00</div>
+            </div>
+        </a>
+
+        <div class="no-results" id="no-results-msg">No pastries found matching your search.</div>
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-bottom">
+            <p>&copy; 2026 The Social Manila Bakehouse. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Filter & Search Javascript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const searchInput = document.getElementById('menu-search');
+            const productCards = document.querySelectorAll('.product-card');
+            const noResultsMsg = document.getElementById('no-results-msg');
+
+            // Function to filter items based on category and search text
+            const filterItems = () => {
+                const activeFilterBtn = document.querySelector('.filter-btn.active');
+                const category = activeFilterBtn.dataset.filter.toLowerCase();
+                const searchQuery = searchInput.value.toLowerCase().trim();
+                let visibleCount = 0;
+
+                productCards.forEach(card => {
+                    const cardCategory = card.dataset.category.toLowerCase();
+                    const cardName = card.querySelector('.product-card-name').textContent.toLowerCase();
+
+                    const matchesCategory = category === 'all' || cardCategory === category;
+                    const matchesSearch = cardName.includes(searchQuery);
+
+                    if (matchesCategory && matchesSearch) {
+                        card.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                if (visibleCount === 0) {
+                    noResultsMsg.style.display = 'block';
+                } else {
+                    noResultsMsg.style.display = 'none';
+                }
+            };
+
+            // Event Listeners for Category Buttons
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update active class
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    filterItems();
+                });
+            });
+
+            // Event Listener for Search Input
+            searchInput.addEventListener('input', filterItems);
+        });
+    </script>
+    <script src="main.js"></script>
+</body>
+
+</html>

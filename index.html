@@ -82,7 +82,8 @@
                 <ul class="nav-menu">
                     <li><a href="#">Our Story</a></li>
                     <li><a href="#" aria-label="Search">Search</a></li>
-                    <li><a href="#" aria-label="Cart">Cart (0)</a></li>
+                    <li><a href="#" aria-label="Cart" class="cart-toggle-btn">Cart (<span
+                                class="cart-count">0</span>)</a></li>
                 </ul>
             </nav>
             <button class="mobile-toggle" id="mobile-toggle" aria-label="Menu">
@@ -497,6 +498,41 @@
             <p>&copy; 2026 The Social Manila.</p>
         </div>
     </footer>
+
+    <!-- CART DRAWER -->
+    <div class="cart-overlay" id="cart-overlay"></div>
+    <div class="cart-drawer" id="cart-drawer">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button class="cart-close" id="cart-close">&times;</button>
+        </div>
+        <div class="cart-body" id="cart-body">
+            <!-- Cart items will be dynamically injected here -->
+            <p class="cart-empty-msg">Your cart is currently empty.</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total-row">
+                <span>Total</span>
+                <span id="cart-total-price">₱0.00</span>
+            </div>
+            <button class="checkout-btn">Checkout</button>
+        </div>
+    </div>
+
+    <!-- PRODUCT ACTION MODAL -->
+    <div class="product-modal-container" id="product-modal">
+        <div class="product-modal">
+            <button class="product-modal-close" id="product-modal-close">&times;</button>
+            <img src="" alt="Product Image" class="product-modal-img" id="modal-img">
+            <h3 id="modal-title">Product Name</h3>
+            <p id="modal-desc" style="font-family: var(--font-body); letter-spacing: 0;">Would you like to add this to
+                your cart or view our full menu?</p>
+            <div class="product-modal-actions">
+                <button class="modal-btn primary" id="modal-add-btn">Add to Cart</button>
+                <a href="bakehouse-menu.html" class="modal-btn secondary">View Full Menu</a>
+            </div>
+        </div>
+    </div>
 
     <script src="main.js"></script>
 </body>

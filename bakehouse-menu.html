@@ -140,7 +140,6 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid var(--color-border);
-            background-color: var(--color-bg);
             flex-wrap: wrap;
             gap: 20px;
         }
@@ -209,28 +208,76 @@
             color: var(--color-text-light);
         }
 
-        /* Product Card Overrides (Image Swap) */
+        /* Menu Gallery Layout */
         .products-grid {
-            padding: 60px 10%;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
+            padding: 60px 5%;
+            display: flex;
+            flex-direction: column;
+            gap: 80px;
             background-color: var(--color-bg);
+            max-width: 1100px;
+            margin: 0 auto;
         }
 
         .product-card {
-            text-decoration: none;
-            display: block;
-            position: relative;
+            display: flex;
+            flex-direction: column;
             background: var(--color-white);
-            padding-bottom: 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(169, 36, 28, 0.05);
+            transition: box-shadow var(--transition-base);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 15px 50px rgba(169, 36, 28, 0.1);
+        }
+
+        @media(min-width: 900px) {
+            .product-card {
+                flex-direction: row;
+                align-items: stretch;
+            }
+
+            .product-card:nth-child(even) {
+                flex-direction: row-reverse;
+            }
+
+            .product-card-img {
+                width: 50%;
+                flex-shrink: 0;
+            }
+
+            .product-card-info {
+                width: 50%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding: 50px;
+                text-align: left;
+            }
         }
 
         .product-card-img {
             position: relative;
-            aspect-ratio: 3/4;
-            overflow: hidden;
             background-color: var(--color-bg-alt);
+            aspect-ratio: 4/3;
+            overflow: hidden;
+            min-height: 300px;
+            /* Fallback for mobile */
+            width: 100%;
+        }
+
+        @media(min-width: 900px) {
+            .product-card-img {
+                aspect-ratio: auto;
+                /* Allow height to stretch naturally */
+                width: 50%;
+                flex: 1 1 50%;
+                min-height: 400px;
+            }
         }
 
         .product-img-primary,
@@ -241,91 +288,139 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.6s ease;
         }
 
         .product-img-hover {
             opacity: 0;
         }
 
-        .product-card:hover .product-img-primary {
+        .product-card-img:hover .product-img-primary {
             opacity: 0;
         }
 
-        .product-card:hover .product-img-hover {
+        .product-card-img:hover .product-img-hover {
             opacity: 1;
         }
 
-        /* Quick Add Button */
-        .quick-add {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            width: 40px;
-            height: 40px;
-            background: var(--color-white);
-            color: var(--color-text);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            font-weight: 300;
-            cursor: pointer;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            z-index: 10;
-        }
-
-        .product-card:hover .quick-add {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .quick-add:hover {
-            background: var(--color-text);
-            color: var(--color-white);
-        }
-
-        /* Details */
         .product-card-info {
-            display: block;
-            padding: 20px 0 0;
-            text-align: center;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
         }
 
         .product-card-brand {
             font-family: var(--font-body);
-            font-size: 10px;
+            font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 2px;
             color: var(--color-text-muted);
-            margin-bottom: 8px;
+            margin-bottom: 15px;
         }
 
         .product-card-name {
             font-family: var(--font-heading);
-            font-size: 16px;
+            font-size: 32px;
             color: var(--color-text);
-            margin-bottom: 5px;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .gallery-desc {
+            font-size: 14px;
+            color: var(--color-text);
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .gallery-ingredients {
+            margin-bottom: 35px;
+        }
+
+        .gallery-ingredients details {
+            border-top: 1px solid var(--color-border);
+            border-bottom: 1px solid var(--color-border);
+            padding: 15px 0;
+        }
+
+        .gallery-ingredients summary {
+            font-family: var(--font-body);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--color-text);
+            font-weight: 600;
+            cursor: pointer;
+            list-style: none;
+            /* Removes default arrow */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .gallery-ingredients summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .gallery-ingredients summary:after {
+            content: '+';
+            font-size: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-ingredients details[open] summary:after {
+            transform: rotate(45deg);
+        }
+
+        .gallery-ingredients-content {
+            padding-top: 15px;
+            font-size: 13px;
+            color: var(--color-text-muted);
+            line-height: 1.6;
+        }
+
+        .gallery-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
         }
 
         .product-card-price {
             font-family: var(--font-body);
-            font-weight: 500;
+            font-weight: 600;
             color: var(--color-text);
-            font-size: 14px;
+            font-size: 20px;
+        }
+
+        .quick-add {
+            padding: 12px 25px;
+            background: var(--color-accent);
+            color: var(--color-white);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: background 0.3s ease, color 0.3s ease;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            pointer-events: none;
+            /* Let the card catch the click */
+        }
+
+        .product-card:hover .quick-add {
+            background: var(--color-accent-hover);
         }
 
         .no-results {
-            grid-column: 1 / -1;
             text-align: center;
-            padding: 50px 0;
+            padding: 80px 0;
             font-family: var(--font-heading);
             font-size: 24px;
             color: var(--color-text-muted);
             display: none;
+            width: 100%;
         }
     </style>
 </head>
@@ -348,14 +443,15 @@
             </nav>
             <div class="site-logo">
                 <a href="bakehouse.html">
-                    The Social Manila
-                    <span class="logo-subtitle">BAKEHOUSE</span>
+                    <img src="SocialManilaBakehouse_Logos/TSMB - White.png" alt="The Social Manila Bakehouse"
+                        class="header-logo-img" style="height: 90px;">
                 </a>
             </div>
             <nav class="main-nav right-nav" id="right-nav">
                 <ul class="nav-menu">
                     <li><a href="#" aria-label="Search">Search</a></li>
-                    <li><a href="#" aria-label="Cart">Cart (0)</a></li>
+                    <li><a href="#" aria-label="Cart" class="cart-toggle-btn">Cart (<span
+                                class="cart-count">0</span>)</a></li>
                 </ul>
             </nav>
             <button class="mobile-toggle" id="mobile-toggle" aria-label="Menu">
@@ -394,14 +490,31 @@
             <div class="product-card-img">
                 <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=600&auto=format&fit=crop"
                     class="product-img-primary" alt="Signature Croissant">
-                <img src="https://images.unsplash.com/photo-1549557617-e9a9fd0edbb0?q=80&w=600&auto=format&fit=crop"
+                <img src="https://images.unsplash.com/photo-1608198093002-ad4e005484ec?q=80&w=600&auto=format&fit=crop"
                     class="product-img-hover" alt="Signature Croissant Lifestyle">
-                <div class="quick-add">+</div>
             </div>
             <div class="product-card-info">
                 <div class="product-card-brand">Viennoiserie</div>
                 <div class="product-card-name">Signature Butter Croissant</div>
-                <div class="product-card-price">₱180.00</div>
+                <p class="gallery-desc">Our iconic croissant, beloved for its hundreds of delicate, shatteringly crisp
+                    layers and deeply rich, buttery interior. Hand-laminated over 72 hours using imported premium butter
+                    to ensure absolute perfection in every bite.</p>
+
+                <div class="gallery-ingredients">
+                    <details>
+                        <summary>Ingredients & Allergy Info</summary>
+                        <div class="gallery-ingredients-content">
+                            Contains: Premium French Butter, Artisan Flour, Local Free-range Eggs, Milk, Sugar, Salt,
+                            Yeast. <br><br><i>Allergy warning: Contains dairy, gluten, and eggs. May contain traces of
+                                nuts.</i>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="gallery-footer">
+                    <div class="product-card-price">₱180.00</div>
+                    <div class="quick-add">Add To Cart</div>
+                </div>
             </div>
         </a>
 
@@ -409,60 +522,96 @@
             <div class="product-card-img">
                 <img src="https://images.unsplash.com/photo-1608198093002-ad4e005484ec?q=80&w=600&auto=format&fit=crop"
                     class="product-img-primary" alt="Pain au Chocolat">
-                <img src="https://images.unsplash.com/photo-1549557617-e9a9fd0edbb0?q=80&w=600&auto=format&fit=crop"
+                <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=600&auto=format&fit=crop"
                     class="product-img-hover" alt="Pain au Chocolat Hover">
-                <div class="quick-add">+</div>
             </div>
             <div class="product-card-info">
                 <div class="product-card-brand">Viennoiserie</div>
                 <div class="product-card-name">Classic Pain au Chocolat</div>
-                <div class="product-card-price">₱220.00</div>
+                <p class="gallery-desc">A masterpiece of French baking. Two batons of rich, 70% dark Valrhona chocolate
+                    wrapped elegantly in our signature laminated pastry dough. Baked until brilliantly golden and flaky.
+                </p>
+
+                <div class="gallery-ingredients">
+                    <details>
+                        <summary>Ingredients & Allergy Info</summary>
+                        <div class="gallery-ingredients-content">
+                            Contains: 70% Dark Valrhona Chocolate, Premium French Butter, Artisan Flour, Free-range
+                            Eggs, Milk, Sugar, Salt, Yeast. <br><br><i>Allergy warning: Contains dairy, gluten, soy (in
+                                chocolate), and eggs.</i>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="gallery-footer">
+                    <div class="product-card-price">₱220.00</div>
+                    <div class="quick-add">Add To Cart</div>
+                </div>
             </div>
         </a>
 
         <a href="#" class="product-card" data-category="viennoiserie">
             <div class="product-card-img">
-                <img src="https://images.unsplash.com/photo-1623334044303-241021148842?q=80&w=600&auto=format&fit=crop"
+                <img src="https://images.unsplash.com/photo-1519915028121-7d3463d20b13?q=80&w=600&auto=format&fit=crop"
                     class="product-img-primary" alt="Almond Croissant">
-                <img src="https://images.unsplash.com/photo-1579698583489-0f666b6c0e86?q=80&w=600&auto=format&fit=crop"
+                <img src="https://images.unsplash.com/photo-1619864205510-cdbc9c3a37ab?q=80&w=600&auto=format&fit=crop"
                     class="product-img-hover" alt="Almond Croissant Plated">
-                <div class="quick-add">+</div>
             </div>
             <div class="product-card-info">
                 <div class="product-card-brand">Viennoiserie</div>
                 <div class="product-card-name">Double Almond Croissant</div>
-                <div class="product-card-price">₱250.00</div>
+                <p class="gallery-desc">Our twice-baked sensation. A day-old croissant soaked in light rum syrup,
+                    generously filled and topped with toasted almond frangipane and slivered almonds, finished with a
+                    dusting of snow sugar.</p>
+
+                <div class="gallery-ingredients">
+                    <details>
+                        <summary>Ingredients & Allergy Info</summary>
+                        <div class="gallery-ingredients-content">
+                            Contains: Almond Flour, Slivered Almonds, Rum Syrup, Premium French Butter, Artisan Flour,
+                            Eggs, Milk, Sugar. <br><br><i>Allergy warning: Contains tree nuts (almonds), dairy, gluten,
+                                and eggs.</i>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="gallery-footer">
+                    <div class="product-card-price">₱250.00</div>
+                    <div class="quick-add">Add To Cart</div>
+                </div>
             </div>
         </a>
 
         <!-- Tarts & Cakes -->
         <a href="#" class="product-card" data-category="tarts">
             <div class="product-card-img">
-                <img src="https://images.unsplash.com/photo-1519915028121-7d3463d20b13?q=80&w=600&auto=format&fit=crop"
-                    class="product-img-primary" alt="Almond Tart">
-                <img src="https://images.unsplash.com/photo-1619864205510-cdbc9c3a37ab?q=80&w=600&auto=format&fit=crop"
-                    class="product-img-hover" alt="Tart Slice">
-                <div class="quick-add">+</div>
-            </div>
-            <div class="product-card-info">
-                <div class="product-card-brand">Tarts & Cakes</div>
-                <div class="product-card-name">Almond & Pear Tart</div>
-                <div class="product-card-price">₱280.00</div>
-            </div>
-        </a>
-
-        <a href="#" class="product-card" data-category="tarts">
-            <div class="product-card-img">
                 <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=600&auto=format&fit=crop"
                     class="product-img-primary" alt="Chocolate Cake">
                 <img src="https://images.unsplash.com/photo-1557308536-ee471ef2c390?q=80&w=600&auto=format&fit=crop"
                     class="product-img-hover" alt="Chocolate Cake Slice">
-                <div class="quick-add">+</div>
             </div>
             <div class="product-card-info">
                 <div class="product-card-brand">Tarts & Cakes</div>
                 <div class="product-card-name">Gâteau au Chocolat</div>
-                <div class="product-card-price">₱350.00</div>
+                <p class="gallery-desc">A luxuriously dense and fudgy flourless chocolate cake. Made with ethically
+                    sourced single-origin cocoa, offering a deep, intense chocolate flavor profile with a crackly,
+                    delicate crust.</p>
+
+                <div class="gallery-ingredients">
+                    <details>
+                        <summary>Ingredients & Allergy Info</summary>
+                        <div class="gallery-ingredients-content">
+                            Contains: Single-origin Dark Chocolate, Cocoa Powder, Premium Butter, Free-range Eggs, Fine
+                            Sugar. <br><br><i>Allergy warning: Contains dairy and eggs. Naturally gluten-free but
+                                prepared in a kitchen that handles wheat.</i>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="gallery-footer">
+                    <div class="product-card-price">₱350.00</div>
+                    <div class="quick-add">Add To Cart</div>
+                </div>
             </div>
         </a>
 
@@ -472,12 +621,29 @@
                     class="product-img-primary" alt="Fruit Tart">
                 <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?q=80&w=600&auto=format&fit=crop"
                     class="product-img-hover" alt="Fruit Tart Top View">
-                <div class="quick-add">+</div>
             </div>
             <div class="product-card-info">
                 <div class="product-card-brand">Tarts & Cakes</div>
                 <div class="product-card-name">Seasonal Fruit Tartlette</div>
-                <div class="product-card-price">₱320.00</div>
+                <p class="gallery-desc">A crisp, buttery pâte sucrée shell hugging a bed of silky vanilla bean pastry
+                    cream. Hand-arranged with the morning's freshest selection of vibrant, glazed berries and seasonal
+                    orchard fruits.</p>
+
+                <div class="gallery-ingredients">
+                    <details>
+                        <summary>Ingredients & Allergy Info</summary>
+                        <div class="gallery-ingredients-content">
+                            Contains: Seasonal Berries/Fruits, Madagascar Vanilla Bean, Artisan Flour, Premium Butter,
+                            Eggs, Milk, Sugar, Apricot Glaze. <br><br><i>Allergy warning: Contains dairy, gluten, and
+                                eggs.</i>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="gallery-footer">
+                    <div class="product-card-price">₱320.00</div>
+                    <div class="quick-add">Add To Cart</div>
+                </div>
             </div>
         </a>
 
@@ -488,27 +654,60 @@
                     class="product-img-primary" alt="Macaron Box">
                 <img src="https://images.unsplash.com/photo-1558326567-98ae2405596b?q=80&w=600&auto=format&fit=crop"
                     class="product-img-hover" alt="Macarons Close Up">
-                <div class="quick-add">+</div>
             </div>
             <div class="product-card-info">
                 <div class="product-card-brand">Macarons</div>
                 <div class="product-card-name">Assorted Macarons (Box of 6)</div>
-                <div class="product-card-price">₱650.00</div>
+                <p class="gallery-desc">A beautiful tasting box of our signature Parisian macarons. Six delicate, crisp
+                    almond meringue shells sandwiching exquisite ganaches, curds, and buttercreams in our most popular
+                    flavors.</p>
+
+                <div class="gallery-ingredients">
+                    <details>
+                        <summary>Ingredients & Allergy Info</summary>
+                        <div class="gallery-ingredients-content">
+                            Contains: Almond Flour, Egg Whites, Sugar, Premium Butter, Heavy Cream, various flavorings
+                            (Vanilla, Chocolate, Pistachio, Raspberry, Lemon, Coffee). <br><br><i>Allergy warning:
+                                Contains tree nuts (almonds, pistachios), dairy, and eggs. Naturally gluten-free.</i>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="gallery-footer">
+                    <div class="product-card-price">₱650.00</div>
+                    <div class="quick-add">Add To Cart</div>
+                </div>
             </div>
         </a>
 
         <a href="#" class="product-card" data-category="macarons">
             <div class="product-card-img">
-                <img src="https://images.unsplash.com/photo-1522066898715-f5840ecea8e4?q=80&w=600&auto=format&fit=crop"
+                <img src="https://images.unsplash.com/photo-1569864358642-9d1684040f43?q=80&w=600&auto=format&fit=crop"
                     class="product-img-primary" alt="Pink Macarons">
                 <img src="https://images.unsplash.com/photo-1558326567-98ae2405596b?q=80&w=600&auto=format&fit=crop"
                     class="product-img-hover" alt="Pink Macarons Stacked">
-                <div class="quick-add">+</div>
             </div>
             <div class="product-card-info">
                 <div class="product-card-brand">Macarons</div>
                 <div class="product-card-name">Rose & Raspberry Macarons</div>
-                <div class="product-card-price">₱700.00</div>
+                <p class="gallery-desc">Our signature floral dessert. Hand-piped almond meringue shells lightly infused
+                    with Bulgarian rose water, filled with a bright, tart house-made raspberry confit and white
+                    chocolate ganache.</p>
+
+                <div class="gallery-ingredients">
+                    <details>
+                        <summary>Ingredients & Allergy Info</summary>
+                        <div class="gallery-ingredients-content">
+                            Contains: Almond Flour, Egg Whites, Sugar, White Chocolate, Raspberry Puree, Rose Water,
+                            Heavy Cream. <br><br><i>Allergy warning: Contains tree nuts (almonds), dairy, and eggs.</i>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="gallery-footer">
+                    <div class="product-card-price">₱700.00</div>
+                    <div class="quick-add">Add To Cart</div>
+                </div>
             </div>
         </a>
 
@@ -518,6 +717,53 @@
 
     <!-- FOOTER -->
     <footer class="site-footer">
+        <div class="footer-main">
+            <div class="footer-col left">
+                <h3>Customer Care</h3>
+                <ul>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">FAQ &amp; Policies</a></li>
+                    <li><a href="#">Shipping &amp; Returns</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-col center">
+                <h3>The Social Manila Bakehouse</h3>
+                <p>Sign up to receive an exclusive invitation to our events and newest menus.</p>
+                <form class="newsletter-form" action="#" method="post">
+                    <input type="email" placeholder="Enter your email" required aria-label="Email">
+                    <button type="submit">→</button>
+                </form>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/thesocialmanilaPH/" target="_blank" aria-label="Facebook">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
+                        </svg>
+                    </a>
+                    <a href="https://www.instagram.com/thesocialmanilaph" target="_blank" aria-label="Instagram">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                            <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" />
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-col right">
+                <h3>Our World</h3>
+                <ul>
+                    <li><a href="index.html">The Social Manila Lifestyle</a></li>
+                    <li><a href="bakehouse-studio.html">Co-Baking Studio</a></li>
+                    <li><a href="bakehouse.html#pastries">Pastries</a></li>
+                    <li><a href="#">Careers</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-massive-logo">
+            <img src="SocialManilaBakehouse_Logos/TSMB - White.png" alt="The Social Manila Bakehouse"
+                style="height: 120px; display: block; margin: 0 auto;">
+        </div>
         <div class="footer-bottom">
             <p>&copy; 2026 The Social Manila Bakehouse. All rights reserved.</p>
         </div>
@@ -574,6 +820,41 @@
             searchInput.addEventListener('input', filterItems);
         });
     </script>
+    <!-- CART DRAWER -->
+    <div class="cart-overlay" id="cart-overlay"></div>
+    <div class="cart-drawer" id="cart-drawer">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button class="cart-close" id="cart-close">&times;</button>
+        </div>
+        <div class="cart-body" id="cart-body">
+            <!-- Cart items will be dynamically injected here -->
+            <p class="cart-empty-msg">Your cart is currently empty.</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total-row">
+                <span>Total</span>
+                <span id="cart-total-price">₱0.00</span>
+            </div>
+            <button class="checkout-btn">Checkout</button>
+        </div>
+    </div>
+
+    <!-- PRODUCT ACTION MODAL (also available here just in case) -->
+    <div class="product-modal-container" id="product-modal">
+        <div class="product-modal">
+            <button class="product-modal-close" id="product-modal-close">&times;</button>
+            <img src="" alt="Product Image" class="product-modal-img" id="modal-img">
+            <h3 id="modal-title">Product Name</h3>
+            <p id="modal-desc" style="font-family: var(--font-body); letter-spacing: 0;">Would you like to add this to
+                your cart or view our full menu?</p>
+            <div class="product-modal-actions">
+                <button class="modal-btn primary" id="modal-add-btn">Add to Cart</button>
+                <a href="bakehouse-menu.html" class="modal-btn secondary">View Full Menu</a>
+            </div>
+        </div>
+    </div>
+
     <script src="main.js"></script>
 </body>
 

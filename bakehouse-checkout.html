@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You - The Social Manila Bakehouse</title>
+    <meta name="description" content="Thank you for your purchase from The Social Manila Bakehouse.">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --color-bg: #FBF5EA;
+            --color-white: #FFFFFF;
+            --color-text: #A9241C;
+            --color-accent: #A9241C;
+            --color-accent-hover: #F56C42;
+        }
+
+        body {
+            background-color: var(--color-bg);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .checkout-success {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .success-container {
+            max-width: 600px;
+            background: var(--color-white);
+            padding: 60px 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(169, 36, 28, 0.08);
+            border: 1px solid rgba(245, 157, 150, 0.3);
+        }
+
+        .success-icon {
+            font-size: 64px;
+            color: var(--color-accent);
+            margin-bottom: 20px;
+        }
+
+        .success-container h1 {
+            font-family: var(--font-heading);
+            font-size: 36px;
+            color: var(--color-accent);
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .success-container p {
+            font-size: 16px;
+            color: var(--color-text);
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        .success-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .success-btn {
+            padding: 15px 30px;
+            border: 1px solid var(--color-accent);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .success-btn.primary {
+            background: var(--color-accent);
+            color: var(--color-white);
+        }
+
+        .success-btn.primary:hover {
+            background: var(--color-white);
+            color: var(--color-accent);
+        }
+
+        .success-btn.secondary {
+            background: transparent;
+            color: var(--color-accent);
+        }
+
+        .success-btn.secondary:hover {
+            background: var(--color-accent);
+            color: var(--color-white);
+        }
+
+        /* Essential Header Styles */
+        .site-header {
+            background-color: var(--color-accent);
+            border-bottom-color: var(--color-accent);
+            position: relative;
+            /* Not fixed for this simple page */
+        }
+
+        .site-header a,
+        .site-logo a {
+            color: var(--color-white) !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER (Simplified) -->
+    <header class="site-header" id="site-header">
+        <div class="header-inner" style="justify-content: center;">
+            <div class="site-logo">
+                <a href="bakehouse.html">
+                    <img src="SocialManilaBakehouse_Logos/TSMB - White.png" alt="The Social Manila Bakehouse"
+                        class="header-logo-img" style="height: 90px;">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- SUCCESS CONTENT -->
+    <main class="checkout-success fade-in">
+        <div class="success-container">
+            <img src="SocialManilaBakehouse_Logos/Coffee.PNG" alt="Coffee and Pastries"
+                style="width: 100%; max-height: 250px; object-fit: cover; border-radius: 8px; margin-bottom: 30px;">
+            <div class="success-icon">✓</div>
+            <h1>Thank You!</h1>
+            <p>Your beautiful artisanal pastries are being prepared. We have received your order and are so excited to
+                bake for you.</p>
+
+            <div class="success-actions">
+                <a href="bakehouse-menu.html" class="success-btn primary">Order Again</a>
+                <a href="bakehouse.html" class="success-btn secondary">Back to Home</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Once they hit the success page, clear the shopping cart.
+        document.addEventListener('DOMContentLoaded', () => {
+            localStorage.removeItem('socialManilaCart');
+            // Trigger a small animation
+            document.querySelector('.checkout-success').classList.add('visible');
+        });
+    </script>
+</body>
+
+</html>

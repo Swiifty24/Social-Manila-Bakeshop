@@ -174,19 +174,20 @@
                         </a>
                     </li>
                     <li><a href="#pastries">Pastries</a></li>
-                    <li><a href="#studio">Co-Baking Studio</a></li>
+                    <li><a href="bakehouse-studio.html">Co-Baking Studio</a></li>
                 </ul>
             </nav>
             <div class="site-logo">
                 <a href="bakehouse.html">
-                    The Social Manila
-                    <span class="logo-subtitle">BAKEHOUSE</span>
+                    <img src="SocialManilaBakehouse_Logos/TSMB - White.png" alt="The Social Manila Bakehouse"
+                        class="header-logo-img" style="height: 90px;">
                 </a>
             </div>
             <nav class="main-nav right-nav" id="right-nav">
                 <ul class="nav-menu">
                     <li><a href="#">Our Story</a></li>
-                    <li><a href="#" aria-label="Cart">Cart (0)</a></li>
+                    <li><a href="#" aria-label="Cart" class="cart-toggle-btn">Cart (<span
+                                class="cart-count">0</span>)</a></li>
                 </ul>
             </nav>
             <button class="mobile-toggle" id="mobile-toggle" aria-label="Menu">
@@ -219,7 +220,7 @@
                     <div class="hero-slide-content">
                         <h1>Co-Baking Studio</h1>
                         <p>Customize your orders or bake with us.</p>
-                        <a href="#studio" class="hero-btn">Explore The Studio</a>
+                        <a href="bakehouse-studio.html" class="hero-btn">Explore The Studio</a>
                     </div>
                 </div>
             </div>
@@ -242,7 +243,7 @@
             <div class="products-grid stagger-children">
                 <a href="#" class="product-card">
                     <div class="product-card-img"><img
-                            src="https://images.unsplash.com/photo-1549557617-e9a9fd0edbb0?q=80&w=600&auto=format&fit=crop"
+                            src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=600&auto=format&fit=crop"
                             alt="Signature Croissant"></div>
                     <div class="product-card-info">
                         <div class="product-card-brand">Bakehouse</div>
@@ -262,7 +263,7 @@
                 </a>
                 <a href="#" class="product-card">
                     <div class="product-card-img"><img
-                            src="https://images.unsplash.com/photo-1579372785461-9c162bc5d36e?q=80&w=600&auto=format&fit=crop"
+                            src="https://images.unsplash.com/photo-1519915028121-7d3463d20b13?q=80&w=600&auto=format&fit=crop"
                             alt="Almond Tart"></div>
                     <div class="product-card-info">
                         <div class="product-card-brand">Bakehouse</div>
@@ -286,38 +287,40 @@
         </div>
     </section>
 
-    <!-- CO-BAKING STUDIO (Split Brand Showcase style) -->
-    <section class="brand-showcases" id="studio">
-        <div class="split-brand-showcase fade-in">
-            <div class="split-content bg-studio">
-                <h2>Co-Baking Studio</h2>
+    <!-- ABOUT US SECTION -->
+    <section class="about-us-section fade-in" id="about-us">
+        <div class="container">
+            <div class="section-heading">
+                <h2>Our Story</h2>
                 <div class="divider"></div>
-                <p>Welcome to our collaborative baking space. Have a special request? Customize your order here or join
-                    us for a session!</p>
-
-                <form class="order-form" action="#" method="post">
-                    <input type="text" placeholder="Your Name" required>
-                    <input type="email" placeholder="Your Email" required>
-                    <select required>
-                        <option value="" disabled selected>Select Product to Customize</option>
-                        <option value="cake">Custom Celebration Cake</option>
-                        <option value="pastries">Bulk Pastry Box</option>
-                        <option value="other">Other Request</option>
-                    </select>
-                    <textarea placeholder="Describe your customization details..." rows="3" required></textarea>
-                    <button type="submit">Submit Custom Order</button>
-                </form>
-
-                <p class="customization-text">In partnership with <strong>Kings City</strong> and <strong>Home
-                        Culinary</strong> for our premium event spaces and culinary workshops.</p>
-                <div class="studio-links">
-                    <a href="https://kingscity.com.ph" target="_blank" class="cta-btn outline">Visit Kings City</a>
-                    <a href="https://homeculinaryschool.com" target="_blank" class="cta-btn outline">Home Culinary</a>
-                </div>
             </div>
-            <div class="split-image">
-                <img src="https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?q=80&w=1200&auto=format&fit=crop"
-                    alt="Co-Baking Studio">
+            <div class="about-us-grid">
+                <div class="about-us-image">
+                    <img src="SocialManilaBakehouse_Logos/Coffee.PNG" alt="Artisanal Coffee and Pastries">
+                </div>
+                <div class="about-us-content">
+                    <p class="about-us-text">
+                        Welcome to The Social Manila Bakehouse. Born from a passion for authentic, artisanal
+                        craftsmanship and the simple joy of sharing a perfect bite, we are dedicated to bringing you an
+                        elevated bakery experience. Every pastry is meticulously handcrafted in our bustling kitchens
+                        using only the finest, carefully sourced ingredients.
+                    </p>
+                    <p class="about-us-text">
+                        Whether you are here to savor our signature butter croissants, create your own masterpiece in
+                        our Co-Baking Studio, or simply enjoy a quiet moment with a freshly poured coffee, we strive to
+                        make every visit memorable. We believe that great food is the foundation of a vibrant community.
+                    </p>
+
+                    <div class="our-network-block">
+                        <h3 class="network-title">Our Network</h3>
+                        <p class="network-subtitle">Discover the rest of The Social Manila lifestyle.</p>
+                        <div class="network-links">
+                            <a href="https://kingscity.com.ph" target="_blank" class="network-btn">Visit Kings City</a>
+                            <a href="https://homeculinaryschool.com" target="_blank" class="network-btn">Home
+                                Culinary</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -361,19 +364,55 @@
                 <h3>Our World</h3>
                 <ul>
                     <li><a href="index.html">The Social Manila Lifestyle</a></li>
-                    <li><a href="#studio">Co-Baking Studio</a></li>
+                    <li><a href="bakehouse-studio.html">Co-Baking Studio</a></li>
                     <li><a href="#pastries">Pastries</a></li>
                     <li><a href="#">Careers</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-massive-logo">
-            <h2>The Social Manila</h2>
+            <img src="SocialManilaBakehouse_Logos/TSMB - White.png" alt="The Social Manila Bakehouse"
+                style="height: 120px; display: block; margin: 0 auto;">
         </div>
         <div class="footer-bottom">
             <p>&copy; 2026 The Social Manila.</p>
         </div>
     </footer>
+
+    <!-- CART DRAWER -->
+    <div class="cart-overlay" id="cart-overlay"></div>
+    <div class="cart-drawer" id="cart-drawer">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button class="cart-close" id="cart-close">&times;</button>
+        </div>
+        <div class="cart-body" id="cart-body">
+            <!-- Cart items will be dynamically injected here -->
+            <p class="cart-empty-msg">Your cart is currently empty.</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total-row">
+                <span>Total</span>
+                <span id="cart-total-price">₱0.00</span>
+            </div>
+            <button class="checkout-btn">Checkout</button>
+        </div>
+    </div>
+
+    <!-- PRODUCT ACTION MODAL -->
+    <div class="product-modal-container" id="product-modal">
+        <div class="product-modal">
+            <button class="product-modal-close" id="product-modal-close">&times;</button>
+            <img src="" alt="Product Image" class="product-modal-img" id="modal-img">
+            <h3 id="modal-title">Product Name</h3>
+            <p id="modal-desc" style="font-family: var(--font-body); letter-spacing: 0;">Would you like to add this to
+                your cart or view our full menu?</p>
+            <div class="product-modal-actions">
+                <button class="modal-btn primary" id="modal-add-btn">Add to Cart</button>
+                <a href="bakehouse-menu.html" class="modal-btn secondary">View Full Menu</a>
+            </div>
+        </div>
+    </div>
 
     <script src="main.js"></script>
 </body>

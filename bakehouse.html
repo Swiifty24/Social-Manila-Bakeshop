@@ -8,32 +8,27 @@
     <meta name="description" content="The Social Manila Bakehouse - Artisanal Pastries and Co-Baking Studio.">
     <link rel="stylesheet" href="style.css">
     <style>
-        :root {
-            /* Override vars using the provided image palette */
-            --color-bg: #FBF5EA;
-            /* Cream */
-            --color-bg-alt: #FCD26C;
-            /* Yellow */
-            --color-white: #FFFFFF;
-            --color-text: #A9241C;
-            /* Dark Red */
-            --color-text-muted: #F56C42;
-            /* Orange */
-            --color-accent: #A9241C;
-            /* Dark Red */
-            --color-accent-hover: #F56C42;
-            /* Orange */
-            --color-dark: #A9241C;
-            /* Dark Red */
-            --color-border: #F59D96;
-            /* Pink */
+        /* Roca Two Bold for all headers on this page */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .section-heading h2,
+        .hero-slide-content h1,
+        .product-card-name,
+        .network-title,
+        .about-us-section h2 {
+            font-family: var(--font-body) !important;
+            font-weight: 700 !important;
         }
 
-        /* Maroon Theme Overrides */
+        /* Gold Theme Overrides */
         .announcement-bar {
-            background-color: var(--color-accent);
+            background-color: var(--color-dark);
             color: var(--color-white);
-            border-bottom-color: var(--color-accent);
+            border-bottom-color: var(--color-dark);
         }
 
         .site-header {
@@ -45,48 +40,74 @@
         .site-header .mega-menu-trigger summary,
         .site-logo a,
         .site-header .nav-menu li a {
-            color: var(--color-white) !important;
+            color: var(--color-dark) !important;
+            /* contrast on gold */
         }
 
         .site-header .mega-menu-trigger:after,
         .site-header a:after {
-            background-color: var(--color-white);
+            background-color: var(--color-dark);
         }
 
         .site-header.scrolled {
-            background-color: rgba(169, 36, 28, 0.98);
+            background-color: rgba(252, 202, 106, 0.98);
+            /* Gold */
         }
 
         .mobile-toggle span {
-            background-color: var(--color-white);
+            background-color: var(--color-dark);
         }
 
         .site-footer {
-            background-color: var(--color-accent);
-            color: var(--color-white);
+            background-color: var(--color-white);
+            /* White footer */
+            color: var(--color-text);
+            /* Black text */
+            border-top: 1px solid var(--color-border);
         }
 
         .site-footer h3,
         .site-footer p,
         .site-footer a,
         .site-footer .footer-massive-logo h2 {
-            color: var(--color-white) !important;
+            color: var(--color-text) !important;
+            /* Black text */
         }
 
         .site-footer .newsletter-form {
-            border-bottom-color: var(--color-white);
+            border-bottom-color: var(--color-text);
+            /* Black border */
         }
 
         .site-footer .newsletter-form input {
-            color: var(--color-white);
+            color: var(--color-text);
+            /* Black text */
         }
 
         .site-footer .newsletter-form input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(44, 44, 44, 0.7);
+            /* Muted black text */
         }
 
         .site-footer .newsletter-form button {
-            color: var(--color-white);
+            color: var(--color-text);
+            /* Black text */
+        }
+
+        /* Our Network Section Contrast Override */
+        .network-title,
+        .network-subtitle {
+            color: var(--color-dark) !important;
+        }
+
+        .network-btn {
+            color: var(--color-dark) !important;
+            border-color: var(--color-dark) !important;
+        }
+
+        .network-btn:hover {
+            background-color: var(--color-dark) !important;
+            color: var(--color-white) !important;
         }
 
         .bg-studio {
@@ -118,12 +139,12 @@
         .order-form select:focus,
         .order-form textarea:focus {
             outline: none;
-            border-color: var(--color-accent);
+            border-color: var(--color-dark);
         }
 
         .order-form button {
             padding: 14px 24px;
-            background-color: var(--color-accent);
+            background-color: var(--color-dark);
             color: var(--color-white);
             border: none;
             cursor: pointer;
@@ -135,7 +156,7 @@
         }
 
         .order-form button:hover {
-            background-color: var(--color-accent-hover);
+            background-color: var(--color-orange);
         }
 
         .customization-text {
@@ -179,7 +200,7 @@
             </nav>
             <div class="site-logo">
                 <a href="bakehouse.html">
-                    <img src="SocialManilaBakehouse_Logos/TSMB - White.png" alt="The Social Manila Bakehouse"
+                    <img src="SocialManilaBakehouse_Logos/TSMB - Red.png" alt="The Social Manila Bakehouse"
                         class="header-logo-img" style="height: 90px;">
                 </a>
             </div>
@@ -371,7 +392,7 @@
             </div>
         </div>
         <div class="footer-massive-logo">
-            <img src="SocialManilaBakehouse_Logos/TSMB - White.png" alt="The Social Manila Bakehouse"
+            <img src="SocialManilaBakehouse_Logos/TSMB - Red.png" alt="The Social Manila Bakehouse"
                 style="height: 120px; display: block; margin: 0 auto;">
         </div>
         <div class="footer-bottom">

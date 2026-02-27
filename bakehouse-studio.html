@@ -8,32 +8,11 @@
     <meta name="description" content="Customize your orders or bake with us at The Social Manila Bakehouse.">
     <link rel="stylesheet" href="style.css">
     <style>
-        :root {
-            /* Override vars using the provided image palette */
-            --color-bg: #FBF5EA;
-            /* Cream */
-            --color-bg-alt: #FCD26C;
-            /* Yellow */
-            --color-white: #FFFFFF;
-            --color-text: #A9241C;
-            /* Dark Red */
-            --color-text-muted: #F56C42;
-            /* Orange */
-            --color-accent: #A9241C;
-            /* Dark Red */
-            --color-accent-hover: #F56C42;
-            /* Orange */
-            --color-dark: #A9241C;
-            /* Dark Red */
-            --color-border: #F59D96;
-            /* Pink */
-        }
-
-        /* Maroon Theme Overrides */
+        /* Gold Theme Overrides */
         .announcement-bar {
-            background-color: var(--color-accent);
+            background-color: var(--color-dark);
             color: var(--color-white);
-            border-bottom-color: var(--color-accent);
+            border-bottom-color: var(--color-dark);
         }
 
         .site-header {
@@ -45,48 +24,56 @@
         .site-header .mega-menu-trigger summary,
         .site-logo a,
         .site-header .nav-menu li a {
-            color: var(--color-white) !important;
+            color: var(--color-dark) !important;
         }
 
         .site-header .mega-menu-trigger:after,
         .site-header a:after {
-            background-color: var(--color-white);
+            background-color: var(--color-dark);
         }
 
         .site-header.scrolled {
-            background-color: rgba(169, 36, 28, 0.98);
+            background-color: rgba(252, 202, 106, 0.98);
         }
 
         .mobile-toggle span {
-            background-color: var(--color-white);
+            background-color: var(--color-dark);
         }
 
         .site-footer {
-            background-color: var(--color-accent);
-            color: var(--color-white);
+            background-color: var(--color-white);
+            /* White footer */
+            color: var(--color-text);
+            /* Black text */
+            border-top: 1px solid var(--color-border);
         }
 
         .site-footer h3,
         .site-footer p,
         .site-footer a,
         .site-footer .footer-massive-logo h2 {
-            color: var(--color-white) !important;
+            color: var(--color-text) !important;
+            /* Black text */
         }
 
         .site-footer .newsletter-form {
-            border-bottom-color: var(--color-white);
+            border-bottom-color: var(--color-text);
+            /* Black border */
         }
 
         .site-footer .newsletter-form input {
-            color: var(--color-white);
+            color: var(--color-text);
+            /* Black text */
         }
 
         .site-footer .newsletter-form input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(44, 44, 44, 0.7);
+            /* Muted black text */
         }
 
         .site-footer .newsletter-form button {
-            color: var(--color-white);
+            color: var(--color-text);
+            /* Black text */
         }
 
         .bg-studio {
@@ -101,6 +88,7 @@
             padding: 40px;
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(169, 36, 28, 0.08);
+            /* Deep red tint */
             border: 1px solid rgba(245, 157, 150, 0.3);
         }
 
@@ -121,7 +109,8 @@
             font-family: inherit;
             font-size: 0.9em;
             font-weight: 600;
-            color: var(--color-accent);
+            color: var(--color-dark);
+            /* Contrast fix */
             letter-spacing: 0.5px;
         }
 
@@ -136,19 +125,18 @@
             width: 100%;
             box-sizing: border-box;
             background-color: #FFFDF9;
-            /* Slightly off-white */
             color: var(--color-text);
             transition: all 0.3s ease;
             appearance: none;
-            /* remove native styling for select */
         }
 
         .order-form input:focus,
         .order-form select:focus,
         .order-form textarea:focus {
             outline: none;
-            border-color: var(--color-accent);
+            border-color: var(--color-dark);
             box-shadow: 0 0 0 3px rgba(169, 36, 28, 0.1);
+            /* Deep red tint */
             background-color: var(--color-white);
         }
 
@@ -160,7 +148,8 @@
         .select-wrapper::after {
             content: '▼';
             font-size: 12px;
-            color: var(--color-accent);
+            color: var(--color-dark);
+            /* Contrast fix */
             position: absolute;
             right: 16px;
             top: 50%;
@@ -171,7 +160,8 @@
         .order-form button {
             padding: 16px 24px;
             background-color: var(--color-accent);
-            color: var(--color-white);
+            /* Gold */
+            color: var(--color-dark);
             border: none;
             border-radius: 8px;
             cursor: pointer;
@@ -182,11 +172,13 @@
             letter-spacing: 1.5px;
             font-size: 0.9em;
             margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(169, 36, 28, 0.2);
+            box-shadow: 0 4px 15px rgba(252, 202, 106, 0.4);
         }
 
         .order-form button:hover {
-            background-color: var(--color-accent-hover);
+            background-color: var(--color-dark);
+            /* Deep Red */
+            color: var(--color-white);
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(169, 36, 28, 0.3);
         }
@@ -203,6 +195,7 @@
         .studio-hero {
             height: 40vh;
             background-color: var(--color-bg-alt);
+            /* Pink */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -220,7 +213,6 @@
             height: 100%;
             object-fit: cover;
             opacity: 0.4;
-            /* Better contrast */
             z-index: 1;
         }
 
@@ -232,7 +224,8 @@
         .studio-hero-content h1 {
             font-size: 48px;
             font-family: var(--font-heading);
-            color: var(--color-accent);
+            color: var(--color-dark);
+            /* Deep Red text for readability on Pink bg */
             letter-spacing: 2px;
             text-transform: uppercase;
         }
@@ -277,12 +270,12 @@
                         </a>
                     </li>
                     <li><a href="bakehouse.html#pastries">Pastries</a></li>
-                    <li><a href="bakehouse.html">Back to Bakehouse</a></li>
+                    <li><a href="bakehouse.html">Home</a></li>
                 </ul>
             </nav>
             <div class="site-logo">
                 <a href="bakehouse.html">
-                    <img src="SocialManilaBakehouse_Logos/TSMB - White.png" alt="The Social Manila Bakehouse"
+                    <img src="SocialManilaBakehouse_Logos/TSMB - Red.png" alt="The Social Manila Bakehouse"
                         class="header-logo-img" style="height: 90px;">
                 </a>
             </div>
@@ -323,7 +316,7 @@
 
             <div class="enhanced-form-container">
                 <h2
-                    style="font-family: var(--font-heading); margin-bottom: 25px; color: var(--color-accent); font-size: 28px;">
+                    style="font-family: var(--font-heading); margin-bottom: 25px; color: #000000; font-size: 28px; font-weight: normal;">
                     Custom Order Request</h2>
                 <form class="order-form" action="#" method="post">
                     <div class="form-group">
@@ -410,7 +403,7 @@
             </div>
         </div>
         <div class="footer-massive-logo">
-            <img src="SocialManilaBakehouse_Logos/TSMB - White.png" alt="The Social Manila Bakehouse"
+            <img src="SocialManilaBakehouse_Logos/TSMB - Red.png" alt="The Social Manila Bakehouse"
                 style="height: 120px; display: block; margin: 0 auto;">
         </div>
         <div class="footer-bottom">

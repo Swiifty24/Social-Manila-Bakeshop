@@ -1,23 +1,49 @@
 /* ============================
    The Social Manila — Design System
    ============================ */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600&family=Cormorant+Garamond:wght@400;500;600&display=swap');
+@font-face {
+    font-family: 'Vintage Goods';
+    src: url('Fonts/Vintage-Goods-Script/Vintage-Goods-Script/Vintage Goods.otf') format('opentype'),
+        url('Fonts/Vintage-Goods-Script/Vintage-Goods-Script/Vintage Goods.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roca Two';
+    src: url('Fonts/fonnts.com-83594/fonts/fonnts.com-Roca_Two_Thin.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roca Two';
+    src: url('Fonts/fonnts.com-83594/fonts/fonnts.com-Roca_Two_Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
 
 :root {
-    --color-bg: #FAFAF7;
-    --color-bg-alt: #F3F1EC;
+    --color-bg: #FCF6F0;
+    /* Cream */
+    --color-bg-alt: #F8A3A0;
+    /* Pink */
     --color-white: #FFFFFF;
     --color-text: #2C2C2C;
     --color-text-muted: #8A8A8A;
     --color-text-light: #B0B0B0;
-    --color-accent: #B8963E;
-    --color-accent-hover: #D4AF37;
-    --color-dark: #1A1A1A;
-    --color-border: #E8E5DF;
+    --color-accent: #FCCA6A;
+    /* Gold primary */
+    --color-accent-hover: #F8B440;
+    --color-dark: #A62319;
+    /* Deep Red */
+    --color-orange: #FA6E4F;
+    /* Coral/Orange Accent */
+    --color-border: #E8D5C8;
 
-    --font-heading: 'Playfair Display', 'Georgia', serif;
-    --font-body: 'Montserrat', 'Helvetica Neue', sans-serif;
-    --font-accent: 'Cormorant Garamond', 'Georgia', serif;
+    --font-heading: 'Vintage Goods', 'Playfair Display', serif;
+    --font-body: 'Roca Two', 'Montserrat', sans-serif;
+    --font-accent: 'Roca Two', 'Cormorant Garamond', serif;
 
     --section-padding: 100px 0;
     --container-width: 1200px;
@@ -93,7 +119,7 @@ h6 {
     color: var(--color-text);
     text-align: center;
     padding: 10px 20px;
-    font-family: var(--font-heading);
+    font-family: var(--font-body);
     font-size: 14px;
     font-weight: 400;
     letter-spacing: 0;
@@ -200,7 +226,7 @@ h6 {
 }
 
 .nav-menu li a {
-    font-family: var(--font-heading);
+    font-family: var(--font-body);
     font-size: 16px;
     font-weight: 400;
     letter-spacing: 0;
@@ -228,7 +254,7 @@ h6 {
 
 /* MEGA MENU */
 .mega-menu-trigger summary {
-    font-family: var(--font-heading);
+    font-family: var(--font-body);
     font-size: 16px;
     font-weight: 400;
     text-transform: capitalize;
@@ -1009,7 +1035,7 @@ h6 {
 }
 
 .footer-col h3 {
-    font-family: var(--font-heading);
+    font-family: var(--font-body);
     font-size: 16px;
     font-weight: 500;
     color: var(--color-text);

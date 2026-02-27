@@ -8,28 +8,7 @@
     <meta name="description" content="Explore the full artisanal pastry menu at The Social Manila Bakehouse.">
     <link rel="stylesheet" href="style.css">
     <style>
-        :root {
-            /* Override vars using the provided image palette */
-            --color-bg: #FBF5EA;
-            /* Cream */
-            --color-bg-alt: #FCD26C;
-            /* Yellow */
-            --color-white: #FFFFFF;
-            --color-text: #A9241C;
-            /* Dark Red */
-            --color-text-muted: #F56C42;
-            /* Orange */
-            --color-accent: #A9241C;
-            /* Dark Red */
-            --color-accent-hover: #F56C42;
-            /* Orange */
-            --color-dark: #A9241C;
-            /* Dark Red */
-            --color-border: #F59D96;
-            /* Pink */
-        }
-
-        /* Maroon Theme Overrides */
+        /* Gold Theme Overrides */
         .site-header {
             background-color: var(--color-accent);
             border-bottom-color: var(--color-accent);
@@ -39,36 +18,62 @@
         .site-header .mega-menu-trigger summary,
         .site-logo a,
         .site-header .nav-menu li a {
-            color: var(--color-white) !important;
+            color: var(--color-dark) !important;
         }
 
         .site-header .mega-menu-trigger:after,
         .site-header a:after {
-            background-color: var(--color-white);
+            background-color: var(--color-dark);
         }
 
         .site-header.scrolled {
-            background-color: rgba(169, 36, 28, 0.98);
+            background-color: rgba(252, 202, 106, 0.98);
         }
 
         .mobile-toggle span {
-            background-color: var(--color-white);
+            background-color: var(--color-dark);
         }
 
         .site-footer {
-            background-color: var(--color-accent);
-            color: var(--color-white);
+            background-color: var(--color-white);
+            /* White footer */
+            color: var(--color-text);
+            /* Black text */
+            border-top: 1px solid var(--color-border);
         }
 
+        .site-footer h3,
         .site-footer p,
-        .site-footer a {
-            color: var(--color-white) !important;
+        .site-footer a,
+        .site-footer .footer-massive-logo h2 {
+            color: var(--color-text) !important;
+            /* Black text */
+        }
+
+        .site-footer .newsletter-form {
+            border-bottom-color: var(--color-text);
+            /* Black border */
+        }
+
+        .site-footer .newsletter-form input {
+            color: var(--color-text);
+            /* Black text */
+        }
+
+        .site-footer .newsletter-form input::placeholder {
+            color: rgba(44, 44, 44, 0.7);
+            /* Muted black text */
+        }
+
+        .site-footer .newsletter-form button {
+            color: var(--color-text);
+            /* Black text */
         }
 
         /* Utility bar */
         .utility-bar {
-            background-color: var(--color-accent);
-            border-bottom-color: var(--color-accent);
+            background-color: var(--color-dark);
+            border-bottom-color: var(--color-dark);
         }
 
         .utility-bar .filter-btn {
@@ -100,7 +105,8 @@
         /* Hero Banner Settings */
         .menu-hero {
             height: 40vh;
-            background-color: var(--color-bg-alt);
+            background-color: #1A1A1A;
+            /* Neutral dark background */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -116,7 +122,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.6;
+            opacity: 0.85;
             z-index: 1;
         }
 
@@ -127,7 +133,8 @@
 
         .menu-hero-content h1 {
             font-size: 48px;
-            font-family: var(--font-heading);
+            font-family: var(--font-body);
+            font-weight: 700;
             color: var(--color-white);
             letter-spacing: 2px;
             text-transform: uppercase;
@@ -384,6 +391,7 @@
             align-items: center;
             justify-content: space-between;
             margin-top: auto;
+            gap: 20px;
         }
 
         .product-card-price {
@@ -395,7 +403,8 @@
 
         .quick-add {
             padding: 12px 25px;
-            background: var(--color-accent);
+            background: var(--color-dark);
+            /* Deep Red */
             color: var(--color-white);
             font-size: 12px;
             text-transform: uppercase;
@@ -410,7 +419,8 @@
         }
 
         .product-card:hover .quick-add {
-            background: var(--color-accent-hover);
+            background: var(--color-orange);
+            /* Coral hover */
         }
 
         .no-results {
@@ -438,12 +448,13 @@
                             <span class="logo-subtitle" style="margin-top: 4px; font-size: 8px;">LIFESTYLE</span>
                         </a>
                     </li>
-                    <li><a href="bakehouse.html">Back to Bakehouse</a></li>
+                    <li><a href="bakehouse.html">Home</a></li>
+                    <li><a href="bakehouse-studio.html">Co-Baking Studio</a></li>
                 </ul>
             </nav>
             <div class="site-logo">
                 <a href="bakehouse.html">
-                    <img src="SocialManilaBakehouse_Logos/TSMB - White.png" alt="The Social Manila Bakehouse"
+                    <img src="SocialManilaBakehouse_Logos/TSMB - Red.png" alt="The Social Manila Bakehouse"
                         class="header-logo-img" style="height: 90px;">
                 </a>
             </div>
@@ -761,7 +772,7 @@
             </div>
         </div>
         <div class="footer-massive-logo">
-            <img src="SocialManilaBakehouse_Logos/TSMB - White.png" alt="The Social Manila Bakehouse"
+            <img src="SocialManilaBakehouse_Logos/TSMB - Red.png" alt="The Social Manila Bakehouse"
                 style="height: 120px; display: block; margin: 0 auto;">
         </div>
         <div class="footer-bottom">
@@ -792,7 +803,7 @@
                     const matchesSearch = cardName.includes(searchQuery);
 
                     if (matchesCategory && matchesSearch) {
-                        card.style.display = 'block';
+                        card.style.display = 'flex';
                         visibleCount++;
                     } else {
                         card.style.display = 'none';

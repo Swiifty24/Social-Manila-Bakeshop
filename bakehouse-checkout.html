@@ -8,13 +8,7 @@
     <meta name="description" content="Thank you for your purchase from The Social Manila Bakehouse.">
     <link rel="stylesheet" href="style.css">
     <style>
-        :root {
-            --color-bg: #FBF5EA;
-            --color-white: #FFFFFF;
-            --color-text: #A9241C;
-            --color-accent: #A9241C;
-            --color-accent-hover: #F56C42;
-        }
+        /* Colors inherited from global style.css */
 
         body {
             background-color: var(--color-bg);
@@ -43,14 +37,16 @@
 
         .success-icon {
             font-size: 64px;
-            color: var(--color-accent);
+            color: var(--color-dark);
+            /* Use Deep Red for contrast against Cream BG */
             margin-bottom: 20px;
         }
 
         .success-container h1 {
             font-family: var(--font-heading);
             font-size: 36px;
-            color: var(--color-accent);
+            color: var(--color-dark);
+            /* Use Deep Red for contrast against Cream BG */
             margin-bottom: 20px;
             letter-spacing: 2px;
             text-transform: uppercase;
@@ -85,21 +81,25 @@
 
         .success-btn.primary {
             background: var(--color-accent);
-            color: var(--color-white);
+            /* Gold */
+            color: var(--color-dark);
+            /* Dark text on gold */
         }
 
         .success-btn.primary:hover {
-            background: var(--color-white);
-            color: var(--color-accent);
+            background: var(--color-dark);
+            color: var(--color-white);
+            border-color: var(--color-dark);
         }
 
         .success-btn.secondary {
             background: transparent;
-            color: var(--color-accent);
+            color: var(--color-dark);
+            border-color: var(--color-dark);
         }
 
         .success-btn.secondary:hover {
-            background: var(--color-accent);
+            background: var(--color-dark);
             color: var(--color-white);
         }
 
@@ -113,7 +113,7 @@
 
         .site-header a,
         .site-logo a {
-            color: var(--color-white) !important;
+            color: var(--color-dark) !important;
         }
     </style>
 </head>
@@ -125,7 +125,7 @@
         <div class="header-inner" style="justify-content: center;">
             <div class="site-logo">
                 <a href="bakehouse.html">
-                    <img src="SocialManilaBakehouse_Logos/TSMB - White.png" alt="The Social Manila Bakehouse"
+                    <img src="SocialManilaBakehouse_Logos/TSMB - Red.png" alt="The Social Manila Bakehouse"
                         class="header-logo-img" style="height: 90px;">
                 </a>
             </div>

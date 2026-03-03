@@ -126,9 +126,159 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     // ============================
+    // PRODUCT DATA & DYNAMIC LOADING
+    // ============================
+    const productData = {
+        'signature-butter-croissant': {
+            id: 'signature-butter-croissant',
+            name: 'Signature Butter Croissant',
+            price: 180.00,
+            category: 'Viennoiserie',
+            img: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=600&auto=format&fit=crop',
+            desc: 'Our iconic croissant, beloved for its hundreds of delicate, shatteringly crisp layers and deeply rich, buttery interior. Hand-laminated over 72 hours using imported premium butter to ensure absolute perfection in every bite.',
+            ingredients: 'Premium French Butter, Artisan Flour, Local Free-range Eggs, Milk, Sugar, Salt, Yeast.',
+            allergens: 'Contains dairy, gluten, and eggs. May contain traces of nuts.'
+        },
+        'pain-au-chocolat': {
+            id: 'pain-au-chocolat',
+            name: 'Pain au Chocolat',
+            price: 220.00,
+            category: 'Viennoiserie',
+            img: 'https://images.unsplash.com/photo-1608198093002-ad4e005484ec?q=80&w=600&auto=format&fit=crop',
+            desc: 'A masterpiece of French baking. Two batons of rich, 70% dark Valrhona chocolate wrapped elegantly in our signature laminated pastry dough. Baked until brilliantly golden and flaky.',
+            ingredients: '70% Dark Valrhona Chocolate, Premium French Butter, Artisan Flour, Free-range Eggs, Milk, Sugar, Salt, Yeast.',
+            allergens: 'Contains dairy, gluten, soy (in chocolate), and eggs.'
+        },
+        'almond-and-pear-tart': {
+            id: 'almond-and-pear-tart',
+            name: 'Almond & Pear Tart',
+            price: 280.00,
+            category: 'Tarts & Cakes',
+            img: 'https://images.unsplash.com/photo-1519915028121-7d3463d20b13?q=80&w=600&auto=format&fit=crop',
+            desc: 'A classic French tart featuring a buttery pâté sucrée shell, silky almond frangipane, and perfectly poached seasonal pears. A harmonious balance of textures and refined sweetness.',
+            ingredients: 'Almond Flour, Pears, Premium French Butter, Artisan Flour, Eggs, Milk, Sugar, Vanilla.',
+            allergens: 'Contains tree nuts (almonds), dairy, gluten, and eggs.'
+        },
+        'gateau-au-chocolat': {
+            id: 'gateau-au-chocolat',
+            name: 'Gâteau au Chocolat',
+            price: 350.00,
+            category: 'Tarts & Cakes',
+            img: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=600&auto=format&fit=crop',
+            desc: 'A luxuriously dense and fudgy flourless chocolate cake. Made with ethically sourced single-origin cocoa, offering a deep, intense chocolate flavor profile with a crackly, delicate crust.',
+            ingredients: 'Single-origin Dark Chocolate, Cocoa Powder, Premium Butter, Free-range Eggs, Fine Sugar.',
+            allergens: 'Contains dairy and eggs. Naturally gluten-free but prepared in a kitchen that handles wheat.'
+        },
+        'seasonal-fruit-tartlette': {
+            id: 'seasonal-fruit-tartlette',
+            name: 'Seasonal Fruit Tartlette',
+            price: 320.00,
+            category: 'Tarts & Cakes',
+            img: 'https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?q=80&w=600&auto=format&fit=crop',
+            desc: 'A crisp, buttery pâte sucrée shell hugging a bed of silky vanilla bean pastry cream. Hand-arranged with the morning\'s freshest selection of vibrant, glazed berries and seasonal orchard fruits.',
+            ingredients: 'Seasonal Berries/Fruits, Madagascar Vanilla Bean, Artisan Flour, Premium Butter, Eggs, Milk, Sugar, Apricot Glaze.',
+            allergens: 'Contains dairy, gluten, and eggs.'
+        },
+        'assorted-macarons-(box-of-6)': {
+            id: 'assorted-macarons-(box-of-6)',
+            name: 'Assorted Macarons (Box of 6)',
+            price: 650.00,
+            category: 'Macarons',
+            img: 'https://images.unsplash.com/photo-1569864358642-9d1684040f43?q=80&w=600&auto=format&fit=crop',
+            desc: 'A beautiful tasting box of our signature Parisian macarons. Six delicate, crisp almond meringue shells sandwiching exquisite ganaches, curds, and buttercreams in our most popular flavors.',
+            ingredients: 'Almond Flour, Egg Whites, Sugar, Premium Butter, Heavy Cream, various flavorings (Vanilla, Chocolate, Pistachio, Raspberry, Lemon, Coffee).',
+            allergens: 'Contains tree nuts (almonds, pistachios), dairy, and eggs. Naturally gluten-free.'
+        },
+        'rose-and-raspberry-macarons': {
+            id: 'rose-and-raspberry-macarons',
+            name: 'Rose & Raspberry Macarons',
+            price: 700.00,
+            category: 'Macarons',
+            img: 'https://images.unsplash.com/photo-1569864358642-9d1684040f43?q=80&w=600&auto=format&fit=crop',
+            desc: 'Our signature floral dessert. Hand-piped almond meringue shells lightly infused with Bulgarian rose water, filled with a bright, tart house-made raspberry confit and white chocolate ganache.',
+            ingredients: 'Almond Flour, Egg Whites, Sugar, White Chocolate, Raspberry Puree, Rose Water, Heavy Cream.',
+            allergens: 'Contains tree nuts (almonds), dairy, and eggs.'
+        }
+    };
+
+    function initProductPage() {
+        if (!window.location.pathname.includes('bakehouse-product.html')) return;
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+
+        if (!productId || !productData[productId]) {
+            showToast('Product not found.');
+            setTimeout(() => window.location.href = 'bakehouse-menu.html', 2000);
+            return;
+        }
+
+        const product = productData[productId];
+
+        // Populate elements
+        const titleEl = document.getElementById('p-title');
+        const priceEl = document.getElementById('p-price');
+        const catEl = document.getElementById('p-category');
+        const descEl = document.getElementById('p-desc');
+        const ingEl = document.getElementById('p-ingredients');
+        const algEl = document.getElementById('p-allergens');
+        const imgEl = document.getElementById('p-main-img');
+
+        if (titleEl) titleEl.textContent = product.name;
+        if (priceEl) priceEl.textContent = `₱${product.price.toFixed(2)}`;
+        if (catEl) catEl.textContent = product.category;
+        if (descEl) descEl.textContent = product.desc;
+        if (ingEl) ingEl.textContent = product.ingredients;
+        if (algEl) algEl.textContent = product.allergens;
+        if (imgEl) {
+            imgEl.src = product.img;
+            imgEl.alt = product.name;
+        }
+
+        // Controls
+        const qtyInput = document.getElementById('qty-input');
+        const plusBtn = document.getElementById('qty-plus');
+        const minusBtn = document.getElementById('qty-minus');
+        const addBtn = document.getElementById('add-to-cart-btn');
+
+        if (plusBtn) plusBtn.addEventListener('click', () => {
+            qtyInput.value = parseInt(qtyInput.value) + 1;
+        });
+        if (minusBtn) minusBtn.addEventListener('click', () => {
+            if (parseInt(qtyInput.value) > 1) qtyInput.value = parseInt(qtyInput.value) - 1;
+        });
+
+        if (addBtn) addBtn.addEventListener('click', () => {
+            const qtyValue = parseInt(qtyInput.value);
+            const noteValue = document.getElementById('custom-notes').value.trim();
+            const fullItem = { ...product, qty: qtyValue, note: noteValue };
+            addToCartWithDetails(fullItem);
+        });
+
+        // Hide loading, show content
+        const loader = document.getElementById('loading');
+        const content = document.getElementById('product-content');
+        if (loader) loader.style.display = 'none';
+        if (content) content.classList.add('loaded');
+    }
+
+    function addToCartWithDetails(fullItem) {
+        // Check if item with SAME ID and SAME NOTE exists
+        const existing = cart.find(i => i.id === fullItem.id && i.note === fullItem.note);
+        if (existing) {
+            existing.qty += fullItem.qty;
+        } else {
+            cart.push(fullItem);
+        }
+        saveCart();
+    }
+
+    initProductPage();
+
+    // ============================
     // SMOOTH SCROLL FOR ANCHORS
     // ============================
-    
+
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             const href = this.getAttribute('href');
@@ -225,13 +375,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function addToCart(product) {
-        const existing = cart.find(item => item.id === product.id);
-        if (existing) {
-            existing.qty += 1;
-        } else {
-            cart.push({ ...product, qty: 1, note: '' });
-        }
-        saveCart();
+        const item = { ...product, qty: 1, note: '' };
+        addToCartWithDetails(item);
         showToast(`Added ${product.name} to your cart.`);
     }
 
@@ -260,18 +405,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     <img src="${item.img}" alt="${item.name}" class="cart-item-img">
                     <div class="cart-item-details">
                         <h4 class="cart-item-title">${item.name}</h4>
+                        ${hasNote ? `<div class="cart-item-note">Note: ${item.note}</div>` : ''}
                         <div class="cart-item-price">${formatPrice(item.price)}</div>
                         <div class="cart-item-actions">
                             <div class="qty-controls">
-                                <button class="qty-btn minus" data-id="${item.id}">-</button>
+                                <button class="qty-btn minus" data-id="${item.id}" data-note="${item.note}">-</button>
                                 <span class="qty-display">${item.qty}</span>
-                                <button class="qty-btn plus" data-id="${item.id}">+</button>
+                                <button class="qty-btn plus" data-id="${item.id}" data-note="${item.note}">+</button>
                             </div>
-                            <button class="remove-item" data-id="${item.id}">Remove</button>
-                        </div>
-                        <button class="customize-toggle" data-id="${item.id}">${hasNote ? '- Hide Customization' : '+ Add Customization'}</button>
-                        <div class="cart-customization-container ${hasNote ? 'active' : ''}" id="customization-container-${item.id}">
-                            <textarea class="cart-customization" data-id="${item.id}" placeholder="Add customization notes (e.g. no nuts, extra sweet...)" rows="2">${item.note}</textarea>
+                            <button class="remove-item" data-id="${item.id}" data-note="${item.note}">Remove</button>
                         </div>
                     </div>
                 `;
@@ -282,11 +424,12 @@ document.addEventListener('DOMContentLoaded', function () {
             container.querySelectorAll('.qty-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const id = e.target.dataset.id;
-                    const item = cart.find(i => i.id === id);
+                    const note = e.target.dataset.note;
+                    const item = cart.find(i => i.id === id && i.note === note);
                     if (e.target.classList.contains('plus')) item.qty += 1;
                     if (e.target.classList.contains('minus')) {
                         item.qty -= 1;
-                        if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
+                        if (item.qty <= 0) cart = cart.filter(i => !(i.id === id && i.note === note));
                     }
                     saveCart();
                 });
@@ -294,28 +437,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
             container.querySelectorAll('.remove-item').forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    cart = cart.filter(i => i.id !== e.target.dataset.id);
-                    saveCart();
-                });
-            });
-
-            container.querySelectorAll('.customize-toggle').forEach(btn => {
-                btn.addEventListener('click', (e) => {
                     const id = e.target.dataset.id;
-                    const cContainer = document.getElementById('customization-container-' + id);
-                    if (cContainer) {
-                        const isActive = cContainer.classList.contains('active');
-                        cContainer.classList.toggle('active');
-                        e.target.textContent = isActive ? '+ Add Customization' : '- Hide Customization';
-                    }
-                });
-            });
-
-            container.querySelectorAll('.cart-customization').forEach(textarea => {
-                textarea.addEventListener('change', (e) => {
-                    const item = cart.find(i => i.id === e.target.dataset.id);
-                    if (item) item.note = e.target.value;
-                    localStorage.setItem('socialManilaCart', JSON.stringify(cart)); // save without re-render
+                    const note = e.target.dataset.note;
+                    cart = cart.filter(i => !(i.id === id && i.note === note));
+                    saveCart();
                 });
             });
         }
@@ -389,11 +514,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (!nameEl || !priceEl || !imgEl) return;
 
-            // Prevent default navigation
-            e.preventDefault();
-
+            const productIdentifier = nameEl.textContent.trim().toLowerCase()
+                .replace(/&/g, 'and')
+                .replace(/\s+/g, '-');
             const product = {
-                id: nameEl.textContent.trim().toLowerCase().replace(/\s+/g, '-'),
+                id: productIdentifier,
                 name: nameEl.textContent.trim(),
                 price: parsePrice(priceEl.textContent),
                 img: imgEl.src
@@ -401,11 +526,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const isMenuPage = window.location.pathname.includes('bakehouse-menu.html') || window.location.pathname.includes('bakehouse-studio.html');
 
-            // Direct cart addition or open modal depending on page context
-            // "In main page if click image, choose add to cart or view menu"
-            if (isMenuPage || isQuickAdd) {
+            if (isQuickAdd) {
+                e.preventDefault();
                 addToCart(product);
+            } else if (isMenuPage) {
+                // Let the anchor href handle regular navigation to bakehouse-product.html?id=...
             } else {
+                e.preventDefault();
                 openModal(product);
             }
         });

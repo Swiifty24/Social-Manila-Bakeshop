@@ -192,6 +192,10 @@
 
         .search-container {
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            min-width: 40px;
         }
 
         .search-input {
@@ -201,90 +205,103 @@
             background: transparent;
             font-family: var(--font-body);
             font-size: 14px;
-            width: 250px;
+            width: 0;
+            opacity: 0;
             color: var(--color-text);
-            transition: border-color var(--transition-base);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+
+        .search-container.active .search-input {
+            width: 200px;
+            opacity: 1;
+            padding-right: 30px;
+            pointer-events: auto;
         }
 
         .search-input:focus {
             outline: none;
-            border-bottom-color: var(--color-text);
+            border-bottom-color: var(--color-white);
         }
 
-        .search-input::placeholder {
-            color: var(--color-text-light);
-        }
-
-        /* Menu Gallery Layout */
-        .products-grid {
-            padding: 60px 5%;
+        .search-btn {
+            background: none;
+            border: none;
+            color: var(--color-white);
+            /* White for visibility on red bar */
+            cursor: pointer;
+            padding: 5px;
             display: flex;
-            flex-direction: column;
-            gap: 80px;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+            z-index: 2;
+        }
+
+        .search-btn svg {
+            width: 20px;
+            height: 20px;
+            stroke-width: 2;
+        }
+
+        .search-container.active .search-btn {
+            transform: translateX(-5px);
+        }
+
+        /* Menu Grid Layout (Cara Mia Style) */
+        .products-grid {
+            padding: 40px 5%;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
             background-color: var(--color-bg);
-            max-width: 1100px;
+            max-width: 1400px;
             margin: 0 auto;
+            grid-auto-flow: row !important;
+            /* Force vertical stacking */
+            overflow-x: visible !important;
+            /* Remove horizontal scroll */
+        }
+
+        @media(min-width: 768px) {
+            .products-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 25px;
+            }
+        }
+
+        @media(min-width: 1100px) {
+            .products-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 30px;
+            }
         }
 
         .product-card {
             display: flex;
             flex-direction: column;
-            background: var(--color-white);
-            border-radius: 12px;
+            background: transparent;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 10px 40px rgba(169, 36, 28, 0.05);
-            transition: box-shadow var(--transition-base);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease, box-shadow 0.4s ease;
             text-decoration: none;
             cursor: pointer;
+            height: 100%;
+            opacity: 1;
         }
 
-        .product-card:hover {
-            box-shadow: 0 15px 50px rgba(169, 36, 28, 0.1);
-        }
-
-        @media(min-width: 900px) {
-            .product-card {
-                flex-direction: row;
-                align-items: stretch;
-            }
-
-            .product-card:nth-child(even) {
-                flex-direction: row-reverse;
-            }
-
-            .product-card-img {
-                width: 50%;
-                flex-shrink: 0;
-            }
-
-            .product-card-info {
-                width: 50%;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                padding: 50px;
-                text-align: left;
-            }
+        .product-card.filtering {
+            opacity: 0;
+            transform: translateY(10px);
         }
 
         .product-card-img {
             position: relative;
-            background-color: var(--color-bg-alt);
-            aspect-ratio: 4/3;
+            background: linear-gradient(135deg, rgba(252, 202, 106, 0.05), rgba(248, 163, 160, 0.05));
+            aspect-ratio: 1/1;
             overflow: hidden;
-            min-height: 300px;
-            /* Fallback for mobile */
             width: 100%;
-        }
-
-        @media(min-width: 900px) {
-            .product-card-img {
-                aspect-ratio: auto;
-                /* Allow height to stretch naturally */
-                width: 50%;
-                flex: 1 1 50%;
-                min-height: 400px;
-            }
+            border-radius: 24px;
         }
 
         .product-img-primary,
@@ -311,138 +328,191 @@
         }
 
         .product-card-info {
-            padding: 40px 30px;
+            padding: 15px 5px;
             display: flex;
             flex-direction: column;
+            flex-grow: 1;
+            background: transparent;
         }
 
-        .product-card-brand {
-            font-family: var(--font-body);
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--color-text-muted);
-            margin-bottom: 15px;
+        .product-card-header {
+            display: flex;
+            flex-direction: column;
+            /* Stack name and price for cleaner look if name is long */
+            align-items: flex-start;
+            gap: 4px;
+            margin-bottom: 12px;
         }
 
         .product-card-name {
-            font-family: var(--font-heading);
-            font-size: 32px;
-            color: var(--color-text);
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
-
-        .gallery-desc {
-            font-size: 14px;
-            color: var(--color-text);
-            line-height: 1.7;
-            margin-bottom: 30px;
-        }
-
-        .gallery-ingredients {
-            margin-bottom: 35px;
-        }
-
-        .gallery-ingredients details {
-            border-top: 1px solid var(--color-border);
-            border-bottom: 1px solid var(--color-border);
-            padding: 15px 0;
-        }
-
-        .gallery-ingredients summary {
-            font-family: var(--font-body);
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--color-text);
-            font-weight: 600;
-            cursor: pointer;
-            list-style: none;
-            /* Removes default arrow */
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .gallery-ingredients summary::-webkit-details-marker {
-            display: none;
-        }
-
-        .gallery-ingredients summary:after {
-            content: '+';
+            font-family: 'Roca Two', serif;
+            font-weight: 700;
             font-size: 18px;
-            transition: transform 0.3s ease;
-        }
-
-        .gallery-ingredients details[open] summary:after {
-            transform: rotate(45deg);
-        }
-
-        .gallery-ingredients-content {
-            padding-top: 15px;
-            font-size: 13px;
-            color: var(--color-text-muted);
-            line-height: 1.6;
-        }
-
-        .gallery-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: auto;
-            gap: 20px;
+            color: var(--color-dark);
+            line-height: 1.2;
+            margin: 0;
+            letter-spacing: -0.01em;
         }
 
         .product-card-price {
             font-family: var(--font-body);
             font-weight: 600;
             color: var(--color-text);
-            font-size: 20px;
+            font-size: 16px;
+            white-space: nowrap;
+        }
+
+        .gallery-footer {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-top: auto;
+            padding: 0;
         }
 
         .quick-add {
-            padding: 12px 25px;
-            background: var(--color-dark);
-            /* Deep Red */
-            color: var(--color-white);
-            font-size: 12px;
+            font-size: 11px;
+            color: var(--color-dark);
+            background-color: var(--color-accent);
+            /* Gold to start */
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            transition: background 0.3s ease, color 0.3s ease;
-            border-radius: 4px;
-            border: none;
+            letter-spacing: 1px;
+            font-weight: 700;
             cursor: pointer;
-            font-weight: 600;
-            pointer-events: none;
-            /* Let the card catch the click */
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 10px 20px;
+            border-radius: 50px;
+            width: auto;
+            display: inline-block;
+            box-shadow: 0 4px 12px rgba(252, 202, 106, 0.3);
         }
 
-        .product-card:hover .quick-add {
-            background: var(--color-orange);
-            /* Coral hover */
+        .quick-add:hover {
+            background-color: var(--color-dark);
+            /* Deep Red on hover */
+            color: var(--color-white);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(169, 36, 28, 0.3);
+        }
+
+        /* Sorting Styles */
+        .sorter-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sorter-label {
+            font-family: var(--font-body);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Custom Dropdown Styles */
+        .sorter-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .custom-select-wrapper {
+            position: relative;
+            user-select: none;
+            width: 180px;
+        }
+
+        .custom-select-trigger {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px 0;
+            color: var(--color-white);
+            font-family: var(--font-body);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .custom-select-trigger:hover {
+            color: var(--color-accent);
+        }
+
+        .custom-select-trigger:after {
+            content: "";
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid currentColor;
+            margin-left: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .custom-select-wrapper.active .custom-select-trigger:after {
+            transform: rotate(180deg);
+        }
+
+        .custom-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--color-dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            margin-top: 10px;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .custom-select-wrapper.active .custom-options {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: all;
+            transform: translateY(0);
+        }
+
+        .custom-option {
+            padding: 12px 15px;
+            color: rgba(255, 255, 255, 0.8);
+            font-family: var(--font-body);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .custom-option:last-child {
+            border-bottom: none;
+        }
+
+        .custom-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--color-white);
+            padding-left: 20px;
+        }
+
+        .custom-option.selected {
+            color: var(--color-accent);
+            background: rgba(252, 202, 106, 0.1);
         }
 
         .no-results {
-            text-align: center;
-            padding: 80px 0;
-            font-family: var(--font-heading);
-            font-size: 24px;
-            color: var(--color-text-muted);
             display: none;
-            width: 100%;
-        }
-
-        /* Scroll-triggered fade-in animation for menu items */
-        .product-card.fade-in {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .product-card.fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+            font-family: var(--font-body);
+            color: var(--color-text-muted);
         }
     </style>
 </head>
@@ -500,8 +570,32 @@
             <button class="filter-btn" data-filter="tarts">Tarts & Cakes</button>
             <button class="filter-btn" data-filter="macarons">Macarons</button>
         </div>
-        <div class="search-container">
-            <input type="text" id="menu-search" class="search-input" placeholder="Search our menu...">
+        <div style="display: flex; gap: 40px; align-items: center;">
+            <div class="search-container" id="search-wrapper">
+                <input type="text" id="menu-search" class="search-input" placeholder="Search our menu...">
+                <button class="search-btn" id="search-trigger" aria-label="Toggle Search">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="sorter-container">
+                <span class="sorter-label">Sort by:</span>
+                <div class="custom-select-wrapper" id="sort-dropdown">
+                    <div class="custom-select-trigger"><span>Featured</span></div>
+                    <div class="custom-options">
+                        <div class="custom-option selected" data-value="featured">Featured</div>
+                        <div class="custom-option" data-value="az">Alphabetically, A-Z</div>
+                        <div class="custom-option" data-value="za">Alphabetically, Z-A</div>
+                        <div class="custom-option" data-value="price-low">Price, low to high</div>
+                        <div class="custom-option" data-value="price-high">Price, high to low</div>
+                    </div>
+                </div>
+                <!-- Hidden input to store value -->
+                <input type="hidden" id="product-sort" value="featured">
+            </div>
         </div>
     </section>
 
@@ -509,7 +603,8 @@
     <section class="products-grid" id="menu-grid">
 
         <!-- Viennoiserie -->
-        <a href="#" class="product-card fade-in" data-category="viennoiserie">
+        <a href="bakehouse-product.html?id=signature-butter-croissant" class="product-card fade-in"
+            data-category="viennoiserie" data-price="180">
             <div class="product-card-img">
                 <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=600&auto=format&fit=crop"
                     class="product-img-primary" alt="Signature Croissant">
@@ -517,31 +612,18 @@
                     class="product-img-hover" alt="Signature Croissant Lifestyle">
             </div>
             <div class="product-card-info">
-                <div class="product-card-brand">Viennoiserie</div>
-                <div class="product-card-name">Signature Butter Croissant</div>
-                <p class="gallery-desc">Our iconic croissant, beloved for its hundreds of delicate, shatteringly crisp
-                    layers and deeply rich, buttery interior. Hand-laminated over 72 hours using imported premium butter
-                    to ensure absolute perfection in every bite.</p>
-
-                <div class="gallery-ingredients">
-                    <details>
-                        <summary>Ingredients & Allergy Info</summary>
-                        <div class="gallery-ingredients-content">
-                            Contains: Premium French Butter, Artisan Flour, Local Free-range Eggs, Milk, Sugar, Salt,
-                            Yeast. <br><br><i>Allergy warning: Contains dairy, gluten, and eggs. May contain traces of
-                                nuts.</i>
-                        </div>
-                    </details>
+                <div class="product-card-header">
+                    <h3 class="product-card-name">Signature Butter Croissant</h3>
+                    <span class="product-card-price">₱180.00</span>
                 </div>
-
                 <div class="gallery-footer">
-                    <div class="product-card-price">₱180.00</div>
-                    <div class="quick-add">Add To Cart</div>
+                    <div class="quick-add">Add to Cart</div>
                 </div>
             </div>
         </a>
 
-        <a href="#" class="product-card fade-in" data-category="viennoiserie">
+        <a href="bakehouse-product.html?id=pain-au-chocolat" class="product-card fade-in" data-category="viennoiserie"
+            data-price="220">
             <div class="product-card-img">
                 <img src="https://images.unsplash.com/photo-1608198093002-ad4e005484ec?q=80&w=600&auto=format&fit=crop"
                     class="product-img-primary" alt="Pain au Chocolat">
@@ -549,64 +631,38 @@
                     class="product-img-hover" alt="Pain au Chocolat Hover">
             </div>
             <div class="product-card-info">
-                <div class="product-card-brand">Viennoiserie</div>
-                <div class="product-card-name">Classic Pain au Chocolat</div>
-                <p class="gallery-desc">A masterpiece of French baking. Two batons of rich, 70% dark Valrhona chocolate
-                    wrapped elegantly in our signature laminated pastry dough. Baked until brilliantly golden and flaky.
-                </p>
-
-                <div class="gallery-ingredients">
-                    <details>
-                        <summary>Ingredients & Allergy Info</summary>
-                        <div class="gallery-ingredients-content">
-                            Contains: 70% Dark Valrhona Chocolate, Premium French Butter, Artisan Flour, Free-range
-                            Eggs, Milk, Sugar, Salt, Yeast. <br><br><i>Allergy warning: Contains dairy, gluten, soy (in
-                                chocolate), and eggs.</i>
-                        </div>
-                    </details>
+                <div class="product-card-header">
+                    <h3 class="product-card-name">Pain au Chocolat</h3>
+                    <span class="product-card-price">₱220.00</span>
                 </div>
-
                 <div class="gallery-footer">
-                    <div class="product-card-price">₱220.00</div>
-                    <div class="quick-add">Add To Cart</div>
+                    <div class="quick-add">Add to Cart</div>
                 </div>
             </div>
         </a>
 
-        <a href="#" class="product-card fade-in" data-category="viennoiserie">
+        <a href="bakehouse-product.html?id=almond-and-pear-tart" class="product-card fade-in" data-category="tarts"
+            data-price="280">
             <div class="product-card-img">
                 <img src="https://images.unsplash.com/photo-1519915028121-7d3463d20b13?q=80&w=600&auto=format&fit=crop"
-                    class="product-img-primary" alt="Almond Croissant">
+                    class="product-img-primary" alt="Almond & Pear Tart">
                 <img src="https://images.unsplash.com/photo-1619864205510-cdbc9c3a37ab?q=80&w=600&auto=format&fit=crop"
-                    class="product-img-hover" alt="Almond Croissant Plated">
+                    class="product-img-hover" alt="Almond & Pear Tart Hover">
             </div>
             <div class="product-card-info">
-                <div class="product-card-brand">Viennoiserie</div>
-                <div class="product-card-name">Double Almond Croissant</div>
-                <p class="gallery-desc">Our twice-baked sensation. A day-old croissant soaked in light rum syrup,
-                    generously filled and topped with toasted almond frangipane and slivered almonds, finished with a
-                    dusting of snow sugar.</p>
-
-                <div class="gallery-ingredients">
-                    <details>
-                        <summary>Ingredients & Allergy Info</summary>
-                        <div class="gallery-ingredients-content">
-                            Contains: Almond Flour, Slivered Almonds, Rum Syrup, Premium French Butter, Artisan Flour,
-                            Eggs, Milk, Sugar. <br><br><i>Allergy warning: Contains tree nuts (almonds), dairy, gluten,
-                                and eggs.</i>
-                        </div>
-                    </details>
+                <div class="product-card-header">
+                    <h3 class="product-card-name">Almond & Pear Tart</h3>
+                    <span class="product-card-price">₱280.00</span>
                 </div>
-
                 <div class="gallery-footer">
-                    <div class="product-card-price">₱250.00</div>
-                    <div class="quick-add">Add To Cart</div>
+                    <div class="quick-add">Add to Cart</div>
                 </div>
             </div>
         </a>
 
         <!-- Tarts & Cakes -->
-        <a href="#" class="product-card fade-in" data-category="tarts">
+        <a href="bakehouse-product.html?id=gateau-au-chocolat" class="product-card fade-in" data-category="tarts"
+            data-price="350">
             <div class="product-card-img">
                 <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=600&auto=format&fit=crop"
                     class="product-img-primary" alt="Chocolate Cake">
@@ -614,31 +670,18 @@
                     class="product-img-hover" alt="Chocolate Cake Slice">
             </div>
             <div class="product-card-info">
-                <div class="product-card-brand">Tarts & Cakes</div>
-                <div class="product-card-name">Gâteau au Chocolat</div>
-                <p class="gallery-desc">A luxuriously dense and fudgy flourless chocolate cake. Made with ethically
-                    sourced single-origin cocoa, offering a deep, intense chocolate flavor profile with a crackly,
-                    delicate crust.</p>
-
-                <div class="gallery-ingredients">
-                    <details>
-                        <summary>Ingredients & Allergy Info</summary>
-                        <div class="gallery-ingredients-content">
-                            Contains: Single-origin Dark Chocolate, Cocoa Powder, Premium Butter, Free-range Eggs, Fine
-                            Sugar. <br><br><i>Allergy warning: Contains dairy and eggs. Naturally gluten-free but
-                                prepared in a kitchen that handles wheat.</i>
-                        </div>
-                    </details>
+                <div class="product-card-header">
+                    <h3 class="product-card-name">Gâteau au Chocolat</h3>
+                    <span class="product-card-price">₱350.00</span>
                 </div>
-
                 <div class="gallery-footer">
-                    <div class="product-card-price">₱350.00</div>
-                    <div class="quick-add">Add To Cart</div>
+                    <div class="quick-add">Add to Cart</div>
                 </div>
             </div>
         </a>
 
-        <a href="#" class="product-card fade-in" data-category="tarts">
+        <a href="bakehouse-product.html?id=seasonal-fruit-tartlette" class="product-card fade-in" data-category="tarts"
+            data-price="320">
             <div class="product-card-img">
                 <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?q=80&w=600&auto=format&fit=crop"
                     class="product-img-primary" alt="Fruit Tart">
@@ -646,64 +689,38 @@
                     class="product-img-hover" alt="Fruit Tart Top View">
             </div>
             <div class="product-card-info">
-                <div class="product-card-brand">Tarts & Cakes</div>
-                <div class="product-card-name">Seasonal Fruit Tartlette</div>
-                <p class="gallery-desc">A crisp, buttery pâte sucrée shell hugging a bed of silky vanilla bean pastry
-                    cream. Hand-arranged with the morning's freshest selection of vibrant, glazed berries and seasonal
-                    orchard fruits.</p>
-
-                <div class="gallery-ingredients">
-                    <details>
-                        <summary>Ingredients & Allergy Info</summary>
-                        <div class="gallery-ingredients-content">
-                            Contains: Seasonal Berries/Fruits, Madagascar Vanilla Bean, Artisan Flour, Premium Butter,
-                            Eggs, Milk, Sugar, Apricot Glaze. <br><br><i>Allergy warning: Contains dairy, gluten, and
-                                eggs.</i>
-                        </div>
-                    </details>
+                <div class="product-card-header">
+                    <h3 class="product-card-name">Seasonal Fruit Tartlette</h3>
+                    <span class="product-card-price">₱320.00</span>
                 </div>
-
                 <div class="gallery-footer">
-                    <div class="product-card-price">₱320.00</div>
-                    <div class="quick-add">Add To Cart</div>
+                    <div class="quick-add">Add to Cart</div>
                 </div>
             </div>
         </a>
 
         <!-- Macarons -->
-        <a href="#" class="product-card fade-in" data-category="macarons">
+        <a href="bakehouse-product.html?id=assorted-macarons-(box-of-6)" class="product-card fade-in"
+            data-category="macarons" data-price="650">
             <div class="product-card-img">
                 <img src="https://images.unsplash.com/photo-1569864358642-9d1684040f43?q=80&w=600&auto=format&fit=crop"
-                    class="product-img-primary" alt="Macaron Box">
+                    class="product-img-primary" alt="Assorted Macarons (Box of 6)">
                 <img src="https://images.unsplash.com/photo-1558326567-98ae2405596b?q=80&w=600&auto=format&fit=crop"
-                    class="product-img-hover" alt="Macarons Close Up">
+                    class="product-img-hover" alt="Assorted Macarons Hover">
             </div>
             <div class="product-card-info">
-                <div class="product-card-brand">Macarons</div>
-                <div class="product-card-name">Assorted Macarons (Box of 6)</div>
-                <p class="gallery-desc">A beautiful tasting box of our signature Parisian macarons. Six delicate, crisp
-                    almond meringue shells sandwiching exquisite ganaches, curds, and buttercreams in our most popular
-                    flavors.</p>
-
-                <div class="gallery-ingredients">
-                    <details>
-                        <summary>Ingredients & Allergy Info</summary>
-                        <div class="gallery-ingredients-content">
-                            Contains: Almond Flour, Egg Whites, Sugar, Premium Butter, Heavy Cream, various flavorings
-                            (Vanilla, Chocolate, Pistachio, Raspberry, Lemon, Coffee). <br><br><i>Allergy warning:
-                                Contains tree nuts (almonds, pistachios), dairy, and eggs. Naturally gluten-free.</i>
-                        </div>
-                    </details>
+                <div class="product-card-header">
+                    <h3 class="product-card-name">Assorted Macarons (Box of 6)</h3>
+                    <span class="product-card-price">₱650.00</span>
                 </div>
-
                 <div class="gallery-footer">
-                    <div class="product-card-price">₱650.00</div>
-                    <div class="quick-add">Add To Cart</div>
+                    <div class="quick-add">Add to Cart</div>
                 </div>
             </div>
         </a>
 
-        <a href="#" class="product-card fade-in" data-category="macarons">
+        <a href="bakehouse-product.html?id=rose-and-raspberry-macarons" class="product-card fade-in"
+            data-category="macarons" data-price="700">
             <div class="product-card-img">
                 <img src="https://images.unsplash.com/photo-1569864358642-9d1684040f43?q=80&w=600&auto=format&fit=crop"
                     class="product-img-primary" alt="Pink Macarons">
@@ -711,25 +728,12 @@
                     class="product-img-hover" alt="Pink Macarons Stacked">
             </div>
             <div class="product-card-info">
-                <div class="product-card-brand">Macarons</div>
-                <div class="product-card-name">Rose & Raspberry Macarons</div>
-                <p class="gallery-desc">Our signature floral dessert. Hand-piped almond meringue shells lightly infused
-                    with Bulgarian rose water, filled with a bright, tart house-made raspberry confit and white
-                    chocolate ganache.</p>
-
-                <div class="gallery-ingredients">
-                    <details>
-                        <summary>Ingredients & Allergy Info</summary>
-                        <div class="gallery-ingredients-content">
-                            Contains: Almond Flour, Egg Whites, Sugar, White Chocolate, Raspberry Puree, Rose Water,
-                            Heavy Cream. <br><br><i>Allergy warning: Contains tree nuts (almonds), dairy, and eggs.</i>
-                        </div>
-                    </details>
+                <div class="product-card-header">
+                    <h3 class="product-card-name">Rose & Raspberry Macarons</h3>
+                    <span class="product-card-price">₱700.00</span>
                 </div>
-
                 <div class="gallery-footer">
-                    <div class="product-card-price">₱700.00</div>
-                    <div class="quick-add">Add To Cart</div>
+                    <div class="quick-add">Add to Cart</div>
                 </div>
             </div>
         </a>
@@ -786,13 +790,73 @@
             const productCards = document.querySelectorAll('.product-card');
             const noResultsMsg = document.getElementById('no-results-msg');
 
-            // Function to filter items based on category and search text
-            const filterItems = () => {
+            const sortSelect = document.getElementById('product-sort');
+            const menuGrid = document.getElementById('menu-grid');
+
+            const searchTrigger = document.getElementById('search-trigger');
+            const searchWrapper = document.getElementById('search-wrapper');
+
+            // Toggle expanding search
+            searchTrigger.addEventListener('click', (e) => {
+                e.preventDefault();
+                searchWrapper.classList.toggle('active');
+                if (searchWrapper.classList.contains('active')) {
+                    searchInput.focus();
+                }
+            });
+
+            // Close search when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!searchWrapper.contains(e.target) && searchWrapper.classList.contains('active')) {
+                    if (searchInput.value === '') {
+                        searchWrapper.classList.remove('active');
+                    }
+                }
+            });
+
+            // Custom Dropdown Logic
+            const dropdown = document.getElementById('sort-dropdown');
+            const trigger = dropdown.querySelector('.custom-select-trigger');
+            const options = dropdown.querySelectorAll('.custom-option');
+
+            trigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdown.classList.toggle('active');
+            });
+
+            options.forEach(option => {
+                option.addEventListener('click', () => {
+                    const val = option.dataset.value;
+                    const text = option.textContent;
+
+                    // Update UI
+                    trigger.querySelector('span').textContent = text;
+                    options.forEach(opt => opt.classList.remove('selected'));
+                    option.classList.add('selected');
+
+                    // Update Hidden Input & Trigger Sort
+                    sortSelect.value = val;
+                    dropdown.classList.remove('active');
+                    filterAndSortItems();
+                });
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!dropdown.contains(e.target)) {
+                    dropdown.classList.remove('active');
+                }
+            });
+
+            // Function to filter and sort items
+            const filterAndSortItems = () => {
                 const activeFilterBtn = document.querySelector('.filter-btn.active');
                 const category = activeFilterBtn.dataset.filter.toLowerCase();
                 const searchQuery = searchInput.value.toLowerCase().trim();
+                const sortType = sortSelect.value;
                 let visibleCount = 0;
 
+                // 1. FILTERING
                 productCards.forEach(card => {
                     const cardCategory = card.dataset.category.toLowerCase();
                     const cardName = card.querySelector('.product-card-name').textContent.toLowerCase();
@@ -801,14 +865,36 @@
                     const matchesSearch = cardName.includes(searchQuery);
 
                     if (matchesCategory && matchesSearch) {
+                        card.classList.remove('filtering');
                         card.style.display = 'flex';
                         visibleCount++;
                     } else {
+                        card.classList.add('filtering');
                         card.style.display = 'none';
                     }
                 });
 
-                if (visibleCount === 0) {
+                // 2. SORTING (only sorting visible items isn't enough, we re-order everything in the DOM)
+                const cardsArray = Array.from(productCards);
+                cardsArray.sort((a, b) => {
+                    const nameA = a.querySelector('.product-card-name').textContent.toLowerCase();
+                    const nameB = b.querySelector('.product-card-name').textContent.toLowerCase();
+                    const priceA = parseFloat(a.dataset.price);
+                    const priceB = parseFloat(b.dataset.price);
+
+                    if (sortType === 'az') return nameA.localeCompare(nameB);
+                    if (sortType === 'za') return nameB.localeCompare(nameA);
+                    if (sortType === 'price-low') return priceA - priceB;
+                    if (sortType === 'price-high') return priceB - priceA;
+                    return 0; // 'featured' or default
+                });
+
+                // Re-append sorted cards to the grid
+                cardsArray.forEach(card => menuGrid.appendChild(card));
+                // Move no results msg to bottom
+                menuGrid.appendChild(noResultsMsg);
+
+                if (visibleCount === 0 && searchQuery !== '') {
                     noResultsMsg.style.display = 'block';
                 } else {
                     noResultsMsg.style.display = 'none';
@@ -818,15 +904,17 @@
             // Event Listeners for Category Buttons
             filterBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
-                    // Update active class
                     filterBtns.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
-                    filterItems();
+                    filterAndSortItems();
                 });
             });
 
             // Event Listener for Search Input
-            searchInput.addEventListener('input', filterItems);
+            searchInput.addEventListener('input', filterAndSortItems);
+
+            // Initial call to set states
+            filterAndSortItems();
         });
     </script>
     <!-- CART DRAWER -->

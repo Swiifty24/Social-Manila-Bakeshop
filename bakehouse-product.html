@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - The Social Manila Bakehouse</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Gold Theme Overrides */
+        .site-header {
+            background-color: var(--color-accent);
+            border-bottom-color: var(--color-accent);
+        }
+
+        .site-header a,
+        .site-logo a,
+        .site-header .nav-menu li a {
+            color: var(--color-dark) !important;
+        }
+
+        .site-header.scrolled {
+            background-color: rgba(252, 202, 106, 0.98);
+        }
+
+        .mobile-toggle span {
+            background-color: var(--color-dark);
+        }
+
+        .site-footer {
+            background-color: var(--color-white);
+            color: var(--color-text);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .site-footer h3,
+        .site-footer p,
+        .site-footer a,
+        .site-footer .footer-massive-logo h2 {
+            color: var(--color-text) !important;
+        }
+
+        .site-footer .newsletter-form {
+            border-bottom-color: var(--color-text);
+        }
+
+        .site-footer .newsletter-form input {
+            color: var(--color-text);
+        }
+
+        .site-footer .newsletter-form input::placeholder {
+            color: rgba(44, 44, 44, 0.7);
+        }
+
+        .site-footer .newsletter-form button {
+            color: var(--color-text);
+        }
+
+        /* Product Page Specific Styles */
+        .product-page-container {
+            padding: 120px 10% 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+        }
+
+        @media(min-width: 1024px) {
+            .product-page-container {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+        }
+
+        .product-media {
+            flex: 1.2;
+            position: sticky;
+            top: 120px;
+        }
+
+        .product-main-img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            border-radius: 24px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.05);
+        }
+
+        .product-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .product-category {
+            font-family: var(--font-body);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--color-orange);
+            font-weight: 600;
+        }
+
+        .product-title {
+            font-family: 'Roca Two', serif;
+            font-weight: 700;
+            font-size: 48px;
+            color: var(--color-dark);
+            margin: 0;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .product-price {
+            font-family: var(--font-body);
+            font-size: 28px;
+            color: var(--color-text);
+            font-weight: 700;
+            margin-top: -10px;
+        }
+
+        .product-description {
+            font-size: 16px;
+            color: var(--color-text);
+            line-height: 1.8;
+        }
+
+        /* Information Accordion */
+        .info-accordion {
+            border-top: 1px solid var(--color-border);
+            margin-top: 20px;
+        }
+
+        .info-item {
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .info-item summary {
+            padding: 20px 0;
+            font-family: var(--font-body);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .info-item summary::after {
+            content: '+';
+            font-size: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .info-item[open] summary::after {
+            transform: rotate(45deg);
+        }
+
+        .info-content {
+            padding-bottom: 20px;
+            font-size: 14px;
+            color: var(--color-text-muted);
+            line-height: 1.6;
+        }
+
+        /* Customization Area */
+        .customization-area {
+            background-color: #f9f9f9;
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .custom-label {
+            display: block;
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            color: var(--color-dark);
+        }
+
+        .custom-textarea {
+            width: 100%;
+            min-height: 100px;
+            border: 1px solid var(--color-border);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-size: 14px;
+            resize: vertical;
+            background-color: var(--color-white);
+            transition: border-color 0.3s ease;
+        }
+
+        .custom-textarea:focus {
+            outline: none;
+            border-color: var(--color-orange);
+        }
+
+        /* Purchase Controls */
+        .purchase-controls {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: var(--color-white);
+        }
+
+        .qty-btn-large {
+            width: 50px;
+            height: 50px;
+            border: none;
+            background: none;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .qty-btn-large:hover {
+            background-color: #f0f0f0;
+        }
+
+        .qty-input-large {
+            width: 50px;
+            height: 50px;
+            border: none;
+            text-align: center;
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .add-to-cart-large {
+            flex: 1;
+            height: 52px;
+            background-color: var(--color-dark);
+            color: var(--color-white);
+            border: none;
+            border-radius: 50px;
+            /* Pill button */
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-cart-large:hover {
+            background-color: var(--color-orange);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(254, 150, 68, 0.3);
+        }
+
+        /* Loading States */
+        #product-content {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        #product-content.loaded {
+            opacity: 1;
+        }
+
+        .loading-spinner {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--color-orange);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header class="site-header" id="site-header">
+        <div class="header-inner">
+            <nav class="main-nav left-nav" id="left-nav">
+                <ul class="nav-menu">
+                    <li>
+                        <a href="index.html">
+                            <img src="SocialManilaBakehouse_Logos/TSM - Red.png" alt="The Social Manila Lifestyle"
+                                style="height: 30px;">
+                        </a>
+                    </li>
+                    <li><a href="bakehouse.html">Home</a></li>
+                    <li><a href="bakehouse-menu.html">Menu</a></li>
+                    <li><a href="bakehouse-studio.html">Co-Baking Studio</a></li>
+                </ul>
+            </nav>
+            <div class="site-logo">
+                <a href="bakehouse.html">
+                    <img src="SocialManilaBakehouse_Logos/TSMB - Red.png" alt="The Social Manila Bakehouse"
+                        class="header-logo-img" style="height: 55px;">
+                </a>
+            </div>
+            <nav class="main-nav right-nav" id="right-nav">
+                <ul class="nav-menu">
+                    <li><a href="bakehouse-about.html">About Us</a></li>
+                    <li><a href="#" aria-label="Cart" class="cart-toggle-btn">Cart (<span
+                                class="cart-count">0</span>)</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-toggle" id="mobile-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div id="loading" class="loading-spinner"></div>
+
+    <main id="product-content" class="product-page-container">
+        <!-- Media Section -->
+        <section class="product-media">
+            <img id="p-main-img" src="" alt="" class="product-main-img">
+        </section>
+
+        <!-- Details Section -->
+        <section class="product-details">
+            <div class="product-category" id="p-category">Category</div>
+            <h1 class="product-title" id="p-title">Product Name</h1>
+            <div class="product-price" id="p-price">₱0.00</div>
+
+            <div class="product-description" id="p-desc">
+                Product description goes here...
+            </div>
+
+            <div class="info-accordion">
+                <details class="info-item" id="p-ingredients-accordion">
+                    <summary>Ingredients</summary>
+                    <div class="info-content" id="p-ingredients">
+                        Detailed ingredients list...
+                    </div>
+                </details>
+                <details class="info-item" id="p-allergens-accordion">
+                    <summary>Allergens</summary>
+                    <div class="info-content" id="p-allergens">
+                        Allergy information...
+                    </div>
+                </details>
+            </div>
+
+            <div class="customization-area">
+                <label class="custom-label" for="custom-notes">Customize your order</label>
+                <textarea id="custom-notes" class="custom-textarea"
+                    placeholder="Add special instructions, dedication for cakes, or any preferences..."></textarea>
+            </div>
+
+            <div class="purchase-controls">
+                <div class="quantity-selector">
+                    <button class="qty-btn-large" id="qty-minus">-</button>
+                    <input type="number" id="qty-input" value="1" min="1" class="qty-input-large">
+                    <button class="qty-btn-large" id="qty-plus">+</button>
+                </div>
+                <button class="add-to-cart-large" id="add-to-cart-btn">Add to Cart</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-main">
+            <div class="footer-col left">
+                <h3>Customer Care</h3>
+                <ul>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">FAQ &amp; Policies</a></li>
+                    <li><a href="#">Shipping &amp; Returns</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-col center">
+                <h3>The Social Manila Bakehouse</h3>
+                <p>Sign up to receive an exclusive invitation to our events and newest menus.</p>
+                <form class="newsletter-form" action="#" method="post">
+                    <input type="email" placeholder="Enter your email" required aria-label="Email">
+                    <button type="submit">→</button>
+                </form>
+
+            </div>
+            <div class="footer-col right">
+                <h3>Our World</h3>
+                <ul>
+                    <li><a href="index.html">The Social Manila Lifestyle</a></li>
+                    <li><a href="bakehouse-studio.html">Co-Baking Studio</a></li>
+                    <li><a href="#top">Menu</a></li>
+                    <li><a href="#">Careers</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-massive-logo">
+            <img src="SocialManilaBakehouse_Logos/TSMB - Red.png" alt="The Social Manila Bakehouse"
+                style="height: 80px; display: block; margin: 0 auto;">
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 The Social Manila Bakehouse. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Shared Cart Components (Copied from other pages or included via main.js) -->
+    <div class="cart-overlay" id="cart-overlay"></div>
+    <div class="cart-drawer" id="cart-drawer">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <button id="cart-close">&times;</button>
+        </div>
+        <div class="cart-body" id="cart-body">
+            <!-- Cart items injected by JS -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total-price">₱0.00</span>
+            </div>
+            <button class="checkout-btn">Checkout</button>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // This is a placeholder for the data. In a real app, this would be in a separate JSON or file.
+            // I will implement the data loading logic in main.js but for now, I'll need a way to test this page.
+        });
+    </script>
+</body>
+
+</html>

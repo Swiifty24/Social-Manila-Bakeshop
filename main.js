@@ -102,6 +102,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // ============================
     // SCROLL ANIMATIONS
     // ============================
+
     const animatedElements = document.querySelectorAll('.fade-in, .stagger-children');
 
     if ('IntersectionObserver' in window) {
@@ -127,6 +128,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // ============================
     // SMOOTH SCROLL FOR ANCHORS
     // ============================
+    
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             const href = this.getAttribute('href');

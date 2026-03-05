@@ -281,13 +281,12 @@
             display: flex;
             flex-direction: column;
             background: transparent;
-            border-radius: 20px;
+            border-radius: 0;
             overflow: hidden;
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease, box-shadow 0.4s ease;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s ease, box-shadow 0.4s ease;
             text-decoration: none;
             cursor: pointer;
             height: 100%;
-            opacity: 1;
         }
 
         .product-card.filtering {
@@ -297,11 +296,12 @@
 
         .product-card-img {
             position: relative;
-            background: linear-gradient(135deg, rgba(252, 202, 106, 0.05), rgba(248, 163, 160, 0.05));
-            aspect-ratio: 1/1;
+            background: #F9F9F9;
+            aspect-ratio: 3/4;
             overflow: hidden;
             width: 100%;
-            border-radius: 24px;
+            border-radius: 0;
+            display: block;
         }
 
         .product-img-primary,
@@ -328,71 +328,85 @@
         }
 
         .product-card-info {
-            padding: 15px 5px;
+            padding: 12px 2px;
             display: flex;
-            flex-direction: column;
-            flex-grow: 1;
+            justify-content: space-between;
+            align-items: center;
             background: transparent;
         }
 
         .product-card-header {
             display: flex;
-            flex-direction: column;
-            /* Stack name and price for cleaner look if name is long */
-            align-items: flex-start;
-            gap: 4px;
-            margin-bottom: 12px;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            gap: 8px;
         }
 
         .product-card-name {
-            font-family: 'Roca Two', serif;
+            font-family: 'Roca Two', var(--font-heading);
+            font-size: 15px;
             font-weight: 700;
-            font-size: 18px;
-            color: var(--color-dark);
-            line-height: 1.2;
+            color: var(--color-text);
             margin: 0;
-            letter-spacing: -0.01em;
+            line-height: 1.3;
         }
 
         .product-card-price {
             font-family: var(--font-body);
-            font-weight: 600;
+            font-size: 12px;
+            font-weight: 500;
             color: var(--color-text);
-            font-size: 16px;
             white-space: nowrap;
+            flex-shrink: 0;
         }
 
-        .gallery-footer {
+        /* Hover + button overlay on product image */
+        .quick-add-btn {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--color-white);
+            border: none;
+            font-size: 22px;
+            line-height: 1;
             display: flex;
             align-items: center;
-            justify-content: flex-start;
-            margin-top: auto;
-            padding: 0;
-        }
-
-        .quick-add {
-            font-size: 11px;
-            color: var(--color-dark);
-            background-color: var(--color-accent);
-            /* Gold to start */
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 700;
+            justify-content: center;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 10px 20px;
-            border-radius: 50px;
-            width: auto;
-            display: inline-block;
-            box-shadow: 0 4px 12px rgba(252, 202, 106, 0.3);
+            opacity: 0;
+            transform: scale(0.75);
+            transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.25s ease, color 0.25s ease;
+            z-index: 5;
+            color: var(--color-dark);
+            box-shadow: 0 2px 14px rgba(0, 0, 0, 0.22);
         }
 
-        .quick-add:hover {
-            background-color: var(--color-dark);
-            /* Deep Red on hover */
+        .product-card-img:hover .quick-add-btn {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .quick-add-btn:hover {
+            background-color: var(--color-accent);
+            transform: scale(1.15) !important;
+            box-shadow: 0 4px 18px rgba(252, 202, 106, 0.45);
+        }
+
+        .quick-add-btn.added {
+            background-color: #2ecc71;
             color: var(--color-white);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(169, 36, 28, 0.3);
+            opacity: 1;
+            transform: scale(1) !important;
+            box-shadow: 0 2px 10px rgba(46, 204, 113, 0.4);
+        }
+
+        .quick-add-btn.fading-out {
+            opacity: 0;
+            transform: scale(0.75) !important;
         }
 
         /* Sorting Styles */
@@ -603,192 +617,219 @@
     <section class="products-grid" id="menu-grid">
 
         <!-- Viennoiserie -->
-        <a href="bakehouse-product.html?id=signature-butter-croissant" class="product-card fade-in"
-            data-category="viennoiserie" data-price="180">
-            <div class="product-card-img">
+        <div class="product-card fade-in" data-category="viennoiserie" data-price="180"
+            data-id="signature-butter-croissant" data-name="Signature Butter Croissant" data-priceval="180">
+            <a href="bakehouse-product.html?id=signature-butter-croissant" class="product-card-img">
                 <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=600&auto=format&fit=crop"
                     class="product-img-primary" alt="Signature Croissant">
                 <img src="https://images.unsplash.com/photo-1608198093002-ad4e005484ec?q=80&w=600&auto=format&fit=crop"
                     class="product-img-hover" alt="Signature Croissant Lifestyle">
-            </div>
+                <button class="quick-add-btn" aria-label="Add to cart">+</button>
+            </a>
             <div class="product-card-info">
                 <div class="product-card-header">
                     <h3 class="product-card-name">Signature Butter Croissant</h3>
-                    <span class="product-card-price">₱180.00</span>
-                </div>
-                <div class="gallery-footer">
-                    <div class="quick-add">Add to Cart</div>
+                    <span class="product-card-price">&#8369;180.00</span>
                 </div>
             </div>
-        </a>
+        </div>
 
-        <a href="bakehouse-product.html?id=pain-au-chocolat" class="product-card fade-in" data-category="viennoiserie"
-            data-price="220">
-            <div class="product-card-img">
+        <div class="product-card fade-in" data-category="viennoiserie" data-price="220" data-id="pain-au-chocolat"
+            data-name="Pain au Chocolat" data-priceval="220">
+            <a href="bakehouse-product.html?id=pain-au-chocolat" class="product-card-img">
                 <img src="https://images.unsplash.com/photo-1608198093002-ad4e005484ec?q=80&w=600&auto=format&fit=crop"
                     class="product-img-primary" alt="Pain au Chocolat">
                 <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=600&auto=format&fit=crop"
                     class="product-img-hover" alt="Pain au Chocolat Hover">
-            </div>
+                <button class="quick-add-btn" aria-label="Add to cart">+</button>
+            </a>
             <div class="product-card-info">
                 <div class="product-card-header">
                     <h3 class="product-card-name">Pain au Chocolat</h3>
-                    <span class="product-card-price">₱220.00</span>
-                </div>
-                <div class="gallery-footer">
-                    <div class="quick-add">Add to Cart</div>
+                    <span class="product-card-price">&#8369;220.00</span>
                 </div>
             </div>
-        </a>
+        </div>
 
-        <a href="bakehouse-product.html?id=almond-and-pear-tart" class="product-card fade-in" data-category="tarts"
-            data-price="280">
-            <div class="product-card-img">
+        <div class="product-card fade-in" data-category="tarts" data-price="280" data-id="almond-and-pear-tart"
+            data-name="Almond and Pear Tart" data-priceval="280">
+            <a href="bakehouse-product.html?id=almond-and-pear-tart" class="product-card-img">
                 <img src="https://images.unsplash.com/photo-1519915028121-7d3463d20b13?q=80&w=600&auto=format&fit=crop"
-                    class="product-img-primary" alt="Almond & Pear Tart">
+                    class="product-img-primary" alt="Almond and Pear Tart">
                 <img src="https://images.unsplash.com/photo-1619864205510-cdbc9c3a37ab?q=80&w=600&auto=format&fit=crop"
-                    class="product-img-hover" alt="Almond & Pear Tart Hover">
-            </div>
+                    class="product-img-hover" alt="Almond and Pear Tart Hover">
+                <button class="quick-add-btn" aria-label="Add to cart">+</button>
+            </a>
             <div class="product-card-info">
                 <div class="product-card-header">
-                    <h3 class="product-card-name">Almond & Pear Tart</h3>
-                    <span class="product-card-price">₱280.00</span>
-                </div>
-                <div class="gallery-footer">
-                    <div class="quick-add">Add to Cart</div>
+                    <h3 class="product-card-name">Almond &amp; Pear Tart</h3>
+                    <span class="product-card-price">&#8369;280.00</span>
                 </div>
             </div>
-        </a>
+        </div>
 
-        <!-- Tarts & Cakes -->
-        <a href="bakehouse-product.html?id=gateau-au-chocolat" class="product-card fade-in" data-category="tarts"
-            data-price="350">
-            <div class="product-card-img">
+        <!-- Tarts and Cakes -->
+        <div class="product-card fade-in" data-category="tarts" data-price="350" data-id="gateau-au-chocolat"
+            data-name="Gateau au Chocolat" data-priceval="350">
+            <a href="bakehouse-product.html?id=gateau-au-chocolat" class="product-card-img">
                 <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=600&auto=format&fit=crop"
                     class="product-img-primary" alt="Chocolate Cake">
                 <img src="https://images.unsplash.com/photo-1557308536-ee471ef2c390?q=80&w=600&auto=format&fit=crop"
                     class="product-img-hover" alt="Chocolate Cake Slice">
-            </div>
+                <button class="quick-add-btn" aria-label="Add to cart">+</button>
+            </a>
             <div class="product-card-info">
                 <div class="product-card-header">
-                    <h3 class="product-card-name">Gâteau au Chocolat</h3>
-                    <span class="product-card-price">₱350.00</span>
-                </div>
-                <div class="gallery-footer">
-                    <div class="quick-add">Add to Cart</div>
+                    <h3 class="product-card-name">G&acirc;teau au Chocolat</h3>
+                    <span class="product-card-price">&#8369;350.00</span>
                 </div>
             </div>
-        </a>
+        </div>
 
-        <a href="bakehouse-product.html?id=seasonal-fruit-tartlette" class="product-card fade-in" data-category="tarts"
-            data-price="320">
-            <div class="product-card-img">
+        <div class="product-card fade-in" data-category="tarts" data-price="320" data-id="seasonal-fruit-tartlette"
+            data-name="Seasonal Fruit Tartlette" data-priceval="320">
+            <a href="bakehouse-product.html?id=seasonal-fruit-tartlette" class="product-card-img">
                 <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?q=80&w=600&auto=format&fit=crop"
                     class="product-img-primary" alt="Fruit Tart">
                 <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?q=80&w=600&auto=format&fit=crop"
                     class="product-img-hover" alt="Fruit Tart Top View">
-            </div>
+                <button class="quick-add-btn" aria-label="Add to cart">+</button>
+            </a>
             <div class="product-card-info">
                 <div class="product-card-header">
                     <h3 class="product-card-name">Seasonal Fruit Tartlette</h3>
-                    <span class="product-card-price">₱320.00</span>
-                </div>
-                <div class="gallery-footer">
-                    <div class="quick-add">Add to Cart</div>
+                    <span class="product-card-price">&#8369;320.00</span>
                 </div>
             </div>
-        </a>
+        </div>
 
         <!-- Macarons -->
-        <a href="bakehouse-product.html?id=assorted-macarons-(box-of-6)" class="product-card fade-in"
-            data-category="macarons" data-price="650">
-            <div class="product-card-img">
+        <div class="product-card fade-in" data-category="macarons" data-price="650"
+            data-id="assorted-macarons-(box-of-6)" data-name="Assorted Macarons (Box of 6)" data-priceval="650">
+            <a href="bakehouse-product.html?id=assorted-macarons-(box-of-6)" class="product-card-img">
                 <img src="https://images.unsplash.com/photo-1569864358642-9d1684040f43?q=80&w=600&auto=format&fit=crop"
                     class="product-img-primary" alt="Assorted Macarons (Box of 6)">
                 <img src="https://images.unsplash.com/photo-1558326567-98ae2405596b?q=80&w=600&auto=format&fit=crop"
                     class="product-img-hover" alt="Assorted Macarons Hover">
-            </div>
+                <button class="quick-add-btn" aria-label="Add to cart">+</button>
+            </a>
             <div class="product-card-info">
                 <div class="product-card-header">
                     <h3 class="product-card-name">Assorted Macarons (Box of 6)</h3>
-                    <span class="product-card-price">₱650.00</span>
-                </div>
-                <div class="gallery-footer">
-                    <div class="quick-add">Add to Cart</div>
+                    <span class="product-card-price">&#8369;650.00</span>
                 </div>
             </div>
-        </a>
+        </div>
 
-        <a href="bakehouse-product.html?id=rose-and-raspberry-macarons" class="product-card fade-in"
-            data-category="macarons" data-price="700">
-            <div class="product-card-img">
+        <div class="product-card fade-in" data-category="macarons" data-price="700"
+            data-id="rose-and-raspberry-macarons" data-name="Rose and Raspberry Macarons" data-priceval="700">
+            <a href="bakehouse-product.html?id=rose-and-raspberry-macarons" class="product-card-img">
                 <img src="https://images.unsplash.com/photo-1569864358642-9d1684040f43?q=80&w=600&auto=format&fit=crop"
                     class="product-img-primary" alt="Pink Macarons">
                 <img src="https://images.unsplash.com/photo-1558326567-98ae2405596b?q=80&w=600&auto=format&fit=crop"
                     class="product-img-hover" alt="Pink Macarons Stacked">
-            </div>
+                <button class="quick-add-btn" aria-label="Add to cart">+</button>
+            </a>
             <div class="product-card-info">
                 <div class="product-card-header">
-                    <h3 class="product-card-name">Rose & Raspberry Macarons</h3>
-                    <span class="product-card-price">₱700.00</span>
-                </div>
-                <div class="gallery-footer">
-                    <div class="quick-add">Add to Cart</div>
+                    <h3 class="product-card-name">Rose &amp; Raspberry Macarons</h3>
+                    <span class="product-card-price">&#8369;700.00</span>
                 </div>
             </div>
-        </a>
+        </div>
 
         <div class="no-results" id="no-results-msg">No pastries found matching your search.</div>
 
     </section>
 
     <!-- FOOTER -->
-    <footer class="site-footer">
-        <div class="footer-main">
-            <div class="footer-col left">
-                <h3>Customer Care</h3>
-                <ul>
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">FAQ &amp; Policies</a></li>
-                    <li><a href="#">Shipping &amp; Returns</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                </ul>
-            </div>
-            <div class="footer-col center">
-                <h3>The Social Manila Bakehouse</h3>
-                <p>Sign up to receive an exclusive invitation to our events and newest menus.</p>
-                <form class="newsletter-form" action="#" method="post">
-                    <input type="email" placeholder="Enter your email" required aria-label="Email">
-                    <button type="submit">→</button>
+    <footer class="site-footer"
+        style="background-color: var(--color-white); border-top: 1px solid var(--color-border); color: var(--color-text);">
+        <div
+            style="padding: 8px 40px; max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px;">
+            <a href="bakehouse.html" style="display: flex; align-items: center; text-decoration: none; flex-shrink: 0;">
+                <img src="SocialManilaBakehouse_Logos/TSMB - Red.png" alt="The Social Manila Bakehouse"
+                    style="height: 75px;">
+            </a>
+            <div style="text-align: center; flex-shrink: 0;">
+                <p
+                    style="font-family: var(--font-body); font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--color-dark); font-weight: 700; margin: 0 0 6px;">
+                    Join The Social Manila Community</p>
+                <form action="#" method="post" style="display: flex; max-width: 300px; margin: 0 auto;"
+                    onsubmit="return false;">
+                    <input type="email" placeholder="Enter your email" required aria-label="Email"
+                        style="flex: 1; padding: 7px 10px; border: 1px solid var(--color-border); border-right: none; font-family: var(--font-body); font-size: 12px; background: var(--color-bg); color: var(--color-text); outline: none;">
+                    <button type="submit"
+                        style="padding: 7px 14px; background-color: var(--color-accent); color: var(--color-dark); border: none; font-family: var(--font-body); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; white-space: nowrap;"
+                        onmouseover="this.style.backgroundColor='var(--color-dark)'; this.style.color='var(--color-white)';"
+                        onmouseout="this.style.backgroundColor='var(--color-accent)'; this.style.color='var(--color-dark)';">Join</button>
                 </form>
-
             </div>
-            <div class="footer-col right">
-                <h3>Our World</h3>
-                <ul>
-                    <li><a href="index.html">The Social Manila Lifestyle</a></li>
-                    <li><a href="bakehouse-studio.html">Co-Baking Studio</a></li>
-                    <li><a href="#top">Menu</a></li>
-                    <li><a href="#">Careers</a></li>
-                </ul>
-            </div>
+            <nav style="display: flex; gap: 20px; align-items: center; flex-shrink: 0;">
+                <a href="bakehouse.html"
+                    style="font-family: var(--font-body); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-text); text-decoration: none;"
+                    onmouseover="this.style.color='var(--color-dark)'"
+                    onmouseout="this.style.color='var(--color-text)'">Home</a>
+                <a href="bakehouse-menu.html"
+                    style="font-family: var(--font-body); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-text); text-decoration: none;"
+                    onmouseover="this.style.color='var(--color-dark)'"
+                    onmouseout="this.style.color='var(--color-text)'">Menu</a>
+                <a href="bakehouse-studio.html"
+                    style="font-family: var(--font-body); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-text); text-decoration: none;"
+                    onmouseover="this.style.color='var(--color-dark)'"
+                    onmouseout="this.style.color='var(--color-text)'">Co-Baking Studio</a>
+                <a href="bakehouse-about.html"
+                    style="font-family: var(--font-body); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-text); text-decoration: none;"
+                    onmouseover="this.style.color='var(--color-dark)'"
+                    onmouseout="this.style.color='var(--color-text)'">About Us</a>
+            </nav>
         </div>
-        <div class="footer-massive-logo">
-            <img src="SocialManilaBakehouse_Logos/TSMB - Red.png" alt="The Social Manila Bakehouse"
-                style="height: 80px; display: block; margin: 0 auto;">
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 The Social Manila Bakehouse. All rights reserved.</p>
+        <div style="border-top: 1px solid var(--color-border); padding: 8px 40px; text-align: center;">
+            <p style="font-family: var(--font-body); font-size: 11px; color: var(--color-text-muted); margin: 0;">&copy;
+                2026 The Social Manila Bakehouse. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- Filter & Search Javascript -->
+    <!-- Filter, Search & Quick-Add Javascript -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const filterBtns = document.querySelectorAll('.filter-btn');
             const searchInput = document.getElementById('menu-search');
             const productCards = document.querySelectorAll('.product-card');
             const noResultsMsg = document.getElementById('no-results-msg');
+
+            // Quick-add + button logic
+            document.querySelectorAll('.quick-add-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();   // stop image link navigation
+                    e.stopPropagation();
+                    if (btn.classList.contains('added')) return; // already adding
+
+                    const card = btn.closest('.product-card');
+                    const id = card.dataset.id;
+                    const name = card.dataset.name;
+                    const price = parseFloat(card.dataset.priceval);
+                    const imgSrc = card.querySelector('.product-img-primary').src;
+
+                    // Use global addToCart exposed by main.js
+                    if (typeof window.addToCart === 'function') {
+                        window.addToCart({ id, name, price, img: imgSrc });
+                    }
+
+                    // Flip to green checkmark
+                    btn.textContent = '✓';
+                    btn.classList.add('added');
+
+                    // Fade out check after 500ms and revert to +
+                    setTimeout(() => {
+                        btn.classList.add('fading-out');
+                        setTimeout(() => {
+                            btn.textContent = '+';
+                            btn.classList.remove('added', 'fading-out');
+                        }, 280); // matches transition duration
+                    }, 500);
+                });
+            });
 
             const sortSelect = document.getElementById('product-sort');
             const menuGrid = document.getElementById('menu-grid');
@@ -875,6 +916,7 @@
                 });
 
                 // 2. SORTING (only sorting visible items isn't enough, we re-order everything in the DOM)
+
                 const cardsArray = Array.from(productCards);
                 cardsArray.sort((a, b) => {
                     const nameA = a.querySelector('.product-card-name').textContent.toLowerCase();

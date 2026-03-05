@@ -223,7 +223,7 @@
         <div class="hero-carousel" id="hero-carousel">
 
             <div class="hero-slide active">
-                <img src="SocialManilaBakehouse_Gallery/DJI_20251203171640_0076_D.JPG" alt="The Social Manila Bakehouse"
+                <img src="SocialManilaBakehouse_Gallery/TSM Bakehouse01.png" alt="The Social Manila Bakehouse"
                     class="hero-slide-bg">
                 <div class="hero-slide-overlay">
                     <div class="hero-slide-content">
@@ -253,6 +253,8 @@
         </div>
     </section>
 
+
+    
     <!-- PASTRIES (Products Section) -->
     <section class="products-section" id="pastries">
         <div class="container">
@@ -303,8 +305,71 @@
                     </div>
                 </a>
             </div>
-            <div class="view-all-link fade-in" style="margin-top: 20px;"><a href="bakehouse-menu.html">View full menu
-                    →</a></div>
+        </div>
+    </section>
+
+    <!-- FEATURED MENU SECTION -->
+    <section style="
+        padding: 30px 20px 100px;
+        background: linear-gradient(
+            to bottom,
+            #ffffff 0%,
+            #fdf6ec 30%,
+            #f5e9d5 65%,
+            #efe0c4 100%
+        );
+        text-align: center;
+    ">
+        <div style="max-width: 1100px; margin: 0 auto;">
+            <div class="section-heading fade-in">
+                <h2>From Our Menu</h2>
+                <div class="divider"></div>
+                <p>Pastries, cakes, specialty coffee &mdash; crafted fresh, every day.</p>
+            </div>
+            <div class="fade-in" style="
+                display: flex;
+                gap: 32px;
+                justify-content: center;
+                align-items: flex-start;
+                flex-wrap: wrap;
+                margin-top: 48px;
+            ">
+                <!-- Coffee & Drinks Menu -->
+                <div style="
+                    flex: 1;
+                    min-width: 280px;
+                    max-width: 460px;
+                    border-radius: 14px;
+                    overflow: hidden;
+                    box-shadow: 0 16px 48px rgba(100, 40, 20, 0.18);
+                    transition: transform 0.3s ease, box-shadow 0.3s ease;
+                " onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 28px 64px rgba(100,40,20,0.25)';"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 16px 48px rgba(100,40,20,0.18)';">
+                    <img src="SocialManilaBakehouse_Gallery/[TSM] Menu/1.png"
+                        alt="The Social Manila Bakehouse Coffee and Drinks Menu"
+                        style="width: 100%; height: auto; display: block; cursor: zoom-in;"
+                        onclick="openLightbox(this.src, this.alt)">
+                </div>
+                <!-- Pastry & Cakes Menu -->
+                <div style="
+                    flex: 1;
+                    min-width: 280px;
+                    max-width: 460px;
+                    border-radius: 14px;
+                    overflow: hidden;
+                    box-shadow: 0 16px 48px rgba(100, 40, 20, 0.18);
+                    transition: transform 0.3s ease, box-shadow 0.3s ease;
+                " onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 28px 64px rgba(100,40,20,0.25)';"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 16px 48px rgba(100,40,20,0.18)';">
+                    <img src="SocialManilaBakehouse_Gallery/[TSM] Menu/2.png"
+                        alt="The Social Manila Bakehouse Pastry and Cakes Menu"
+                        style="width: 100%; height: auto; display: block; cursor: zoom-in;"
+                        onclick="openLightbox(this.src, this.alt)">
+                </div>
+            </div>
+            <div class="fade-in" style="margin-top: 36px;">
+                <a href="bakehouse-menu.html" class="network-btn">View Products &rarr;</a>
+            </div>
         </div>
     </section>
 
@@ -326,9 +391,14 @@
                         our signature croissants or creating your own masterpiece in our Co-Baking Studio, we strive to
                         make every visit memorable.
                     </p>
-                    <a href="bakehouse-about.html" class="hero-btn"
-                        style="display: inline-block; margin-top: 15px; margin-bottom: 30px; background-color: var(--color-dark); color: var(--color-white); padding: 12px 24px; text-decoration: none; font-family: var(--font-body); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">View
-                        More</a>
+                    <div style="margin-top: 18px; margin-bottom: 24px; text-align: left;">
+                        <a href="bakehouse-about.html"
+                            style="display: inline-block; padding: 12px 24px; background-color: var(--color-dark); color: var(--color-white); text-decoration: none; font-family: var(--font-body); font-weight: 600; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px; border-radius: 3px; transition: background-color 0.3s ease;"
+                            onmouseover="this.style.backgroundColor='#000';"
+                            onmouseout="this.style.backgroundColor='var(--color-dark)';">
+                            View More &rarr;
+                        </a>
+                    </div>
 
                     <div class="our-network-block">
                         <h3 class="network-title">Our Network</h3>
@@ -345,42 +415,50 @@
     </section>
 
     <!-- FOOTER -->
-    <footer class="site-footer">
-        <div class="footer-main">
-            <div class="footer-col left">
-                <h3>Customer Care</h3>
-                <ul>
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">FAQ &amp; Policies</a></li>
-                    <li><a href="#">Shipping &amp; Returns</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                </ul>
-            </div>
-            <div class="footer-col center">
-                <h3>The Social Manila Bakehouse</h3>
-                <p>Sign up to receive an exclusive invitation to our events and newest menus.</p>
-                <form class="newsletter-form" action="#" method="post">
-                    <input type="email" placeholder="Enter your email" required aria-label="Email">
-                    <button type="submit">→</button>
+    <footer class="site-footer"
+        style="background-color: var(--color-white); border-top: 1px solid var(--color-border); color: var(--color-text);">
+        <div
+            style="padding: 8px 40px; max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px;">
+            <a href="bakehouse.html" style="display: flex; align-items: center; text-decoration: none; flex-shrink: 0;">
+                <img src="SocialManilaBakehouse_Logos/TSMB - Red.png" alt="The Social Manila Bakehouse"
+                    style="height: 75px;">
+            </a>
+            <div style="text-align: center; flex-shrink: 0;">
+                <p
+                    style="font-family: var(--font-body); font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--color-dark); font-weight: 700; margin: 0 0 6px;">
+                    Join The Social Manila Community</p>
+                <form action="#" method="post" style="display: flex; max-width: 300px; margin: 0 auto;"
+                    onsubmit="return false;">
+                    <input type="email" placeholder="Enter your email" required aria-label="Email"
+                        style="flex: 1; padding: 7px 10px; border: 1px solid var(--color-border); border-right: none; font-family: var(--font-body); font-size: 12px; background: var(--color-bg); color: var(--color-text); outline: none;">
+                    <button type="submit"
+                        style="padding: 7px 14px; background-color: var(--color-accent); color: var(--color-dark); border: none; font-family: var(--font-body); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; white-space: nowrap;"
+                        onmouseover="this.style.backgroundColor='var(--color-dark)'; this.style.color='var(--color-white)';"
+                        onmouseout="this.style.backgroundColor='var(--color-accent)'; this.style.color='var(--color-dark)';">Join</button>
                 </form>
-
             </div>
-            <div class="footer-col right">
-                <h3>Our World</h3>
-                <ul>
-                    <li><a href="index.html">The Social Manila Lifestyle</a></li>
-                    <li><a href="bakehouse-studio.html">Co-Baking Studio</a></li>
-                    <li><a href="bakehouse-menu.html">Menu</a></li>
-                    <li><a href="#">Careers</a></li>
-                </ul>
-            </div>
+            <nav style="display: flex; gap: 20px; align-items: center; flex-shrink: 0;">
+                <a href="bakehouse.html"
+                    style="font-family: var(--font-body); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-text); text-decoration: none;"
+                    onmouseover="this.style.color='var(--color-dark)'"
+                    onmouseout="this.style.color='var(--color-text)'">Home</a>
+                <a href="bakehouse-menu.html"
+                    style="font-family: var(--font-body); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-text); text-decoration: none;"
+                    onmouseover="this.style.color='var(--color-dark)'"
+                    onmouseout="this.style.color='var(--color-text)'">Menu</a>
+                <a href="bakehouse-studio.html"
+                    style="font-family: var(--font-body); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-text); text-decoration: none;"
+                    onmouseover="this.style.color='var(--color-dark)'"
+                    onmouseout="this.style.color='var(--color-text)'">Co-Baking Studio</a>
+                <a href="bakehouse-about.html"
+                    style="font-family: var(--font-body); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-text); text-decoration: none;"
+                    onmouseover="this.style.color='var(--color-dark)'"
+                    onmouseout="this.style.color='var(--color-text)'">About Us</a>
+            </nav>
         </div>
-        <div class="footer-massive-logo">
-            <img src="SocialManilaBakehouse_Logos/TSMB - Red.png" alt="The Social Manila Bakehouse"
-                style="height: 80px; display: block; margin: 0 auto;">
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 The Social Manila.</p>
+        <div style="border-top: 1px solid var(--color-border); padding: 8px 40px; text-align: center;">
+            <p style="font-family: var(--font-body); font-size: 11px; color: var(--color-text-muted); margin: 0;">&copy;
+                2026 The Social Manila Bakehouse. All rights reserved.</p>
         </div>
     </footer>
 
@@ -418,6 +496,70 @@
             </div>
         </div>
     </div>
+
+    <!-- LIGHTBOX OVERLAY -->
+    <div id="lightbox-overlay" onclick="closeLightbox()" style="
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: rgba(0, 0, 0, 0.88);
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        cursor: zoom-out;
+        backdrop-filter: blur(4px);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    ">
+        <img id="lightbox-img" src="" alt="" style="
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+            transform: scale(0.92);
+            transition: transform 0.3s ease;
+            pointer-events: none;
+        ">
+        <button onclick="closeLightbox()" style="
+            position: absolute;
+            top: 20px;
+            right: 28px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        " onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.8">&times;</button>
+    </div>
+
+    <script>
+        function openLightbox(src, alt) {
+            const overlay = document.getElementById('lightbox-overlay');
+            const img = document.getElementById('lightbox-img');
+            img.src = src;
+            img.alt = alt;
+            overlay.style.display = 'flex';
+            requestAnimationFrame(() => {
+                overlay.style.opacity = '1';
+                img.style.transform = 'scale(1)';
+            });
+            document.addEventListener('keydown', escClose);
+        }
+        function closeLightbox() {
+            const overlay = document.getElementById('lightbox-overlay');
+            const img = document.getElementById('lightbox-img');
+            overlay.style.opacity = '0';
+            img.style.transform = 'scale(0.92)';
+            setTimeout(() => { overlay.style.display = 'none'; }, 300);
+            document.removeEventListener('keydown', escClose);
+        }
+        function escClose(e) { if (e.key === 'Escape') closeLightbox(); }
+    </script>
 
     <script src="main.js"></script>
 </body>

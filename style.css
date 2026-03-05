@@ -1405,7 +1405,7 @@ h6 {
     font-size: 20px;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--color-accent);
+    color: var(--color-dark);
     margin: 0;
 }
 
@@ -1540,7 +1540,7 @@ h6 {
     margin-bottom: 25px;
     font-size: 18px;
     font-weight: 500;
-    color: var(--color-accent);
+    color: var(--color-dark);
     text-transform: uppercase;
     letter-spacing: 1px;
 }
@@ -1548,18 +1548,19 @@ h6 {
 .checkout-btn {
     width: 100%;
     padding: 18px;
-    background: var(--color-accent);
-    color: var(--color-white);
-    border: none;
+    background: transparent;
+    color: var(--color-dark);
+    border: 1px solid var(--color-dark);
     text-transform: uppercase;
     letter-spacing: 2px;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .checkout-btn:hover {
-    background: var(--color-accent-hover);
+    background: var(--color-dark);
+    color: var(--color-white);
 }
 
 /* Modal Styling */
@@ -1616,7 +1617,7 @@ h6 {
 .product-modal h3 {
     font-family: var(--font-heading);
     font-size: 24px;
-    color: var(--color-accent);
+    color: var(--color-text);
     margin-bottom: 15px;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -1646,7 +1647,7 @@ h6 {
 .modal-btn {
     flex: 1;
     padding: 15px;
-    border: 1px solid var(--color-accent);
+    border: 1px solid var(--color-dark);
     text-transform: uppercase;
     letter-spacing: 1.5px;
     font-size: 11px;
@@ -1658,22 +1659,22 @@ h6 {
 }
 
 .modal-btn.primary {
-    background: var(--color-accent);
-    color: var(--color-white);
+    background: transparent;
+    color: var(--color-dark);
 }
 
 .modal-btn.primary:hover {
-    background: var(--color-white);
-    color: var(--color-accent);
+    background: var(--color-dark);
+    color: var(--color-white);
 }
 
 .modal-btn.secondary {
     background: transparent;
-    color: var(--color-accent);
+    color: var(--color-dark);
 }
 
 .modal-btn.secondary:hover {
-    background: var(--color-accent);
+    background: var(--color-dark);
     color: var(--color-white);
 }
 
@@ -1710,7 +1711,7 @@ h6 {
 #toast-container {
     position: fixed;
     bottom: 30px;
-    right: 30px;
+    left: 30px;
     z-index: 9999;
     display: flex;
     flex-direction: column;
@@ -1720,7 +1721,7 @@ h6 {
 
 .toast-notification {
     background: var(--color-accent);
-    color: var(--color-white);
+    color: var(--color-dark);
     padding: 16px 24px;
     border-radius: 8px;
     font-size: 13px;
@@ -1830,4 +1831,352 @@ h6 {
 .network-btn:hover {
     background-color: var(--color-accent);
     color: var(--color-white);
+}
+
+/* ============================
+   MOBILE NAV OVERLAY
+   ============================ */
+#mobile-nav-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background-color: var(--color-accent);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#mobile-nav-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+#mobile-nav-close {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    background: none;
+    border: none;
+    font-size: 2.2rem;
+    color: var(--color-dark);
+    cursor: pointer;
+    line-height: 1;
+}
+
+#mobile-nav-links {
+    list-style: none;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+}
+
+#mobile-nav-links li {
+    margin: 18px 0;
+}
+
+#mobile-nav-links li a {
+    font-family: var(--font-body);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--color-dark);
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+#mobile-nav-links li a:hover {
+    opacity: 0.65;
+}
+
+/* Hamburger → X animation */
+.mobile-toggle.open span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.mobile-toggle.open span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+.mobile-toggle.open span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+.mobile-toggle span {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* ============================
+   COMPREHENSIVE RESPONSIVE
+   ============================ */
+
+/* ---- Tablet (≤900px) ---- */
+@media (max-width: 900px) {
+    .footer-main {
+        flex-direction: column;
+        padding: 0 24px 40px;
+        gap: 32px;
+    }
+
+    .footer-col.center {
+        padding: 0;
+    }
+
+    .footer-col.right {
+        text-align: left;
+    }
+
+    .footer-massive-logo h2 {
+        font-size: 48px;
+    }
+
+    .about-us-section .container {
+        padding: 0 24px;
+    }
+}
+
+/* ---- Mobile (≤768px) ---- */
+@media (max-width: 768px) {
+
+    /* Hide desktop navs, show hamburger */
+    .left-nav,
+    .right-nav {
+        display: none;
+    }
+
+    .mobile-toggle {
+        display: block;
+    }
+
+    /* Header */
+    .header-inner {
+        padding: 0 16px;
+        height: 56px;
+    }
+
+    .header-logo-img {
+        height: 44px;
+    }
+
+    /* Announcement bar */
+    .announcement-bar {
+        font-size: 12px;
+        padding: 4px 12px;
+    }
+
+    /* Hero */
+    .hero-section {
+        height: 70vh;
+        min-height: 320px;
+    }
+
+    .hero-slide-content h1 {
+        font-size: 26px;
+        letter-spacing: 2px;
+    }
+
+    .hero-slide-content p {
+        font-size: 13px;
+        letter-spacing: 1px;
+        margin-bottom: 20px;
+    }
+
+    .hero-slide-overlay {
+        padding-bottom: 50px;
+    }
+
+    .hero-btn {
+        padding: 11px 28px;
+        font-size: 10px;
+    }
+
+    /* Section headings */
+    .section-heading {
+        margin-bottom: 36px;
+    }
+
+    .section-heading h2 {
+        font-size: 22px;
+        letter-spacing: 3px;
+    }
+
+    /* Container */
+    .container {
+        padding: 0 16px;
+    }
+
+    /* Products grid — snap-scroll cards on mobile */
+    .products-section {
+        padding: 50px 0;
+    }
+
+    .products-grid {
+        grid-auto-columns: 230px;
+        gap: 16px;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    /* Highlights grid */
+    .highlights-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .highlights-grid .highlight-tile:last-child {
+        grid-column: span 1;
+        aspect-ratio: 1;
+    }
+
+    /* Brand circles */
+    .brand-circles {
+        gap: 20px;
+    }
+
+    .brand-circle-img {
+        width: 90px;
+        height: 90px;
+    }
+
+    .brand-circle h3 {
+        font-size: 10px;
+    }
+
+    /* Instagram grid */
+    .instagram-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* Community CTA */
+    .community-cta {
+        height: 360px;
+    }
+
+    .community-cta-content h2 {
+        font-size: 24px;
+        letter-spacing: 2px;
+    }
+
+    .community-cta-content p {
+        font-size: 13px;
+    }
+
+    /* Footer */
+    .footer-main {
+        flex-direction: column;
+        padding: 0 16px 32px;
+        gap: 28px;
+    }
+
+    .footer-col.center,
+    .footer-col.right {
+        text-align: left;
+    }
+
+    .footer-massive-logo h2 {
+        font-size: 36px;
+    }
+
+    .footer-bottom {
+        padding: 16px 16px 32px;
+    }
+
+    /* About Us section */
+    .about-us-section {
+        padding: 50px 0;
+    }
+
+    .about-us-grid {
+        gap: 28px;
+    }
+
+    /* Network buttons */
+    .network-links {
+        flex-direction: column;
+    }
+
+    .network-btn {
+        min-width: unset;
+        width: 100%;
+    }
+
+    /* Bakehouse Homepage — menu images stacked */
+    /* (flex-wrap already handles this from inline styles) */
+
+    /* Product page */
+    .product-detail-grid,
+    .product-detail-layout {
+        grid-template-columns: 1fr !important;
+        flex-direction: column !important;
+    }
+
+    /* Recommended section */
+    .recommended-section {
+        padding: 40px 16px;
+    }
+
+    /* Toast */
+    #toast-container {
+        bottom: 16px;
+        left: 16px;
+        right: auto;
+    }
+
+    .toast-notification {
+        font-size: 12px;
+        padding: 12px 16px;
+    }
+
+    /* Cart drawer */
+    .cart-drawer {
+        width: 100vw;
+        right: -100vw;
+    }
+
+    /* Modal */
+    .product-modal {
+        padding: 28px 20px;
+    }
+
+    .product-modal-actions {
+        flex-direction: column;
+    }
+
+    /* Mega menu — hide on mobile (use overlay nav instead) */
+    .mega-menu-dropdown {
+        display: none !important;
+    }
+}
+
+/* ---- Small phones (≤480px) ---- */
+@media (max-width: 480px) {
+    .hero-slide-content h1 {
+        font-size: 20px;
+        letter-spacing: 1.5px;
+    }
+
+    .hero-section {
+        height: 60vh;
+    }
+
+    .section-heading h2 {
+        font-size: 18px;
+        letter-spacing: 2px;
+    }
+
+    .products-grid {
+        grid-auto-columns: 200px;
+    }
+
+    .footer-massive-logo h2 {
+        font-size: 28px;
+    }
+
+    .header-logo-img {
+        height: 38px;
+    }
 }

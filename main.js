@@ -76,26 +76,54 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     // ============================
-    // MOBILE MENU
+    // MOBILE NAVIGATION TOGGLE
     // ============================
     const mobileToggle = document.getElementById('mobile-toggle');
-    const mainNav = document.getElementById('main-nav');
+    const leftNav = document.querySelector('.left-nav');
+    const rightNav = document.querySelector('.right-nav');
 
-    if (mobileToggle && mainNav) {
-        mobileToggle.addEventListener('click', function () {
-            this.classList.toggle('active');
-            mainNav.classList.toggle('active');
-            document.body.style.overflow = mainNav.classList.contains('active') ? 'hidden' : '';
-        });
+    if (mobileToggle) {
+        let mobileOverlay = document.getElementById('mobile-nav-overlay');
+        if (!mobileOverlay) {
+            mobileOverlay = document.createElement('div');
+            mobileOverlay.id = 'mobile-nav-overlay';
+            mobileOverlay.innerHTML = `
+                <button id="mobile-nav-close" aria-label="Close menu">&times;</button>
+                <nav><ul id="mobile-nav-links"></ul></nav>`;
+            document.body.appendChild(mobileOverlay);
 
-        // Close on link click
-        mainNav.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', function () {
-                mobileToggle.classList.remove('active');
-                mainNav.classList.remove('active');
-                document.body.style.overflow = '';
+            const linkList = mobileOverlay.querySelector('#mobile-nav-links');
+            [leftNav, rightNav].forEach(nav => {
+                if (!nav) return;
+                nav.querySelectorAll('a').forEach(link => {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = link.href;
+                    a.textContent = link.textContent.trim();
+                    if (link.classList.contains('cart-toggle-btn')) a.className = 'cart-toggle-btn';
+                    li.appendChild(a);
+                    linkList.appendChild(li);
+                });
             });
+
+            document.getElementById('mobile-nav-close').addEventListener('click', closeMobileNav);
+            mobileOverlay.addEventListener('click', e => { if (e.target === mobileOverlay) closeMobileNav(); });
+            mobileOverlay.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMobileNav));
+        }
+
+        mobileToggle.addEventListener('click', () => {
+            mobileOverlay.classList.contains('active') ? closeMobileNav() : openMobileNav();
         });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMobileNav(); });
+    }
+
+    function openMobileNav() {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        if (overlay) { overlay.classList.add('active'); document.body.style.overflow = 'hidden'; mobileToggle.classList.add('open'); }
+    }
+    function closeMobileNav() {
+        const overlay = document.getElementById('mobile-nav-overlay');
+        if (overlay) { overlay.classList.remove('active'); document.body.style.overflow = ''; mobileToggle.classList.remove('open'); }
     }
 
 
@@ -260,6 +288,62 @@ document.addEventListener('DOMContentLoaded', function () {
         const content = document.getElementById('product-content');
         if (loader) loader.style.display = 'none';
         if (content) content.classList.add('loaded');
+
+        // Render Recommendations
+        renderRecommendations(product);
+    }
+
+    function renderRecommendations(currentProduct) {
+        const recommendedSection = document.getElementById('recommended-section');
+        const recommendedGrid = document.getElementById('recommended-grid');
+
+        if (!recommendedSection || !recommendedGrid) return;
+
+        // Find products in the same category, excluding the current one
+        const recommendations = Object.values(productData).filter(p =>
+            p.category === currentProduct.category && p.id !== currentProduct.id
+        ).slice(0, 4); // Limit to 4 max
+
+        if (recommendations.length > 0) {
+            recommendedSection.style.display = 'block';
+            recommendedGrid.innerHTML = '';
+
+            recommendations.forEach(product => {
+                const card = document.createElement('a');
+                card.href = `bakehouse-product.html?id=${product.id}`;
+                card.className = 'product-card fade-in visible';
+                card.setAttribute('data-recommended', 'true');
+
+                card.innerHTML = `
+                    <div class="product-card-img">
+                        <img src="${product.img}" class="product-img-primary" alt="${product.name}">
+                        <img src="${product.img}" class="product-img-hover" alt="${product.name} Hover">
+                    </div>
+                    <div class="product-card-info">
+                        <div class="product-card-header">
+                            <h3 class="product-card-name">${product.name}</h3>
+                            <span class="product-card-price">₱${product.price.toFixed(2)}</span>
+                        </div>
+                        <div class="gallery-footer">
+                            <div class="quick-add">Add to Cart</div>
+                        </div>
+                    </div>
+                `;
+
+                // Use the quick-add button directly — stop propagation so the
+                // global .product-card handler below doesn't also fire.
+                const quickAddBtn = card.querySelector('.quick-add');
+                if (quickAddBtn) {
+                    quickAddBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        addToCart(product);
+                    });
+                }
+
+                recommendedGrid.appendChild(card);
+            });
+        }
     }
 
     function addToCartWithDetails(fullItem) {
@@ -379,6 +463,9 @@ document.addEventListener('DOMContentLoaded', function () {
         addToCartWithDetails(item);
         showToast(`Added ${product.name} to your cart.`);
     }
+    // Expose globally so inline scripts (e.g. bakehouse-menu.html) can call this
+    window.addToCart = addToCart;
+    window.siteProductData = productData;
 
     function updateCartUI() {
         if (!cartBody) return;
@@ -501,6 +588,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Product Click Interception
     document.querySelectorAll('.product-card').forEach(card => {
+        // Skip recommended cards — they manage their own click listeners
+        if (card.getAttribute('data-recommended') === 'true') return;
+
         card.addEventListener('click', (e) => {
             // Ignore click if they click the details/ingredients accordion
             if (e.target.closest('.gallery-ingredients')) return;

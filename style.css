@@ -3,8 +3,8 @@
    ============================ */
 @font-face {
     font-family: 'Vintage Goods';
-    src: url('Fonts/Vintage-Goods-Script/Vintage-Goods-Script/Vintage Goods.otf') format('opentype'),
-        url('Fonts/Vintage-Goods-Script/Vintage-Goods-Script/Vintage Goods.ttf') format('truetype');
+    src: url('Fonts/Vintage-Goods-Script/Vintage-Goods-Script/VintageGoods.otf') format('opentype'),
+        url('Fonts/Vintage-Goods-Script/Vintage-Goods-Script/VintageGoods.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -1260,34 +1260,54 @@ h6 {
     }
 
     .main-nav {
-        display: none;
-    }
-
-    .mobile-toggle {
-        display: block;
+        /* FIXED: ensure the actual nav element is only as wide as the sidebar, not the screen */
+        position: fixed;
+        top: 0;
+        left: -350px;
+        width: 300px !important;
+        max-width: 80vw !important;
+        height: 100vh !important;
+        background: var(--color-bg) !important;
+        z-index: 1002 !important;
+        /* Must be strictly > 1000 so it sits ABOVE the #sidebar-overlay mask */
+        display: flex !important;
+        flex-direction: column;
+        justify-content: flex-start !important;
+        align-items: flex-start !important;
+        padding: 80px 30px;
+        box-shadow: 5px 0 30px rgba(0, 0, 0, 0.1);
+        transition: left 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        visibility: hidden;
     }
 
     .main-nav.active {
-        display: flex;
-        position: fixed;
-        top: 0;
         left: 0;
-        width: 100%;
-        height: 100vh;
-        background: var(--color-white);
-        z-index: 1001;
-        align-items: center;
-        justify-content: center;
+        visibility: visible;
     }
 
-    .main-nav.active .nav-menu {
+    .main-nav .nav-menu {
         flex-direction: column;
-        gap: 25px;
+        gap: 30px;
+        width: 100%;
+        display: flex;
+        /* Ensure the menu inside it remains flex on mobile */
     }
 
-    .main-nav.active .nav-menu li a {
-        font-size: 16px;
-        letter-spacing: 4px;
+    .main-nav .nav-menu li {
+        width: 100%;
+        border-bottom: 1px solid var(--color-border);
+        padding-bottom: 15px;
+    }
+
+    .main-nav .nav-menu li:last-child {
+        border-bottom: none;
+    }
+
+    .main-nav .nav-menu li a {
+        font-size: 14px;
+        letter-spacing: 2px;
+        color: var(--color-text);
+        display: block;
     }
 
     .hero-section {

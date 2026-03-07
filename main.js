@@ -76,54 +76,88 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     // ============================
-    // MOBILE NAVIGATION TOGGLE
+    // MOBILE NAVIGATION TOGGLE (SIDEBAR)
     // ============================
     const mobileToggle = document.getElementById('mobile-toggle');
-    const leftNav = document.querySelector('.left-nav');
+    const mainNav = document.querySelector('.main-nav');
+    const navMenu = mainNav ? mainNav.querySelector('.nav-menu') : null;
     const rightNav = document.querySelector('.right-nav');
 
-    if (mobileToggle) {
-        let mobileOverlay = document.getElementById('mobile-nav-overlay');
-        if (!mobileOverlay) {
-            mobileOverlay = document.createElement('div');
-            mobileOverlay.id = 'mobile-nav-overlay';
-            mobileOverlay.innerHTML = `
-                <button id="mobile-nav-close" aria-label="Close menu">&times;</button>
-                <nav><ul id="mobile-nav-links"></ul></nav>`;
-            document.body.appendChild(mobileOverlay);
-
-            const linkList = mobileOverlay.querySelector('#mobile-nav-links');
-            [leftNav, rightNav].forEach(nav => {
-                if (!nav) return;
-                nav.querySelectorAll('a').forEach(link => {
+    if (mobileToggle && mainNav && navMenu) {
+        // Move right-nav items into the main-nav (sidebar) for mobile
+        if (rightNav) {
+            rightNav.querySelectorAll('a').forEach(link => {
+                // Check if already exists to prevent duplication on multiple resizes
+                if (!Array.from(navMenu.querySelectorAll('a')).some(a => a.textContent.trim() === link.textContent.trim())) {
                     const li = document.createElement('li');
+                    li.className = 'mobile-only-link'; // easily identify injected links
                     const a = document.createElement('a');
                     a.href = link.href;
                     a.textContent = link.textContent.trim();
-                    if (link.classList.contains('cart-toggle-btn')) a.className = 'cart-toggle-btn';
+                    if (link.classList.contains('cart-toggle-btn')) {
+                        a.className = 'cart-toggle-btn';
+                        // Re-bind cart toggle
+                        a.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            closeMobileNav();
+                            toggleCart();
+                        });
+                    }
                     li.appendChild(a);
-                    linkList.appendChild(li);
-                });
+                    navMenu.appendChild(li);
+                }
             });
+        }
 
-            document.getElementById('mobile-nav-close').addEventListener('click', closeMobileNav);
-            mobileOverlay.addEventListener('click', e => { if (e.target === mobileOverlay) closeMobileNav(); });
-            mobileOverlay.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMobileNav));
+        // Generate an overlay background for the sidebar
+        let sidebarOverlay = document.getElementById('sidebar-overlay');
+        if (!sidebarOverlay) {
+            sidebarOverlay = document.createElement('div');
+            sidebarOverlay.id = 'sidebar-overlay';
+            sidebarOverlay.style.cssText = 'position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:1000; opacity:0; visibility:hidden; transition:opacity 0.3s ease;';
+            document.body.appendChild(sidebarOverlay);
+
+            sidebarOverlay.addEventListener('click', closeMobileNav);
         }
 
         mobileToggle.addEventListener('click', () => {
-            mobileOverlay.classList.contains('active') ? closeMobileNav() : openMobileNav();
+            mainNav.classList.contains('active') ? closeMobileNav() : openMobileNav();
         });
+
         document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMobileNav(); });
+
+        // Close on link click
+        navMenu.querySelectorAll('a').forEach(a => {
+            if (!a.classList.contains('cart-toggle-btn')) {
+                a.addEventListener('click', closeMobileNav);
+            }
+        });
     }
 
     function openMobileNav() {
-        const overlay = document.getElementById('mobile-nav-overlay');
-        if (overlay) { overlay.classList.add('active'); document.body.style.overflow = 'hidden'; mobileToggle.classList.add('open'); }
+        if (mainNav) {
+            mainNav.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            if (mobileToggle) mobileToggle.classList.add('open');
+            const overlay = document.getElementById('sidebar-overlay');
+            if (overlay) {
+                overlay.style.visibility = 'visible';
+                overlay.style.opacity = '1';
+            }
+        }
     }
+
     function closeMobileNav() {
-        const overlay = document.getElementById('mobile-nav-overlay');
-        if (overlay) { overlay.classList.remove('active'); document.body.style.overflow = ''; mobileToggle.classList.remove('open'); }
+        if (mainNav) {
+            mainNav.classList.remove('active');
+            document.body.style.overflow = '';
+            if (mobileToggle) mobileToggle.classList.remove('open');
+            const overlay = document.getElementById('sidebar-overlay');
+            if (overlay) {
+                overlay.style.opacity = '0';
+                setTimeout(() => { overlay.style.visibility = 'hidden'; }, 300);
+            }
+        }
     }
 
 

@@ -172,6 +172,53 @@
             gap: 15px;
             flex-wrap: wrap;
         }
+
+        .custom-hero-text-container {
+            position: absolute;
+            top: 15%;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            z-index: 3;
+            padding: 0 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .custom-hero-title {
+            font-size: 72px !important;
+            margin: 0;
+            color: var(--color-white);
+            letter-spacing: 2px;
+            font-family: 'Vintage Goods', cursive !important;
+            font-weight: normal !important;
+            text-transform: none !important;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .custom-hero-subtitle {
+            font-size: 15px;
+            font-family: inherit;
+            font-weight: 300;
+            color: var(--color-white);
+            letter-spacing: 2px;
+            margin: 0;
+            opacity: 0.9;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-slide.active .custom-hero-title {
+            animation: heroEntrance 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s forwards;
+            opacity: 0;
+        }
+
+        .hero-slide.active .custom-hero-subtitle {
+            animation: heroEntrance 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s forwards;
+            opacity: 0;
+        }
     </style>
 </head>
 
@@ -226,9 +273,11 @@
                 <img src="SocialManilaBakehouse_Gallery/TSM Bakehouse01.png" alt="The Social Manila Bakehouse"
                     class="hero-slide-bg">
                 <div class="hero-slide-overlay">
+                    <div class="custom-hero-text-container">
+                        <h1 class="custom-hero-title">The Social Manila Bakehouse</h1>
+                        <p class="custom-hero-subtitle">Artisanal pastries and collaborative baking experiences.</p>
+                    </div>
                     <div class="hero-slide-content">
-                        <h1>The Social Manila Bakehouse</h1>
-                        <p>Artisanal pastries and collaborative baking experiences.</p>
                         <a href="bakehouse-menu.html" class="hero-btn">Discover Our Menu</a>
                     </div>
                 </div>
@@ -254,7 +303,7 @@
     </section>
 
 
-    
+
     <!-- PASTRIES (Products Section) -->
     <section class="products-section" id="pastries">
         <div class="container">

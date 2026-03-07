@@ -109,16 +109,11 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-        // Generate an overlay background for the sidebar
-        let sidebarOverlay = document.getElementById('sidebar-overlay');
-        if (!sidebarOverlay) {
-            sidebarOverlay = document.createElement('div');
-            sidebarOverlay.id = 'sidebar-overlay';
-            sidebarOverlay.style.cssText = 'position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:1000; opacity:0; visibility:hidden; transition:opacity 0.3s ease;';
-            document.body.appendChild(sidebarOverlay);
-
-            sidebarOverlay.addEventListener('click', closeMobileNav);
-        }
+        document.addEventListener('click', (e) => {
+            if (mainNav.classList.contains('active') && !mainNav.contains(e.target) && !mobileToggle.contains(e.target)) {
+                closeMobileNav();
+            }
+        });
 
         mobileToggle.addEventListener('click', () => {
             mainNav.classList.contains('active') ? closeMobileNav() : openMobileNav();
@@ -129,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Close on link click
         navMenu.querySelectorAll('a').forEach(a => {
             if (!a.classList.contains('cart-toggle-btn')) {
-                a.addEventListener('click', closeMobileNav);
+                a.addEventListener('click', () => setTimeout(closeMobileNav, 250));
             }
         });
     }
@@ -139,11 +134,6 @@ document.addEventListener('DOMContentLoaded', function () {
             mainNav.classList.add('active');
             document.body.style.overflow = 'hidden';
             if (mobileToggle) mobileToggle.classList.add('open');
-            const overlay = document.getElementById('sidebar-overlay');
-            if (overlay) {
-                overlay.style.visibility = 'visible';
-                overlay.style.opacity = '1';
-            }
         }
     }
 
@@ -152,11 +142,6 @@ document.addEventListener('DOMContentLoaded', function () {
             mainNav.classList.remove('active');
             document.body.style.overflow = '';
             if (mobileToggle) mobileToggle.classList.remove('open');
-            const overlay = document.getElementById('sidebar-overlay');
-            if (overlay) {
-                overlay.style.opacity = '0';
-                setTimeout(() => { overlay.style.visibility = 'hidden'; }, 300);
-            }
         }
     }
 

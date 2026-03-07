@@ -787,6 +787,19 @@ h6 {
     border-radius: 10px;
 }
 
+/* ============================
+   MOBILE ONLY LINKS FIX
+   ============================ */
+.mobile-only-link {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    .mobile-only-link {
+        display: block !important;
+    }
+}
+
 .products-grid::-webkit-scrollbar-thumb {
     background: var(--color-accent);
     border-radius: 10px;
@@ -1231,10 +1244,6 @@ h6 {
    RESPONSIVE
    ============================ */
 @media (max-width: 1024px) {
-    .products-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
     .highlights-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -1276,13 +1285,14 @@ h6 {
         align-items: flex-start !important;
         padding: 80px 30px;
         box-shadow: 5px 0 30px rgba(0, 0, 0, 0.1);
-        transition: left 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        transition: left 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), visibility 0s linear 0.4s;
         visibility: hidden;
     }
 
     .main-nav.active {
         left: 0;
         visibility: visible;
+        transition: left 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), visibility 0s linear 0s;
     }
 
     .main-nav .nav-menu {
@@ -1356,6 +1366,20 @@ h6 {
     .header-inner {
         padding: 0 20px;
         height: 65px;
+    }
+
+    .header-logo-img {
+        height: 40px;
+    }
+
+    .mobile-toggle {
+        display: block;
+        order: -1;
+    }
+
+    .site-logo {
+        flex: 1;
+        text-align: right;
     }
 
     .container {
@@ -1548,7 +1572,7 @@ h6 {
 }
 
 .cart-footer {
-    padding: 30px;
+    padding: 30px 30px 60px;
     background: var(--color-white);
     border-top: 1px solid var(--color-border);
 }

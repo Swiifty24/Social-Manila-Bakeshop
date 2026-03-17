@@ -4,84 +4,337 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Social Manila — Connect. Collaborate. Conquer Globally.</title>
-    <meta name="description"
-        content="The Social Manila is a Filipino brand collective featuring Kamiseta, Karimadon, The Social Manila Merch, Taza Coffee Manila, and Vice Cosmetics.">
+    <title>The Social Manila Bakehouse</title>
+    <meta name="description" content="The Social Manila Bakehouse - Artisanal Pastries and Co-Baking Studio.">
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Vintage Goods for all headers on this page */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .section-heading h2,
+        .hero-slide-content h1,
+        .network-title,
+        .about-us-section h2 {
+            font-family: var(--font-heading) !important;
+            font-weight: normal !important;
+            text-transform: capitalize !important;
+        }
+
+        /* Roca Two for product names and cart titles */
+        .product-card-name,
+        .cart-item-title {
+            font-family: var(--font-body) !important;
+            font-weight: 600 !important;
+            text-transform: none !important;
+        }
+
+        /* Gold Theme Overrides */
+        .announcement-bar {
+            background-color: var(--color-dark);
+            color: var(--color-white);
+            border-bottom-color: var(--color-dark);
+        }
+
+        .site-header {
+            background-color: var(--color-accent);
+            border-bottom-color: var(--color-accent);
+        }
+
+        .site-header a,
+        .site-header .mega-menu-trigger summary,
+        .site-logo a,
+        .site-header .nav-menu li a {
+            color: var(--color-dark) !important;
+            /* contrast on gold */
+        }
+
+        .site-header .mega-menu-trigger:after,
+        .site-header a:after {
+            background-color: var(--color-dark);
+        }
+
+        .site-header.scrolled {
+            background-color: rgba(252, 202, 106, 0.98);
+            /* Gold */
+        }
+
+        .mobile-toggle span {
+            background-color: var(--color-dark);
+        }
+
+        .site-footer {
+            background-color: var(--color-white);
+            /* White footer */
+            color: var(--color-text);
+            /* Black text */
+            border-top: 1px solid var(--color-border);
+        }
+
+        .site-footer h3,
+        .site-footer p,
+        .site-footer a,
+        .site-footer .footer-massive-logo h2 {
+            color: var(--color-text) !important;
+            /* Black text */
+        }
+
+        .site-footer .newsletter-form {
+            border-bottom-color: var(--color-text);
+            /* Black border */
+        }
+
+        .site-footer .newsletter-form input {
+            color: var(--color-text);
+            /* Black text */
+        }
+
+        .site-footer .newsletter-form input::placeholder {
+            color: rgba(44, 44, 44, 0.7);
+            /* Muted black text */
+        }
+
+        .site-footer .newsletter-form button {
+            color: var(--color-text);
+            /* Black text */
+        }
+
+        /* Our Network Section Contrast Override */
+        .network-title,
+        .network-subtitle {
+            color: var(--color-dark) !important;
+        }
+
+        .network-btn {
+            color: var(--color-dark) !important;
+            border-color: var(--color-dark) !important;
+        }
+
+        .network-btn:hover {
+            background-color: var(--color-dark) !important;
+            color: var(--color-white) !important;
+        }
+
+        .bg-studio {
+            background-color: var(--color-bg-alt);
+        }
+
+        .order-form {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 100%;
+        }
+
+        .order-form input,
+        .order-form select,
+        .order-form textarea {
+            padding: 12px;
+            border: 1px solid var(--color-border);
+            font-family: inherit;
+            font-size: 0.9em;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: var(--color-white);
+            color: var(--color-text);
+        }
+
+        .order-form input:focus,
+        .order-form select:focus,
+        .order-form textarea:focus {
+            outline: none;
+            border-color: var(--color-dark);
+        }
+
+        .order-form button {
+            padding: 14px 24px;
+            background-color: var(--color-dark);
+            color: var(--color-white);
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85em;
+        }
+
+        .order-form button:hover {
+            background-color: var(--color-orange);
+        }
+
+        .customization-text {
+            font-size: 0.9em;
+            color: var(--color-text-muted);
+            margin-top: 25px;
+            line-height: 1.6;
+        }
+
+        .studio-links {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .custom-hero-text-container {
+            position: absolute;
+            top: 15%;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            z-index: 3;
+            padding: 0 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .custom-hero-title {
+            font-size: 72px !important;
+            margin: 0;
+            color: var(--color-white);
+            letter-spacing: 2px;
+            font-family: 'Vintage Goods', cursive !important;
+            font-weight: normal !important;
+            text-transform: none !important;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .custom-hero-subtitle {
+            font-size: 15px;
+            font-family: inherit;
+            font-weight: 300;
+            color: var(--color-white);
+            letter-spacing: 2px;
+            margin: 0;
+            opacity: 0.9;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-slide.active .custom-hero-title {
+            animation: heroEntrance 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s forwards;
+            opacity: 0;
+        }
+
+        .hero-slide.active .custom-hero-subtitle {
+            animation: heroEntrance 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s forwards;
+            opacity: 0;
+        }
+        .site-header {
+            padding: 5px 0;
+        }
+        .header-inner {
+            height: auto !important;
+            min-height: 70px;
+        }
+        .about-us-section {
+            background-color: var(--color-dark) !important;
+            color: var(--color-white) !important;
+        }
+        .about-us-section h2, 
+        .about-us-section p, 
+        .about-us-section .network-title, 
+        .about-us-section .network-subtitle,
+        .about-us-section .about-us-text {
+            color: var(--color-white) !important;
+        }
+        .about-us-image img {
+            box-shadow: none !important;
+            border: none !important;
+        }
+        .about-us-section .network-btn {
+            color: var(--color-white) !important;
+            border-color: var(--color-white) !important;
+        }
+        .about-us-section .network-btn:hover {
+            background-color: var(--color-white) !important;
+            color: var(--color-dark) !important;
+        }
+        .about-us-grid {
+            max-width: 1400px !important;
+            gap: 60px !important;
+        }
+        .about-us-image img {
+            width: 100% !important;
+            max-width: 650px !important;
+            margin: 0 auto;
+            display: block;
+        }
+        .about-us-section .network-title {
+            color: #FCCA6A !important; /* Gold primary */
+            margin-bottom: 8px !important;
+            text-align: center !important;
+            text-transform: uppercase !important;
+            letter-spacing: 5px !important;
+            font-size: 28px !important;
+        }
+
+        .network-divider {
+            width: 60px;
+            height: 1.5px;
+            background-color: #FCCA6A;
+            margin: 0 auto 15px;
+        }
+        
+        .network-subtitle {
+            text-align: left !important;
+            font-style: italic;
+            margin-bottom: 25px !important;
+        }
+        .our-network-block {
+            text-align: left !important;
+            margin-top: 45px !important;
+        }
+        .network-title-wrapper {
+            display: inline-block;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .network-links {
+            justify-content: flex-start !important;
+        }
+        .about-us-section .network-btn {
+            color: #FCCA6A !important;
+            border-color: #FCCA6A !important;
+        }
+        .about-us-section .network-btn:hover {
+            background-color: #FCCA6A !important;
+            color: var(--color-dark) !important;
+        }
+
+    </style>
 </head>
 
 <body>
 
-    <!-- ANNOUNCEMENT BAR -->
-    <div class="announcement-bar">
-        <span>Connect &middot; Collaborate &middot; Conquer Globally</span>
-    </div>
+
 
     <!-- HEADER -->
     <header class="site-header" id="site-header">
         <div class="header-inner">
             <nav class="main-nav left-nav" id="left-nav">
                 <ul class="nav-menu">
-                    <li class="mega-menu-container">
-                        <details class="mega-menu-trigger">
-                            <summary>Brands</summary>
-                            <div class="mega-menu-dropdown">
-                                <div class="mega-menu-col">
-                                    <h4>Apparel</h4>
-                                    <ul>
-                                        <li><a href="#kamiseta">Kamiseta</a></li>
-                                        <li><a href="#karimadon">Karimadon</a></li>
-                                        <li><a href="#merch">The Social Manila Merch</a></li>
-                                    </ul>
-                                </div>
-                                <div class="mega-menu-col">
-                                    <h4>Beauty &amp; Lifestyle</h4>
-                                    <ul>
-                                        <li><a href="#vice">Vice Cosmetics</a></li>
-                                        <li><a href="#taza">Taza Coffee Manila</a></li>
-                                    </ul>
-                                </div>
-                                <div class="mega-menu-col image-col">
-                                    <img src="https://picsum.photos/seed/socialmanilanav/400/200" alt="New Arrivals">
-                                    <p>Discover Our Brands</p>
-                                </div>
-                            </div>
-                        </details>
-                    </li>
-                    <li class="mega-menu-container">
-                        <details class="mega-menu-trigger">
-                            <summary>Our Space</summary>
-                            <div class="mega-menu-dropdown">
-                                <div class="mega-menu-col">
-                                    <h4>Sister Companies</h4>
-                                    <ul>
-                                        <li><a href="bakehouse.html">The Social Manila Bakeshop</a></li>
-                                        <li><a href="#">Event Spaces</a></li>
-                                        <li><a href="#">Co-working</a></li>
-                                    </ul>
-                                </div>
-                                <div class="mega-menu-col image-col">
-                                    <img src="https://picsum.photos/seed/socialmanilaspace/400/200" alt="Our Space">
-                                    <p>Explore Our Spaces</p>
-                                </div>
-                                <div class="mega-menu-col">
-                                </div>
-                            </div>
-                        </details>
-                    </li>
-                    <li><a href="#featured-products">Collections</a></li>
+                    <li><a href="bakehouse.html">Home</a></li>
+                    <li><a href="bakehouse-menu.html">Menu</a></li>
+                    <li><a href="bakehouse-studio.html">Co-Baking Studio</a></li>
                 </ul>
             </nav>
             <div class="site-logo">
-                <a href="#">
-                    The Social Manila
-                    <span class="logo-subtitle">LIFESTYLE</span>
+                <a href="bakehouse.html">
+                    <img src="SocialManilaBakehouse_Logos/TSMB - Red.png" alt="The Social Manila Bakehouse"
+                        class="header-logo-img" style="height: 55px;">
                 </a>
             </div>
             <nav class="main-nav right-nav" id="right-nav">
                 <ul class="nav-menu">
                     <li><a href="bakehouse-about.html">About Us</a></li>
-                    <li><a href="#" aria-label="Search">Search</a></li>
                     <li><a href="#" aria-label="Cart" class="cart-toggle-btn">Cart (<span
                                 class="cart-count">0</span>)</a></li>
                 </ul>
@@ -98,36 +351,27 @@
         <div class="hero-carousel" id="hero-carousel">
 
             <div class="hero-slide active">
-                <img src="https://picsum.photos/seed/socialmanila1/1920/1080" alt="The Social Manila"
+                <img src="SocialManilaBakehouse_Gallery/TSM Bakehouse01.png" alt="The Social Manila Bakehouse"
                     class="hero-slide-bg">
                 <div class="hero-slide-overlay">
+                    <div class="custom-hero-text-container">
+                        <h1 class="custom-hero-title">Bringing Manila's Social Spirit to you.</h1>
+                        <p class="custom-hero-subtitle">Artisanal pastries and collaborative baking experiences.</p>
+                    </div>
                     <div class="hero-slide-content">
-                        <h1>The Social Manila</h1>
-                        <p>Connect. Collaborate. Conquer Globally.</p>
-                        <a href="#brands" class="hero-btn">Explore Our Brands</a>
+                        <a href="bakehouse-menu.html" class="hero-btn">Discover Our Menu</a>
                     </div>
                 </div>
             </div>
 
             <div class="hero-slide">
-                <img src="https://picsum.photos/seed/socialmanila2/1920/1080" alt="New Collection"
+                <img src="SocialManilaBakehouse_Gallery/DJI_20251203160734_0058_D.JPG" alt="Co-Baking Studio"
                     class="hero-slide-bg">
                 <div class="hero-slide-overlay">
                     <div class="hero-slide-content">
-                        <h1>New Collection</h1>
-                        <p>Discover the latest from Kamiseta &amp; Karimadon</p>
-                        <a href="#" class="hero-btn">Shop Now</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="hero-slide">
-                <img src="https://picsum.photos/seed/socialmanila3/1920/1080" alt="Community" class="hero-slide-bg">
-                <div class="hero-slide-overlay">
-                    <div class="hero-slide-content">
-                        <h1>Join the Community</h1>
-                        <p>A beautiful space for connections and collaboration</p>
-                        <a href="#community" class="hero-btn">Learn More</a>
+                        <h1>Co-Baking Studio</h1>
+                        <p>Customize your orders or bake with us.</p>
+                        <a href="bakehouse-studio.html" class="hero-btn">Explore The Studio</a>
                     </div>
                 </div>
             </div>
@@ -136,354 +380,233 @@
         <div class="hero-dots" id="hero-dots">
             <button class="hero-dot active" data-slide="0" aria-label="Slide 1"></button>
             <button class="hero-dot" data-slide="1" aria-label="Slide 2"></button>
-            <button class="hero-dot" data-slide="2" aria-label="Slide 3"></button>
         </div>
     </section>
-
-
-    <!-- SHOP BY BRAND -->
-    <section class="shop-by-brand" id="brands">
+    <!-- PASTRIES (Products Section) -->
+    <section class="products-section" id="pastries">
         <div class="container">
             <div class="section-heading fade-in">
-                <h2>Our Brands</h2>
+                <h2>Our Pastries</h2>
                 <div class="divider"></div>
-                <p>Proudly supporting the entrepreneurial spirit of our community</p>
-            </div>
-            <div class="brand-circles stagger-children">
-                <a href="#kamiseta" class="brand-circle">
-                    <div class="brand-circle-img">
-                        <img src="https://picsum.photos/seed/socialmanila4/400/400" alt="Kamiseta">
-                    </div>
-                    <h3>Kamiseta</h3>
-                </a>
-                <a href="#karimadon" class="brand-circle">
-                    <div class="brand-circle-img">
-                        <img src="https://picsum.photos/seed/socialmanila5/400/400" alt="Karimadon">
-                    </div>
-                    <h3>Karimadon</h3>
-                </a>
-                <a href="#merch" class="brand-circle">
-                    <div class="brand-circle-img">
-                        <img src="https://picsum.photos/seed/socialmanila6/400/400" alt="KC Merch">
-                    </div>
-                    <h3>KC Merch</h3>
-                </a>
-                <a href="#taza" class="brand-circle">
-                    <div class="brand-circle-img">
-                        <img src="https://picsum.photos/seed/socialmanila7/400/400" alt="Taza Coffee">
-                    </div>
-                    <h3>Taza Coffee</h3>
-                </a>
-                <a href="#vice" class="brand-circle">
-                    <div class="brand-circle-img">
-                        <img src="https://picsum.photos/seed/socialmanila8/400/400" alt="Vice Cosmetics">
-                    </div>
-                    <h3>Vice Cosmetics</h3>
-                </a>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- ===================== BRAND SHOWCASES ===================== -->
-    <section class="brand-showcases">
-
-        <!-- BRAND 1: KAMISETA -->
-        <div id="kamiseta" class="split-brand-showcase fade-in">
-            <div class="split-content bg-kamiseta">
-                <h2>Kamiseta</h2>
-                <div class="divider"></div>
-                <p>The leading specialty retailer of fashionable casual apparel in the Philippines. The Kamiseta
-                    lifestyle is truly what girls are all about.</p>
-                <a href="#" class="cta-btn outline">Shop Kamiseta</a>
-            </div>
-            <div class="split-image">
-                <img src="https://picsum.photos/seed/socialmanila9/1200/1200" alt="Kamiseta Collection">
-            </div>
-        </div>
-
-        <!-- BRAND 2: KARIMADON -->
-        <div id="karimadon" class="split-brand-showcase reverse fade-in">
-            <div class="split-content bg-karimadon">
-                <h2>Karimadon</h2>
-                <div class="divider"></div>
-                <p>Couture quality special occasion dresses, gowns and bespoke custom clothing program.</p>
-                <a href="#" class="cta-btn outline">Shop Karimadon</a>
-            </div>
-            <div class="split-image">
-                <img src="https://picsum.photos/seed/socialmanila14/1200/1200" alt="Karimadon Collection">
-            </div>
-        </div>
-
-        <!-- BRAND 3: KC MERCH -->
-        <div id="merch" class="split-brand-showcase fade-in">
-            <div class="split-content bg-merch">
-                <h2>The Social Manila Merch</h2>
-                <div class="divider"></div>
-                <p>A community hub inviting customers to shop and engage within an inclusive space that celebrates
-                    Filipino artistry and collaboration.</p>
-                <a href="#" class="cta-btn outline">Shop Collection</a>
-            </div>
-            <div class="split-image">
-                <img src="https://picsum.photos/seed/socialmanila19/1200/1200" alt="Merch Collection">
-            </div>
-        </div>
-
-        <!-- BRAND 4: TAZA COFFEE -->
-        <div id="taza" class="split-brand-showcase reverse fade-in">
-            <div class="split-content bg-taza">
-                <h2>Taza Coffee Manila</h2>
-                <div class="divider"></div>
-                <p>Discover the rich flavors of carefully sourced and expertly roasted beans. Indulge in a quality cuppa
-                    today.</p>
-                <a href="#" class="cta-btn outline">Shop Taza Coffee</a>
-            </div>
-            <div class="split-image">
-                <img src="https://picsum.photos/seed/socialmanila24/1200/1200" alt="Taza Coffee Collection">
-            </div>
-        </div>
-
-        <!-- BRAND 5: VICE COSMETICS -->
-        <div id="vice" class="split-brand-showcase fade-in">
-            <div class="split-content bg-vice">
-                <h2>Vice Cosmetics</h2>
-                <div class="divider"></div>
-                <p>Cruelty-free, high performance beauty all the while embracing all gender, age, color &amp; shape.</p>
-                <a href="#" class="cta-btn outline">Shop Vice Cosmetics</a>
-            </div>
-            <div class="split-image">
-                <img src="https://picsum.photos/seed/socialmanila29/1200/1200" alt="Vice Cosmetics Collection">
-            </div>
-        </div>
-
-    </section>
-
-    <!-- ===================== FEATURED PRODUCTS ===================== -->
-    <section class="products-section" id="featured-products">
-        <div class="container">
-            <div class="section-heading fade-in">
-                <h2>Featured Products</h2>
-                <div class="divider"></div>
-                <p>Discover our community favorites</p>
+                <p>Freshly baked artisanal treats.</p>
             </div>
             <div class="products-grid stagger-children">
-                <!-- Kamiseta Products -->
-                <a href="#" class="product-card">
-                    <div class="product-card-img"><img src="https://picsum.photos/seed/socialmanila10/600/800"
-                            alt="WJ-AYANA"></div>
+                <div class="product-card" data-id="signature-butter-croissant" data-name="Signature Butter Croissant" data-priceval="180">
+                    <a href="bakehouse-product.html?id=signature-butter-croissant" class="product-card-img" style="position: relative;">
+                        <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?q=80&w=600&auto=format&fit=crop" alt="Signature Croissant">
+                        <button class="quick-add-btn" aria-label="Add to cart">+</button>
+                    </a>
                     <div class="product-card-info">
-                        <div class="product-card-brand">Kamiseta</div>
-                        <div class="product-card-name">WJ-AYANA</div>
-                        <div class="product-card-price">₱2,999.00</div>
+                        <div class="product-card-brand">Bakehouse</div>
+                        <div class="product-card-name">Signature Butter Croissant</div>
+                        <div class="product-card-price">₱180.00</div>
                     </div>
-                </a>
-                <a href="#" class="product-card">
-                    <div class="product-card-img"><img src="https://picsum.photos/seed/socialmanila11/600/800"
-                            alt="WD Kiennah"></div>
+                </div>
+                <div class="product-card" data-id="pain-au-chocolat" data-name="Pain au Chocolat" data-priceval="220">
+                    <a href="bakehouse-product.html?id=pain-au-chocolat" class="product-card-img" style="position: relative;">
+                        <img src="https://images.unsplash.com/photo-1608198093002-ad4e005484ec?q=80&w=600&auto=format&fit=crop" alt="Pain au Chocolat">
+                        <button class="quick-add-btn" aria-label="Add to cart">+</button>
+                    </a>
                     <div class="product-card-info">
-                        <div class="product-card-brand">Kamiseta</div>
-                        <div class="product-card-name">WD Kiennah</div>
-                        <div class="product-card-price">₱2,499.00</div>
+                        <div class="product-card-brand">Bakehouse</div>
+                        <div class="product-card-name">Pain au Chocolat</div>
+                        <div class="product-card-price">₱220.00</div>
                     </div>
-                </a>
-                <!-- Karimadon Products -->
-                <a href="#" class="product-card">
-                    <div class="product-card-img"><img src="https://picsum.photos/seed/socialmanila15/600/800"
-                            alt="Multi-Way Felicity 2.0"></div>
+                </div>
+                <div class="product-card" data-id="almond-and-pear-tart" data-name="Almond &amp; Pear Tart" data-priceval="280">
+                    <a href="bakehouse-product.html?id=almond-and-pear-tart" class="product-card-img" style="position: relative;">
+                        <img src="https://images.unsplash.com/photo-1519915028121-7d3463d20b13?q=80&w=600&auto=format&fit=crop" alt="Almond Tart">
+                        <button class="quick-add-btn" aria-label="Add to cart">+</button>
+                    </a>
                     <div class="product-card-info">
-                        <div class="product-card-brand">Karimadon</div>
-                        <div class="product-card-name">Multi-Way Felicity 2.0</div>
-                        <div class="product-card-price">From ₱4,999.00</div>
+                        <div class="product-card-brand">Bakehouse</div>
+                        <div class="product-card-name">Almond &amp; Pear Tart</div>
+                        <div class="product-card-price">₱280.00</div>
                     </div>
-                </a>
-                <a href="#" class="product-card">
-                    <div class="product-card-img"><img src="https://picsum.photos/seed/socialmanila16/600/800"
-                            alt="Wendy"></div>
+                </div>
+                <div class="product-card" data-id="assorted-macarons-(box-of-6)" data-name="Assorted Macarons (Box of 6)" data-priceval="650">
+                    <a href="bakehouse-product.html?id=assorted-macarons-(box-of-6)" class="product-card-img" style="position: relative;">
+                        <img src="https://images.unsplash.com/photo-1569864358642-9d1684040f43?q=80&w=600&auto=format&fit=crop" alt="Macaron Set">
+                        <button class="quick-add-btn" aria-label="Add to cart">+</button>
+                    </a>
                     <div class="product-card-info">
-                        <div class="product-card-brand">Karimadon</div>
-                        <div class="product-card-name">Wendy</div>
-                        <div class="product-card-price">From ₱599.00</div>
+                        <div class="product-card-brand">Bakehouse</div>
+                        <div class="product-card-name">Assorted Macarons (Box of 6)</div>
+                        <div class="product-card-price">₱650.00</div>
                     </div>
-                </a>
-                <!-- Merch Products -->
-                <a href="#" class="product-card">
-                    <div class="product-card-img"><img src="https://picsum.photos/seed/socialmanila20/600/800"
-                            alt="The Social Manila Shirt"></div>
-                    <div class="product-card-info">
-                        <div class="product-card-brand">KC Merch</div>
-                        <div class="product-card-name">The Social Manila Shirt</div>
-                        <div class="product-card-price">₱499.00</div>
-                    </div>
-                </a>
-                <a href="#" class="product-card">
-                    <div class="product-card-img"><img src="https://picsum.photos/seed/socialmanila21/600/800"
-                            alt="Sticker Sheet"></div>
-                    <div class="product-card-info">
-                        <div class="product-card-brand">KC Merch</div>
-                        <div class="product-card-name">Sticker Sheet</div>
-                        <div class="product-card-price">₱149.00</div>
-                    </div>
-                </a>
-                <!-- Taza Coffee -->
-                <a href="#" class="product-card">
-                    <div class="product-card-img"><img src="https://picsum.photos/seed/socialmanila25/600/800"
-                            alt="Arcangel"></div>
-                    <div class="product-card-info">
-                        <div class="product-card-brand">Taza Coffee</div>
-                        <div class="product-card-name">Arcangel</div>
-                        <div class="product-card-price">₱450.00</div>
-                    </div>
-                </a>
-                <a href="#" class="product-card">
-                    <div class="product-card-img"><img src="https://picsum.photos/seed/socialmanila26/600/800"
-                            alt="Candela Gold"></div>
-                    <div class="product-card-info">
-                        <div class="product-card-brand">Taza Coffee</div>
-                        <div class="product-card-name">Candela Gold (Washed)</div>
-                        <div class="product-card-price">₱480.00</div>
-                    </div>
-                </a>
-                <!-- Vice Cosmetics -->
-                <a href="#" class="product-card">
-                    <div class="product-card-img"><img src="https://picsum.photos/seed/socialmanila30/600/800"
-                            alt="Phenomenal Liquid Lipstick"></div>
-                    <div class="product-card-info">
-                        <div class="product-card-brand">Vice Cosmetics</div>
-                        <div class="product-card-name">Phenomenal Liquid Lipstick</div>
-                        <div class="product-card-price">₱299.00</div>
-                    </div>
-                </a>
-                <a href="#" class="product-card">
-                    <div class="product-card-img"><img src="https://picsum.photos/seed/socialmanila31/600/800"
-                            alt="Pro Palette"></div>
-                    <div class="product-card-info">
-                        <div class="product-card-brand">Vice Cosmetics</div>
-                        <div class="product-card-name">Pro Palette</div>
-                        <div class="product-card-price">₱599.00</div>
-                    </div>
-                </a>
+                </div>
             </div>
-            <div class="view-all-link fade-in" style="margin-top: 20px;"><a href="#">View all collections →</a></div>
+            <div class="fade-in" style="margin-top: 36px; text-align: center;">
+                <a href="bakehouse-menu.html" class="network-btn">View Products &rarr;</a>
+            </div>
         </div>
+
     </section>
 
+    <style>
+        /* Quick-add button on homepage product cards */
+        .quick-add-btn {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--color-white);
+            border: none;
+            font-size: 22px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transform: scale(0.75);
+            transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.25s ease, color 0.25s ease;
+            z-index: 5;
+            color: var(--color-dark);
+            box-shadow: 0 2px 14px rgba(0, 0, 0, 0.22);
+        }
+        .product-card-img:hover .quick-add-btn {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .quick-add-btn:hover {
+            background-color: var(--color-accent);
+            transform: scale(1.15) !important;
+            box-shadow: 0 4px 18px rgba(252, 202, 106, 0.45);
+        }
+        .quick-add-btn.added {
+            background-color: #2ecc71;
+            color: var(--color-white);
+            opacity: 1;
+            transform: scale(1) !important;
+            box-shadow: 0 2px 10px rgba(46, 204, 113, 0.4);
+        }
+        .quick-add-btn.fading-out {
+            opacity: 0;
+            transform: scale(0.75) !important;
+        }
+    </style>
 
-    <!-- HIGHLIGHTS -->
-    <section class="highlights-section">
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('#pastries .quick-add-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (btn.classList.contains('added')) return;
+
+                    const card = btn.closest('.product-card');
+                    const id = card.dataset.id;
+                    const name = card.dataset.name;
+                    const price = parseFloat(card.dataset.priceval);
+                    const imgSrc = card.querySelector('img').src;
+
+                    if (typeof window.addToCart === 'function') {
+                        window.addToCart({ id, name, price, img: imgSrc });
+                    }
+
+                    btn.textContent = '✓';
+                    btn.classList.add('added');
+
+                    setTimeout(() => {
+                        btn.classList.add('fading-out');
+                        setTimeout(() => {
+                            btn.textContent = '+';
+                            btn.classList.remove('added', 'fading-out');
+                        }, 280);
+                    }, 500);
+                });
+            });
+        });
+    </script>
+
+
+
+    <!-- ABOUT US SECTION -->
+    <section class="about-us-section fade-in" id="about-us">
         <div class="container">
-            <div class="section-heading fade-in">
-                <h2>Looking for Something?</h2>
+            <div class="section-heading">
+                <h2>Our Story</h2>
                 <div class="divider"></div>
             </div>
-            <div class="highlights-grid stagger-children">
-                <a href="#" class="highlight-tile">
-                    <img src="https://picsum.photos/seed/socialmanila34/800/800" alt="New Arrivals">
-                    <div class="highlight-tile-overlay">
-                        <h3>New Arrivals</h3>
+            <div class="about-us-grid">
+                <div class="about-us-image">
+                    <img src="SocialManilaBakehouse_Gallery/TSM BAKEHOUSE.png" alt="Artisanal Coffee and Pastries">
+                </div>
+                <div class="about-us-content">
+                    <p class="about-us-text">
+                        Welcome to The Social Manila Bakehouse. Born from a passion for authentic, artisanal
+                        craftsmanship, we are dedicated to bringing you an elevated bakery experience. Whether savoring
+                        our signature croissants or creating your own masterpiece in our Co-Baking Studio, we strive to
+                        make every visit memorable.
+                    </p>
+                    <div style="margin-top: 18px; margin-bottom: 24px; text-align: left;">
+                        <a href="bakehouse-about.html"
+                            style="display: inline-block; padding: 12px 28px; background-color: transparent; color: var(--color-white); border: 1px solid var(--color-white); text-decoration: none; font-family: var(--font-body); font-weight: 600; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease;"
+                            onmouseover="this.style.backgroundColor='var(--color-white)'; this.style.color='var(--color-dark)';"
+                            onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--color-white)';"
+                        >
+                            View More &rarr;
+                        </a>
                     </div>
-                </a>
-                <a href="#" class="highlight-tile">
-                    <img src="https://picsum.photos/seed/socialmanila35/800/800" alt="Best Sellers">
-                    <div class="highlight-tile-overlay">
-                        <h3>Best Sellers</h3>
+
+                    <div class="our-network-block">
+                        <div class="network-title-wrapper">
+                            <h3 class="network-title">Our Network</h3>
+                            <div class="network-divider"></div>
+                        </div>
+                        <p class="network-subtitle">Discover the rest of The Social Manila lifestyle.</p>
+                        <div class="network-links">
+                            <a href="https://kingscity.com.ph" target="_blank" class="network-btn">Visit Kings City</a>
+                            <a href="https://homeculinaryschool.com" target="_blank" class="network-btn">Home
+                                Culinary</a>
+                        </div>
                     </div>
-                </a>
-                <a href="#" class="highlight-tile">
-                    <img src="https://picsum.photos/seed/socialmanila36/800/800" alt="Our Space">
-                    <div class="highlight-tile-overlay">
-                        <h3>Our Space</h3>
-                    </div>
-                </a>
+                </div>
             </div>
         </div>
-    </section>
-
-
-    <!-- COMMUNITY CTA -->
-    <section class="community-cta" id="community">
-        <img src="https://picsum.photos/seed/socialmanila37/1920/1000" alt="The The Social Manila Space"
-            class="community-cta-bg">
-        <div class="community-cta-overlay">
-            <div class="community-cta-content fade-in">
-                <h2>The The Social Manila</h2>
-                <p>We are a beautiful space, creating a community for connections — with communal tables, workstations,
-                    events, and networking opportunities.</p>
-                <a href="#" class="cta-btn">Be a The Social Manila Member</a>
-            </div>
         </div>
     </section>
-
-
-    <!-- INSTAGRAM -->
-    <section class="instagram-section">
-        <div class="container">
-            <div class="section-heading fade-in">
-                <h2>Follow Us</h2>
-                <div class="divider"></div>
-                <p>@thesocialmanilaph</p>
-            </div>
-        </div>
-        <div class="instagram-grid stagger-children">
-            <a href="https://www.instagram.com/thesocialmanilaph" target="_blank" class="instagram-item">
-                <img src="https://picsum.photos/seed/socialmanila38/400/400" alt="Instagram">
-            </a>
-            <a href="https://www.instagram.com/thesocialmanilaph" target="_blank" class="instagram-item">
-                <img src="https://picsum.photos/seed/socialmanila39/400/400" alt="Instagram">
-            </a>
-            <a href="https://www.instagram.com/thesocialmanilaph" target="_blank" class="instagram-item">
-                <img src="https://picsum.photos/seed/socialmanila40/400/400" alt="Instagram">
-            </a>
-            <a href="https://www.instagram.com/thesocialmanilaph" target="_blank" class="instagram-item">
-                <img src="https://picsum.photos/seed/socialmanila41/400/400" alt="Instagram">
-            </a>
-            <a href="https://www.instagram.com/thesocialmanilaph" target="_blank" class="instagram-item">
-                <img src="https://picsum.photos/seed/socialmanila42/400/400" alt="Instagram">
-            </a>
-            <a href="https://www.instagram.com/thesocialmanilaph" target="_blank" class="instagram-item">
-                <img src="https://picsum.photos/seed/socialmanila43/400/400" alt="Instagram">
-            </a>
-        </div>
-    </section>
-
-
     <!-- FOOTER -->
-    <footer class="site-footer">
-        <div class="footer-main">
-            <div class="footer-col left">
-                <h3>Customer Care</h3>
-                <ul>
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">FAQ &amp; Policies</a></li>
-                    <li><a href="#">Shipping &amp; Returns</a></li>
-                    <li><a href="#">Terms of Service</a></li>
-                </ul>
+    <footer class="site-footer" style="padding: 15px 0 5px; background-color: var(--color-white); border-top: 1px solid var(--color-border); color: var(--color-text);">
+        <div style="padding: 10px 40px; max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
+            <!-- Left: Logo -->
+            <div style="flex: 1; display: flex; justify-content: flex-start;">
+                <a href="bakehouse.html" style="display: flex; align-items: center; text-decoration: none;">
+                    <img src="SocialManilaBakehouse_Logos/TSMB - Red.png" alt="The Social Manila Bakehouse" style="height: 75px;">
+                </a>
             </div>
-            <div class="footer-col center">
-                <h3>The Social Manila</h3>
-                <p>Sign up to receive an exclusive invitation to our events and newest collections.</p>
-                <form class="newsletter-form" action="#" method="post">
-                    <input type="email" placeholder="Enter your email" required aria-label="Email">
-                    <button type="submit">→</button>
-                </form>
 
+            <!-- Center: Newsletter -->
+            <div style="flex: 1; text-align: center;">
+                <p style="font-family: var(--font-body); font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--color-dark); font-weight: 700; margin: 0 0 6px;">Join The Social Manila Community</p>
+                <form action="#" method="post" style="display: flex; max-width: 280px; margin: 0 auto;" onsubmit="return false;">
+                    <input type="email" placeholder="Enter your email" required aria-label="Email"
+                        style="flex: 1; padding: 7px 10px; border: 1px solid var(--color-border); border-right: none; font-family: var(--font-body); font-size: 12px; background: var(--color-bg); color: var(--color-text); outline: none;">
+                    <button type="submit"
+                        style="padding: 7px 14px; background-color: var(--color-accent); color: var(--color-dark); border: none; font-family: var(--font-body); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; white-space: nowrap; transition: 0.3s;"
+                        onmouseover="this.style.backgroundColor='var(--color-dark)'; this.style.color='var(--color-white)';"
+                        onmouseout="this.style.backgroundColor='var(--color-accent)'; this.style.color='var(--color-dark)';"
+                    >Join</button>
+                </form>
             </div>
-            <div class="footer-col right">
-                <h3>Our World</h3>
-                <ul>
-                    <li><a href="bakehouse-about.html">About Us</a></li>
-                    <li><a href="#">The Community Space</a></li>
-                    <li><a href="#">Our Brands</a></li>
-                    <li><a href="#">Careers</a></li>
-                </ul>
-            </div>
+
+            <!-- Right: Navigation -->
+            <nav style="flex: 1; display: flex; gap: 20px; justify-content: flex-end; align-items: center;">
+                <a href="bakehouse.html" style="font-family: var(--font-body); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-text); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--color-dark)'" onmouseout="this.style.color='var(--color-text)'">Home</a>
+                <a href="bakehouse-menu.html" style="font-family: var(--font-body); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-text); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--color-dark)'" onmouseout="this.style.color='var(--color-text)'">Menu</a>
+                <a href="bakehouse-studio.html" style="font-family: var(--font-body); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-text); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--color-dark)'" onmouseout="this.style.color='var(--color-text)'">Co-Baking Studio</a>
+                <a href="bakehouse-about.html" style="font-family: var(--font-body); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-text); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--color-dark)'" onmouseout="this.style.color='var(--color-text)'">About Us</a>
+            </nav>
         </div>
-        <div class="footer-massive-logo">
-            <h2>The Social Manila</h2>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 The Social Manila.</p>
+        <!-- Bottom: Copyright -->
+        <div style="border-top: 1px solid var(--color-border); padding: 8px 40px; text-align: center; margin-top: 5px;">
+            <p style="font-family: var(--font-body); font-size: 11px; color: var(--color-text-muted); margin: 0;">&copy; 2026 The Social Manila Bakehouse. All rights reserved.</p>
         </div>
     </footer>
+
 
     <!-- CART DRAWER -->
     <div class="cart-overlay" id="cart-overlay"></div>
@@ -519,6 +642,70 @@
             </div>
         </div>
     </div>
+
+    <!-- LIGHTBOX OVERLAY -->
+    <div id="lightbox-overlay" onclick="closeLightbox()" style="
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: rgba(0, 0, 0, 0.88);
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        cursor: zoom-out;
+        backdrop-filter: blur(4px);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    ">
+        <img id="lightbox-img" src="" alt="" style="
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+            transform: scale(0.92);
+            transition: transform 0.3s ease;
+            pointer-events: none;
+        ">
+        <button onclick="closeLightbox()" style="
+            position: absolute;
+            top: 20px;
+            right: 28px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        " onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.8">&times;</button>
+    </div>
+
+    <script>
+        function openLightbox(src, alt) {
+            const overlay = document.getElementById('lightbox-overlay');
+            const img = document.getElementById('lightbox-img');
+            img.src = src;
+            img.alt = alt;
+            overlay.style.display = 'flex';
+            requestAnimationFrame(() => {
+                overlay.style.opacity = '1';
+                img.style.transform = 'scale(1)';
+            });
+            document.addEventListener('keydown', escClose);
+        }
+        function closeLightbox() {
+            const overlay = document.getElementById('lightbox-overlay');
+            const img = document.getElementById('lightbox-img');
+            overlay.style.opacity = '0';
+            img.style.transform = 'scale(0.92)';
+            setTimeout(() => { overlay.style.display = 'none'; }, 300);
+            document.removeEventListener('keydown', escClose);
+        }
+        function escClose(e) { if (e.key === 'Escape') closeLightbox(); }
+    </script>
 
     <script src="main.js"></script>
 </body>

@@ -194,7 +194,6 @@
 
         /* Studio Page Specifics */
         .studio-hero {
-            height: 40vh;
             background-color: #1A1A1A;
             display: flex;
             align-items: center;
@@ -206,30 +205,12 @@
         }
 
         .studio-hero img {
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
-            height: 100%;
+            height: auto;
+            max-height: 450px;
             object-fit: cover;
-            object-position: center 25%;
+            display: block;
             opacity: 0.85;
-            z-index: 1;
-        }
-
-        .studio-hero-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .studio-hero-content h1 {
-            font-size: 64px;
-            font-family: 'Vintage Goods', cursive !important;
-            color: var(--color-white);
-            letter-spacing: 2px;
-            text-transform: none !important;
-            font-weight: normal !important;
-            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
         }
 
         .studio-content-section {
@@ -292,14 +273,12 @@
     <!-- HERO SECTION -->
     <section class="studio-hero">
         <img src="SocialManilaBakehouse_Gallery/6F8A0486.jpg" alt="Co-Baking Studio Background">
-        <div class="studio-hero-content fade-in">
-            <h1>Co-Baking Studio</h1>
-        </div>
     </section>
 
     <!-- CONTENT & FORM SECTION -->
     <section class="studio-content-section">
         <div class="fade-in">
+            <h1 style="font-size: 52px; font-family: 'Vintage Goods', cursive; color: var(--color-dark); letter-spacing: 2px; text-transform: none; font-weight: normal; margin-bottom: 30px;">Co-Baking Studio</h1>
             <div class="studio-description">
                 <p>Welcome to our collaborative baking space. Whether you have a special custom request, need bulk
                     pastry boxes for your next event, or simply want to bring a sweet vision to life — we are here to

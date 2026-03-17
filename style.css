@@ -1405,7 +1405,7 @@ h6 {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.4);
+    background: transparent;
     z-index: 2000;
     opacity: 0;
     visibility: hidden;

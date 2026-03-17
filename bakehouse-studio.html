@@ -13,6 +13,12 @@
         .site-header {
             background-color: var(--color-accent);
             border-bottom-color: var(--color-accent);
+            padding: 5px 0;
+        }
+
+        .header-inner {
+            height: auto !important;
+            min-height: 70px;
         }
 
         .site-header a,
@@ -259,13 +265,6 @@
             <nav class="main-nav left-nav" id="left-nav">
                 <ul class="nav-menu">
 
-                    <li>
-                        <a href="https://kingscity.com.ph" target="_blank"
-                            style="display: flex; align-items: center; gap: 8px;">
-                            <img src="SocialManilaBakehouse_Logos/TSM - Red.png" alt="The Social Manila Lifestyle"
-                                style="height: 40px;">
-                        </a>
-                    </li>
                     <li><a href="bakehouse.html">Home</a></li>
                     <li><a href="bakehouse-menu.html">Menu</a></li>
                     <li><a href="bakehouse-studio.html">Co-Baking Studio</a></li>
@@ -359,53 +358,41 @@
 
 
         </div>
-    </section>
-
     <!-- FOOTER -->
-    <footer class="site-footer"
-        style="background-color: var(--color-white); border-top: 1px solid var(--color-border); color: var(--color-text);">
-        <div
-            style="padding: 8px 40px; max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 20px;">
-            <a href="bakehouse.html" style="display: flex; align-items: center; text-decoration: none; flex-shrink: 0;">
-                <img src="SocialManilaBakehouse_Logos/TSMB - Red.png" alt="The Social Manila Bakehouse"
-                    style="height: 75px;">
-            </a>
-            <div style="text-align: center; flex-shrink: 0;">
-                <p
-                    style="font-family: var(--font-body); font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--color-dark); font-weight: 700; margin: 0 0 6px;">
-                    Join The Social Manila Community</p>
-                <form action="#" method="post" style="display: flex; max-width: 300px; margin: 0 auto;"
-                    onsubmit="return false;">
+    <footer class="site-footer" style="padding: 15px 0 5px; background-color: var(--color-white); border-top: 1px solid var(--color-border); color: var(--color-text);">
+        <div style="padding: 10px 40px; max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
+            <!-- Left: Logo -->
+            <div style="flex: 1; display: flex; justify-content: flex-start;">
+                <a href="bakehouse.html" style="display: flex; align-items: center; text-decoration: none;">
+                    <img src="SocialManilaBakehouse_Logos/TSMB - Red.png" alt="The Social Manila Bakehouse" style="height: 75px;">
+                </a>
+            </div>
+
+            <!-- Center: Newsletter -->
+            <div style="flex: 1; text-align: center;">
+                <p style="font-family: var(--font-body); font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--color-dark); font-weight: 700; margin: 0 0 6px;">Join The Social Manila Community</p>
+                <form action="#" method="post" style="display: flex; max-width: 280px; margin: 0 auto;" onsubmit="return false;">
                     <input type="email" placeholder="Enter your email" required aria-label="Email"
                         style="flex: 1; padding: 7px 10px; border: 1px solid var(--color-border); border-right: none; font-family: var(--font-body); font-size: 12px; background: var(--color-bg); color: var(--color-text); outline: none;">
                     <button type="submit"
-                        style="padding: 7px 14px; background-color: var(--color-accent); color: var(--color-dark); border: none; font-family: var(--font-body); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; white-space: nowrap;"
+                        style="padding: 7px 14px; background-color: var(--color-accent); color: var(--color-dark); border: none; font-family: var(--font-body); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; white-space: nowrap; transition: 0.3s;"
                         onmouseover="this.style.backgroundColor='var(--color-dark)'; this.style.color='var(--color-white)';"
-                        onmouseout="this.style.backgroundColor='var(--color-accent)'; this.style.color='var(--color-dark)';">Join</button>
+                        onmouseout="this.style.backgroundColor='var(--color-accent)'; this.style.color='var(--color-dark)';"
+                    >Join</button>
                 </form>
             </div>
-            <nav style="display: flex; gap: 20px; align-items: center; flex-shrink: 0;">
-                <a href="bakehouse.html"
-                    style="font-family: var(--font-body); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-text); text-decoration: none;"
-                    onmouseover="this.style.color='var(--color-dark)'"
-                    onmouseout="this.style.color='var(--color-text)'">Home</a>
-                <a href="bakehouse-menu.html"
-                    style="font-family: var(--font-body); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-text); text-decoration: none;"
-                    onmouseover="this.style.color='var(--color-dark)'"
-                    onmouseout="this.style.color='var(--color-text)'">Menu</a>
-                <a href="bakehouse-studio.html"
-                    style="font-family: var(--font-body); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-text); text-decoration: none;"
-                    onmouseover="this.style.color='var(--color-dark)'"
-                    onmouseout="this.style.color='var(--color-text)'">Co-Baking Studio</a>
-                <a href="bakehouse-about.html"
-                    style="font-family: var(--font-body); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-text); text-decoration: none;"
-                    onmouseover="this.style.color='var(--color-dark)'"
-                    onmouseout="this.style.color='var(--color-text)'">About Us</a>
+
+            <!-- Right: Navigation -->
+            <nav style="flex: 1; display: flex; gap: 20px; justify-content: flex-end; align-items: center;">
+                <a href="bakehouse.html" style="font-family: var(--font-body); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-text); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--color-dark)'" onmouseout="this.style.color='var(--color-text)'">Home</a>
+                <a href="bakehouse-menu.html" style="font-family: var(--font-body); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-text); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--color-dark)'" onmouseout="this.style.color='var(--color-text)'">Menu</a>
+                <a href="bakehouse-studio.html" style="font-family: var(--font-body); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-text); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--color-dark)'" onmouseout="this.style.color='var(--color-text)'">Co-Baking Studio</a>
+                <a href="bakehouse-about.html" style="font-family: var(--font-body); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-text); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--color-dark)'" onmouseout="this.style.color='var(--color-text)'">About Us</a>
             </nav>
         </div>
-        <div style="border-top: 1px solid var(--color-border); padding: 8px 40px; text-align: center;">
-            <p style="font-family: var(--font-body); font-size: 11px; color: var(--color-text-muted); margin: 0;">&copy;
-                2026 The Social Manila Bakehouse. All rights reserved.</p>
+        <!-- Bottom: Copyright -->
+        <div style="border-top: 1px solid var(--color-border); padding: 8px 40px; text-align: center; margin-top: 5px;">
+            <p style="font-family: var(--font-body); font-size: 11px; color: var(--color-text-muted); margin: 0;">&copy; 2026 The Social Manila Bakehouse. All rights reserved.</p>
         </div>
     </footer>
 
@@ -443,6 +430,70 @@
             </div>
         </div>
     </div>
+
+    <!-- LIGHTBOX OVERLAY -->
+    <div id="lightbox-overlay" onclick="closeLightbox()" style="
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: rgba(0, 0, 0, 0.88);
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        cursor: zoom-out;
+        backdrop-filter: blur(4px);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    ">
+        <img id="lightbox-img" src="" alt="" style="
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+            transform: scale(0.92);
+            transition: transform 0.3s ease;
+            pointer-events: none;
+        ">
+        <button onclick="closeLightbox()" style="
+            position: absolute;
+            top: 20px;
+            right: 28px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        " onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.8">&times;</button>
+    </div>
+
+    <script>
+        function openLightbox(src, alt) {
+            const overlay = document.getElementById('lightbox-overlay');
+            const img = document.getElementById('lightbox-img');
+            img.src = src;
+            img.alt = alt;
+            overlay.style.display = 'flex';
+            requestAnimationFrame(() => {
+                overlay.style.opacity = '1';
+                img.style.transform = 'scale(1)';
+            });
+            document.addEventListener('keydown', escClose);
+        }
+        function closeLightbox() {
+            const overlay = document.getElementById('lightbox-overlay');
+            const img = document.getElementById('lightbox-img');
+            overlay.style.opacity = '0';
+            img.style.transform = 'scale(0.92)';
+            setTimeout(() => { overlay.style.display = 'none'; }, 300);
+            document.removeEventListener('keydown', escClose);
+        }
+        function escClose(e) { if (e.key === 'Escape') closeLightbox(); }
+    </script>
 
     <script src="main.js"></script>
 </body>

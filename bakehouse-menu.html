@@ -76,11 +76,7 @@
             /* Black text */
         }
 
-        /* Utility bar */
-        .utility-bar {
-            background-color: var(--color-dark);
-            border-bottom-color: var(--color-dark);
-        }
+        /* Utility bar - background on wrapper */
 
         .utility-bar .filter-btn {
             color: rgba(255, 255, 255, 0.7);
@@ -147,12 +143,18 @@
         }
 
         /* Utility Bar (Search & Filter) */
+        .utility-bar-wrapper {
+            background-color: var(--color-dark);
+            border-bottom: 1px solid var(--color-border);
+        }
+
         .utility-bar {
-            padding: 30px 10%;
+            padding: 30px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--color-border);
             flex-wrap: wrap;
             gap: 20px;
         }
@@ -578,41 +580,43 @@
     </section>
 
     <!-- UTILITY BAR -->
-    <section class="utility-bar">
-        <div class="category-filters">
-            <button class="filter-btn active" data-filter="all">All Pastries</button>
-            <button class="filter-btn" data-filter="viennoiserie">Viennoiserie</button>
-            <button class="filter-btn" data-filter="tarts">Tarts & Cakes</button>
-            <button class="filter-btn" data-filter="macarons">Macarons</button>
-        </div>
-        <div style="display: flex; gap: 40px; align-items: center;">
-            <div class="search-container" id="search-wrapper">
-                <input type="text" id="menu-search" class="search-input" placeholder="Search our menu...">
-                <button class="search-btn" id="search-trigger" aria-label="Toggle Search">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
-                </button>
+    <div class="utility-bar-wrapper">
+        <section class="utility-bar">
+            <div class="category-filters">
+                <button class="filter-btn active" data-filter="all">All Pastries</button>
+                <button class="filter-btn" data-filter="viennoiserie">Viennoiserie</button>
+                <button class="filter-btn" data-filter="tarts">Tarts & Cakes</button>
+                <button class="filter-btn" data-filter="macarons">Macarons</button>
             </div>
-            <div class="sorter-container">
-                <span class="sorter-label">Sort by:</span>
-                <div class="custom-select-wrapper" id="sort-dropdown">
-                    <div class="custom-select-trigger"><span>Featured</span></div>
-                    <div class="custom-options">
-                        <div class="custom-option selected" data-value="featured">Featured</div>
-                        <div class="custom-option" data-value="az">Alphabetically, A-Z</div>
-                        <div class="custom-option" data-value="za">Alphabetically, Z-A</div>
-                        <div class="custom-option" data-value="price-low">Price, low to high</div>
-                        <div class="custom-option" data-value="price-high">Price, high to low</div>
-                    </div>
+            <div style="display: flex; gap: 40px; align-items: center;">
+                <div class="search-container" id="search-wrapper">
+                    <input type="text" id="menu-search" class="search-input" placeholder="Search our menu...">
+                    <button class="search-btn" id="search-trigger" aria-label="Toggle Search">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
                 </div>
-                <!-- Hidden input to store value -->
-                <input type="hidden" id="product-sort" value="featured">
+                <div class="sorter-container">
+                    <span class="sorter-label">Sort by:</span>
+                    <div class="custom-select-wrapper" id="sort-dropdown">
+                        <div class="custom-select-trigger"><span>Featured</span></div>
+                        <div class="custom-options">
+                            <div class="custom-option selected" data-value="featured">Featured</div>
+                            <div class="custom-option" data-value="az">Alphabetically, A-Z</div>
+                            <div class="custom-option" data-value="za">Alphabetically, Z-A</div>
+                            <div class="custom-option" data-value="price-low">Price, low to high</div>
+                            <div class="custom-option" data-value="price-high">Price, high to low</div>
+                        </div>
+                    </div>
+                    <!-- Hidden input to store value -->
+                    <input type="hidden" id="product-sort" value="featured">
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
     <!-- PRODUCT GRID -->
     <section class="products-grid" id="menu-grid">

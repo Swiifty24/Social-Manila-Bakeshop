@@ -100,10 +100,16 @@ h4,
 h5,
 h6 {
     font-family: var(--font-heading);
-    font-weight: 600;
+    font-weight: normal;
     line-height: 1.2;
     color: var(--color-text);
+    text-transform: capitalize;
 }
+
+h1 { font-size: 48px; }
+h2 { font-size: 40px; }
+h3 { font-size: 32px; }
+h4 { font-size: 24px; }
 
 .container {
     max-width: var(--container-width);
@@ -552,10 +558,10 @@ h6 {
 }
 
 .section-heading h2 {
-    font-size: 32px;
-    font-weight: 600;
+    font-size: 40px;
+    font-weight: normal;
     letter-spacing: 5px;
-    text-transform: uppercase;
+    text-transform: capitalize;
     margin-bottom: 15px;
 }
 
@@ -843,11 +849,12 @@ h6 {
 }
 
 .product-card-name {
-    font-family: var(--font-heading);
+    font-family: var(--font-body);
     font-size: 15px;
-    font-weight: 400;
+    font-weight: 600;
     color: var(--color-text);
     margin-bottom: 0;
+    text-transform: none;
 }
 
 .product-card-price {
@@ -1448,7 +1455,7 @@ h6 {
     font-family: var(--font-heading);
     font-size: 20px;
     letter-spacing: 2px;
-    text-transform: uppercase;
+    text-transform: capitalize;
     color: var(--color-dark);
     margin: 0;
 }
@@ -1503,10 +1510,12 @@ h6 {
 }
 
 .cart-item-title {
-    font-family: var(--font-heading);
+    font-family: var(--font-body);
     font-size: 15px;
+    font-weight: 600;
     color: var(--color-text);
     margin-bottom: 0;
+    text-transform: none;
 }
 
 .cart-item-price {
@@ -1663,7 +1672,7 @@ h6 {
     font-size: 24px;
     color: var(--color-text);
     margin-bottom: 15px;
-    text-transform: uppercase;
+    text-transform: capitalize;
     letter-spacing: 2px;
 }
 
@@ -1837,11 +1846,11 @@ h6 {
 
 .network-title {
     font-family: var(--font-heading);
-    font-size: 20px;
+    font-size: 28px;
     color: var(--color-accent);
     margin-bottom: 8px;
     letter-spacing: 1.5px;
-    text-transform: uppercase;
+    text-transform: capitalize;
 }
 
 .network-subtitle {

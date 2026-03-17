@@ -8,7 +8,7 @@
     <meta name="description" content="The Social Manila Bakehouse - Artisanal Pastries and Co-Baking Studio.">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Roca Two Bold for all headers on this page */
+        /* Vintage Goods for all headers on this page */
         h1,
         h2,
         h3,
@@ -17,11 +17,19 @@
         h6,
         .section-heading h2,
         .hero-slide-content h1,
-        .product-card-name,
         .network-title,
         .about-us-section h2 {
+            font-family: var(--font-heading) !important;
+            font-weight: normal !important;
+            text-transform: capitalize !important;
+        }
+
+        /* Roca Two for product names and cart titles */
+        .product-card-name,
+        .cart-item-title {
             font-family: var(--font-body) !important;
-            font-weight: 700 !important;
+            font-weight: 600 !important;
+            text-transform: none !important;
         }
 
         /* Gold Theme Overrides */
@@ -361,6 +369,7 @@
                     class="hero-slide-bg">
                 <div class="hero-slide-overlay">
                     <div class="hero-slide-content">
+                        <h1>Co-Baking Studio</h1>
                         <p>Customize your orders or bake with us.</p>
                         <a href="bakehouse-studio.html" class="hero-btn">Explore The Studio</a>
                     </div>

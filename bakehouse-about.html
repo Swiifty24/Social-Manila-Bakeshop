@@ -48,20 +48,29 @@
         .site-header .mega-menu-trigger summary,
         .site-logo a,
         .site-header .nav-menu li a {
-            color: var(--color-dark) !important;
+            color: var(--color-white) !important;
         }
 
         .site-header .mega-menu-trigger:after,
-        .site-header a:after {
-            background-color: var(--color-dark);
+        .site-header a:after,
+        .site-header .nav-menu li a:after {
+            background-color: var(--color-white) !important;
+        }
+
+        /* Mobile sidebar: dark text on white background */
+        .main-nav.active .nav-menu li a {
+            color: var(--color-text) !important;
+        }
+        .main-nav.active .nav-menu li a:after {
+            background-color: var(--color-accent) !important;
         }
 
         .site-header.scrolled {
-            background-color: rgba(252, 202, 106, 0.98);
+            background-color: rgba(166, 35, 25, 0.98);
         }
 
         .mobile-toggle span {
-            background-color: var(--color-dark);
+            background-color: var(--color-white);
         }
 
         .site-footer {
@@ -303,7 +312,7 @@
             </nav>
             <div class="site-logo">
                 <a href="index.html">
-                    <img src="SocialManilaBakehouse_Logos/TSMB - Red.png" alt="The Social Manila Bakehouse"
+                    <img src="SocialManilaBakehouse_Logos/TSMB - White.png" alt="The Social Manila Bakehouse"
                         class="header-logo-img" style="height: 55px;">
                 </a>
             </div>
@@ -430,9 +439,9 @@
                     <input type="email" placeholder="Enter your email" required aria-label="Email"
                         style="flex: 1; padding: 7px 10px; border: 1px solid var(--color-border); border-right: none; font-family: var(--font-body); font-size: 12px; background: var(--color-bg); color: var(--color-text); outline: none;">
                     <button type="submit"
-                        style="padding: 7px 14px; background-color: var(--color-accent); color: var(--color-dark); border: none; font-family: var(--font-body); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; white-space: nowrap; transition: 0.3s;"
-                        onmouseover="this.style.backgroundColor='var(--color-dark)'; this.style.color='var(--color-white)';"
-                        onmouseout="this.style.backgroundColor='var(--color-accent)'; this.style.color='var(--color-dark)';"
+                        style="padding: 7px 14px; background-color: var(--color-accent); color: var(--color-white); border: 2px solid var(--color-accent); font-family: var(--font-body); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; white-space: nowrap; transition: 0.3s;"
+                        onmouseover="this.style.backgroundColor='white'; this.style.color='var(--color-accent)'; this.style.borderColor='var(--color-accent)';"
+                        onmouseout="this.style.backgroundColor='var(--color-accent)'; this.style.color='var(--color-white)'; this.style.borderColor='var(--color-accent)';"
                     >Join</button>
                 </form>
             </div>

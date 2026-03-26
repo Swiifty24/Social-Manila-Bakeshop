@@ -48,22 +48,31 @@
         .site-header .mega-menu-trigger summary,
         .site-logo a,
         .site-header .nav-menu li a {
-            color: var(--color-dark) !important;
-            /* contrast on gold */
+            color: var(--color-white) !important;
+            /* White text on maroon header */
         }
 
         .site-header .mega-menu-trigger:after,
-        .site-header a:after {
-            background-color: var(--color-dark);
+        .site-header a:after,
+        .site-header .nav-menu li a:after {
+            background-color: var(--color-white) !important;
+        }
+
+        /* Mobile sidebar: dark text on white background */
+        .main-nav.active .nav-menu li a {
+            color: var(--color-text) !important;
+        }
+        .main-nav.active .nav-menu li a:after {
+            background-color: var(--color-accent) !important;
         }
 
         .site-header.scrolled {
-            background-color: rgba(252, 202, 106, 0.98);
-            /* Gold */
+            background-color: rgba(166, 35, 25, 0.98);
+            /* Maroon */
         }
 
         .mobile-toggle span {
-            background-color: var(--color-dark);
+            background-color: var(--color-white);
         }
 
         .site-footer {
@@ -268,7 +277,7 @@
             display: block;
         }
         .about-us-section .network-title {
-            color: #FCCA6A !important; /* Gold primary */
+            color: var(--color-white) !important; /* White on dark bg */
             margin-bottom: 8px !important;
             text-align: center !important;
             text-transform: uppercase !important;
@@ -279,7 +288,7 @@
         .network-divider {
             width: 60px;
             height: 1.5px;
-            background-color: #FCCA6A;
+            background-color: var(--color-white);
             margin: 0 auto 15px;
         }
         
@@ -301,12 +310,12 @@
             justify-content: flex-start !important;
         }
         .about-us-section .network-btn {
-            color: #FCCA6A !important;
-            border-color: #FCCA6A !important;
+            color: var(--color-white) !important;
+            border-color: var(--color-white) !important;
         }
         .about-us-section .network-btn:hover {
-            background-color: #FCCA6A !important;
-            color: var(--color-dark) !important;
+            background-color: var(--color-white) !important;
+            color: var(--color-accent) !important;
         }
 
     </style>
@@ -325,7 +334,7 @@
             </nav>
             <div class="site-logo">
                 <a href="index.html">
-                    <img src="SocialManilaBakehouse_Logos/TSMB - Red.png" alt="The Social Manila Bakehouse"
+                    <img src="SocialManilaBakehouse_Logos/TSMB - White.png" alt="The Social Manila Bakehouse"
                         class="header-logo-img" style="height: 55px;">
                 </a>
             </div>
@@ -470,8 +479,9 @@
         }
         .quick-add-btn:hover {
             background-color: var(--color-accent);
+            color: var(--color-white) !important;
             transform: scale(1.15) !important;
-            box-shadow: 0 4px 18px rgba(252, 202, 106, 0.45);
+            box-shadow: 0 4px 18px rgba(166, 35, 25, 0.45);
         }
         .quick-add-btn.added {
             background-color: #2ecc71;
@@ -583,9 +593,9 @@
                     <input type="email" placeholder="Enter your email" required aria-label="Email"
                         style="flex: 1; padding: 7px 10px; border: 1px solid var(--color-border); border-right: none; font-family: var(--font-body); font-size: 12px; background: var(--color-bg); color: var(--color-text); outline: none;">
                     <button type="submit"
-                        style="padding: 7px 14px; background-color: var(--color-accent); color: var(--color-dark); border: none; font-family: var(--font-body); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; white-space: nowrap; transition: 0.3s;"
-                        onmouseover="this.style.backgroundColor='var(--color-dark)'; this.style.color='var(--color-white)';"
-                        onmouseout="this.style.backgroundColor='var(--color-accent)'; this.style.color='var(--color-dark)';"
+                        style="padding: 7px 14px; background-color: var(--color-accent); color: var(--color-white); border: 2px solid var(--color-accent); font-family: var(--font-body); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; white-space: nowrap; transition: 0.3s;"
+                        onmouseover="this.style.backgroundColor='white'; this.style.color='var(--color-accent)'; this.style.borderColor='var(--color-accent)';"
+                        onmouseout="this.style.backgroundColor='var(--color-accent)'; this.style.color='var(--color-white)'; this.style.borderColor='var(--color-accent)';"
                     >Join</button>
                 </form>
             </div>

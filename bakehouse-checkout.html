@@ -396,7 +396,92 @@
                 display: none;
             }
         }
+
+        /* ---- INLINE FIELD ERRORS (JS-driven, not HTML5) ---- */
+        .field-error {
+            display: block;
+            color: #c1251d;
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 5px;
+            padding-left: 2px;
+            letter-spacing: 0.2px;
+            animation: errorSlideIn 0.25s ease;
+        }
+
+        @keyframes errorSlideIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .checkout-input.input-error {
+            border-color: #c1251d;
+            box-shadow: 0 0 0 1px #c1251d;
+        }
+
+        .checkout-input.input-error:focus {
+            border-color: #c1251d;
+            box-shadow: 0 0 0 1px #c1251d;
+        }
+
+        /* ---- PROCESSING OVERLAY ---- */
+        .processing-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(6px);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .processing-overlay.visible {
+            display: flex;
+            opacity: 1;
+        }
+
+        .processing-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid #e5e5e5;
+            border-top: 4px solid var(--color-accent, #A62319);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .processing-text {
+            font-family: var(--font-body);
+            font-size: 16px;
+            color: var(--color-dark);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .processing-subtext {
+            font-family: var(--font-body);
+            font-size: 13px;
+            color: var(--color-text-muted);
+            margin-top: -16px;
+        }
+
+        /* ---- BTN-PAY disabled state ---- */
+        .btn-pay:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
     </style>
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 
 <body>
@@ -449,6 +534,22 @@
                 <!-- DELIVERY -->
                 <section class="checkout-section">
                     <h2 class="checkout-section-title">Delivery</h2>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input type="text" id="firstName" class="checkout-input" placeholder="First name">
+                            <label for="firstName" class="floating-label">First name</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="lastName" class="checkout-input" placeholder="Last name">
+                            <label for="lastName" class="floating-label">Last name</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" id="address" class="checkout-input" placeholder="Address">
+                        <label for="address" class="floating-label">Address</label>
+                    </div>
 
                     <div class="form-row">
                         <div class="form-group" style="position: relative;">
@@ -595,6 +696,13 @@
                     <button type="submit" class="btn-pay">Complete Order</button>
                 </div>
             </form>
+
+            <!-- Processing Overlay -->
+            <div class="processing-overlay" id="processing-overlay">
+                <div class="processing-spinner"></div>
+                <div class="processing-text">Processing Payment</div>
+                <div class="processing-subtext">Please do not close this page...</div>
+            </div>
         </main>
 
         <!-- RIGHT COLUMN: Order Summary -->
@@ -721,92 +829,258 @@
                 }
             });
 
-            // 4. Custom Form Validation (Simulating Backend Security)
-            // Ported showToast logic to match "cart is empty" styling
+            // 4. Secure Form Validation — Inline Error Messages (JS-driven, no HTML5 attributes)
+            // ====================================================================
+
+            // -- Input Sanitizer (prevents XSS injection) --
+            function sanitizeInput(str) {
+                const div = document.createElement('div');
+                div.textContent = str;
+                return div.innerHTML;
+            }
+
+            // -- Inline Error Helpers --
+            function setFieldError(fieldId, message) {
+                const field = document.getElementById(fieldId);
+                if (!field) return;
+                // Add red border
+                field.classList.add('input-error');
+                // Remove existing error if any
+                clearFieldError(fieldId);
+                // Create error span
+                const errorSpan = document.createElement('span');
+                errorSpan.className = 'field-error';
+                errorSpan.id = 'error-' + fieldId;
+                errorSpan.textContent = message;
+                // Insert after the form-group (field's parent)
+                field.closest('.form-group').appendChild(errorSpan);
+            }
+
+            function clearFieldError(fieldId) {
+                const field = document.getElementById(fieldId);
+                if (field) field.classList.remove('input-error');
+                const existing = document.getElementById('error-' + fieldId);
+                if (existing) existing.remove();
+            }
+
+            function clearAllErrors() {
+                document.querySelectorAll('.field-error').forEach(el => el.remove());
+                document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+            }
+
+            // -- Real-time: clear error as user types --
+            ['email', 'firstName', 'lastName', 'address', 'city', 'barangay'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('input', () => clearFieldError(id));
+                    el.addEventListener('change', () => clearFieldError(id));
+                }
+            });
+
+            // -- Toast for email status only --
             function showToast(message, isError = true) {
                 let container = document.getElementById('toast-container');
                 if (!container) {
                     container = document.createElement('div');
                     container.id = 'toast-container';
-                    container.className = 'toast-container'; // match original styling class
+                    container.className = 'toast-container';
                     document.body.appendChild(container);
                 }
-
                 const toast = document.createElement('div');
                 toast.className = 'toast-notification';
                 if (isError) {
-                    toast.style.backgroundColor = '#A9241C'; // Red theme for security error
+                    toast.style.backgroundColor = '#A9241C';
+                    toast.style.color = '#fff';
+                } else {
+                    toast.style.backgroundColor = '#2e7d32';
                     toast.style.color = '#fff';
                 }
                 toast.textContent = message;
-
                 container.appendChild(toast);
-
-                // Trigger reflow to play transition
                 void toast.offsetWidth;
                 toast.classList.add('visible');
-
                 setTimeout(() => {
                     toast.classList.remove('visible');
                     setTimeout(() => {
                         if (toast.parentElement) toast.parentElement.removeChild(toast);
-                    }, 400); // Wait for transition
-                }, 4000); // 4 seconds visible to read error
+                    }, 400);
+                }, 4000);
             }
 
+            // -- Processing Overlay --
+            function showProcessing() {
+                const overlay = document.getElementById('processing-overlay');
+                overlay.style.display = 'flex';
+                requestAnimationFrame(() => {
+                    overlay.classList.add('visible');
+                });
+            }
+
+            // -- Form Submit Handler --
             const form = document.getElementById('checkout-form');
             form.addEventListener('submit', (e) => {
-                e.preventDefault(); // Stop default browser submission
+                e.preventDefault();
+                clearAllErrors();
 
-                let errors = [];
+                let hasError = false;
 
-                // Grab values
-                const email = document.getElementById('email').value.trim();
-                const firstName = document.getElementById('firstName').value.trim();
-                const lastName = document.getElementById('lastName').value.trim();
-                const address = document.getElementById('address').value.trim();
+                // Grab & sanitize values
+                const email = sanitizeInput(document.getElementById('email').value.trim());
+                const firstName = sanitizeInput(document.getElementById('firstName').value.trim());
+                const lastName = sanitizeInput(document.getElementById('lastName').value.trim());
+                const address = sanitizeInput(document.getElementById('address').value.trim());
                 const city = document.getElementById('city').value;
-                const barangay = document.getElementById('barangay').value.trim();
+                const barangay = sanitizeInput(document.getElementById('barangay').value.trim());
 
                 // Validate Email
                 if (!email) {
-                    errors.push("Email is required.");
+                    setFieldError('email', 'Email address is required.');
+                    hasError = true;
                 } else {
                     const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
                     if (!emailRegex.test(email)) {
-                        errors.push("Please enter a valid email address.");
+                        setFieldError('email', 'Please enter a valid email address.');
+                        hasError = true;
                     }
                 }
 
-                // Validate text fields securely
-                if (!firstName) errors.push("First name is required.");
-                if (!lastName) errors.push("Last name is required.");
-                if (!address) errors.push("Delivery address is required.");
-                if (!city) errors.push("Please select a City.");
-                if (!barangay) errors.push("Barangay is required.");
+                // Validate Name fields (letters, spaces, hyphens only)
+                const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿñÑ\s'-]{2,50}$/;
+                if (!firstName) {
+                    setFieldError('firstName', 'First name is required.');
+                    hasError = true;
+                } else if (!nameRegex.test(firstName)) {
+                    setFieldError('firstName', 'First name contains invalid characters.');
+                    hasError = true;
+                }
 
-                // If Payment is Card, pseudo-validate those fields too
+                if (!lastName) {
+                    setFieldError('lastName', 'Last name is required.');
+                    hasError = true;
+                } else if (!nameRegex.test(lastName)) {
+                    setFieldError('lastName', 'Last name contains invalid characters.');
+                    hasError = true;
+                }
+
+                // Validate Address (min 5 chars, no script tags)
+                if (!address) {
+                    setFieldError('address', 'Delivery address is required.');
+                    hasError = true;
+                } else if (address.length < 5) {
+                    setFieldError('address', 'Please enter a complete address.');
+                    hasError = true;
+                }
+
+                // Validate City
+                if (!city) {
+                    setFieldError('city', 'Please select a city.');
+                    hasError = true;
+                }
+
+                // Validate Barangay
+                if (!barangay) {
+                    setFieldError('barangay', 'Barangay is required.');
+                    hasError = true;
+                }
+
+                // Validate Card fields if Credit Card is selected
                 const activePayment = document.querySelector('input[name="payment_method"]:checked').value;
                 if (activePayment === 'card') {
                     const cardInputs = document.getElementById('details-card').querySelectorAll('input');
-                    let cardEmpty = false;
                     cardInputs.forEach(input => {
-                        if (!input.value.trim()) cardEmpty = true;
+                        if (!input.value.trim()) {
+                            input.classList.add('input-error');
+                            hasError = true;
+                        }
+                        // Clear individual card field errors on input
+                        input.addEventListener('input', () => input.classList.remove('input-error'), { once: true });
                     });
-                    if (cardEmpty) {
-                        errors.push("Please complete all Credit Card details.");
+                    if (hasError && document.querySelectorAll('#details-card .input-error').length > 0) {
+                        // Add a single message under the payment section
+                        const paymentSection = document.querySelector('.payment-methods');
+                        if (!document.getElementById('error-card')) {
+                            const errorSpan = document.createElement('span');
+                            errorSpan.className = 'field-error';
+                            errorSpan.id = 'error-card';
+                            errorSpan.textContent = 'Please complete all credit card details.';
+                            errorSpan.style.padding = '8px 15px';
+                            paymentSection.after(errorSpan);
+                        }
                     }
                 }
 
-                // Security Check Pass/Fail
-                if (errors.length > 0) {
-                    // Show the first top-most error as a toast
-                    showToast(errors[0]);
-                } else {
-                    // Validated successfully
-                    window.location.href = form.action;
+                // If errors exist, scroll to first error
+                if (hasError) {
+                    const firstError = document.querySelector('.input-error');
+                    if (firstError) {
+                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        firstError.focus();
+                    }
+                    return;
                 }
+
+                // ✅ Validation passed — show processing overlay
+                const payBtn = document.querySelector('.btn-pay');
+                payBtn.disabled = true;
+                showProcessing();
+
+                // Simulate processing delay, then send email, then redirect
+                setTimeout(() => {
+                    sendEmailReceipt(email, firstName, lastName, address, city, barangay, activePayment);
+                }, 2500);
             });
+
+            // =============================================
+            // 5. EMAIL RECEIPT via EmailJS
+            // =============================================
+            // ⚠️ SETUP REQUIRED: Replace these 3 values with your own from https://www.emailjs.com
+            const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY';       // EmailJS → Account → Public Key
+            const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID';       // EmailJS → Email Services → Service ID
+            const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';     // EmailJS → Email Templates → Template ID
+
+            // Initialize EmailJS
+            emailjs.init(EMAILJS_PUBLIC_KEY);
+
+            function sendEmailReceipt(email, firstName, lastName, address, city, barangay, paymentMethod) {
+                // Generate order number
+                const orderNumber = 'TSMB-' + Date.now().toString(36).toUpperCase();
+                const orderDate = new Date().toLocaleDateString('en-PH', {
+                    year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
+                });
+
+                // Build items list
+                const cart = JSON.parse(localStorage.getItem('socialManilaCart')) || [];
+                let itemsHtml = '';
+                let total = 0;
+
+                cart.forEach(item => {
+                    const lineTotal = item.price * item.qty;
+                    total += lineTotal;
+                    itemsHtml += `${sanitizeInput(item.name)} (x${item.qty}) — ₱${lineTotal.toFixed(2)}\n`;
+                });
+
+                // Payment method label
+                const paymentLabels = { card: 'Credit/Debit Card', gcash: 'GCash', paypal: 'PayPal' };
+
+                // Send via EmailJS
+                emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+                    to_email: email,
+                    to_name: firstName + ' ' + lastName,
+                    order_number: orderNumber,
+                    order_date: orderDate,
+                    items_list: itemsHtml,
+                    total: '₱' + total.toFixed(2),
+                    delivery_address: `${address}, ${barangay}, ${city}`,
+                    payment_method: paymentLabels[paymentMethod] || paymentMethod
+                }).then(() => {
+                    // Redirect to success page
+                    window.location.href = form.action;
+                }).catch((error) => {
+                    console.error('EmailJS Error:', error);
+                    // Still redirect even if email fails — order is placed
+                    window.location.href = form.action;
+                });
+            }
         });
     </script>
 </body>

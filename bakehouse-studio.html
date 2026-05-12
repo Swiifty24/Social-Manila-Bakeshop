@@ -243,6 +243,94 @@
         .studio-description p:last-child {
             margin-bottom: 0;
         }
+
+        /* ---- INLINE FIELD ERRORS (JS-driven, not HTML5) ---- */
+        .studio-field-error {
+            display: block;
+            color: #c1251d;
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 4px;
+            padding-left: 2px;
+            letter-spacing: 0.2px;
+            animation: studioErrorSlide 0.25s ease;
+        }
+
+        @keyframes studioErrorSlide {
+            from { opacity: 0; transform: translateY(-4px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .order-form input.studio-input-error,
+        .order-form select.studio-input-error,
+        .order-form textarea.studio-input-error {
+            border-color: #c1251d !important;
+            box-shadow: 0 0 0 2px rgba(193, 37, 29, 0.15) !important;
+        }
+
+        /* ---- SUCCESS OVERLAY ---- */
+        .studio-success-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            background: rgba(255,255,255,0.94);
+            backdrop-filter: blur(6px);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .studio-success-overlay.visible {
+            display: flex;
+            opacity: 1;
+        }
+
+        .studio-success-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--color-accent, #A62319);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 32px;
+            animation: successPop 0.4s ease;
+        }
+
+        @keyframes successPop {
+            0%   { transform: scale(0); }
+            60%  { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        .studio-success-text {
+            font-family: var(--font-heading);
+            font-size: 24px;
+            color: var(--color-dark);
+            letter-spacing: 1px;
+        }
+
+        .studio-success-subtext {
+            font-family: var(--font-body);
+            font-size: 14px;
+            color: var(--color-text-muted);
+            max-width: 360px;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        /* ---- SUBMIT BTN disabled state ---- */
+        .order-form button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
     </style>
 </head>
 
@@ -309,21 +397,26 @@
                 <h2
                     style="font-family: var(--font-heading); margin-bottom: 25px; color: #000000; font-size: 28px; font-weight: normal;">
                     Custom Order Request</h2>
-                <form class="order-form" action="#" method="post">
+                <form class="order-form" id="studio-form" action="#" method="post">
                     <div class="form-group">
-                        <label for="name">Your Name</label>
-                        <input type="text" id="name" placeholder="E.g., Jane Doe" required>
+                        <label for="studio-name">Your Name</label>
+                        <input type="text" id="studio-name" placeholder="E.g., Jane Doe">
                     </div>
 
                     <div class="form-group">
-                        <label for="email">Your Email</label>
-                        <input type="email" id="email" placeholder="jane.doe@example.com" required>
+                        <label for="studio-email">Your Email</label>
+                        <input type="email" id="studio-email" placeholder="jane.doe@example.com">
                     </div>
 
                     <div class="form-group">
-                        <label for="product">Select Product to Customize</label>
+                        <label for="studio-phone">Phone Number</label>
+                        <input type="tel" id="studio-phone" placeholder="09XX XXX XXXX">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="studio-product">Select Product to Customize</label>
                         <div class="select-wrapper">
-                            <select id="product" required>
+                            <select id="studio-product">
                                 <option value="" disabled selected>Select an option...</option>
                                 <option value="cake">Custom Celebration Cake</option>
                                 <option value="pastries">Bulk Pastry Box</option>
@@ -334,14 +427,21 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="details">Customization Details</label>
-                        <textarea id="details"
+                        <label for="studio-details">Customization Details</label>
+                        <textarea id="studio-details"
                             placeholder="Please describe your flavor preferences, dietary requirements, theme, or workshop goals..."
-                            rows="4" required></textarea>
+                            rows="4"></textarea>
                     </div>
 
-                    <button type="submit">Submit Request</button>
+                    <button type="submit" id="studio-submit-btn">Submit Request</button>
                 </form>
+
+                <!-- Success Overlay -->
+                <div class="studio-success-overlay" id="studio-success-overlay">
+                    <div class="studio-success-icon">✓</div>
+                    <div class="studio-success-text">Request Submitted!</div>
+                    <div class="studio-success-subtext">Thank you! We've received your custom order request and will get back to you within 24 hours.</div>
+                </div>
             </div>
 
 
@@ -485,6 +585,148 @@
     </script>
 
     <script src="main.js"></script>
+
+    <!-- STUDIO FORM: Secure JS Validation -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // -- Input Sanitizer (prevents XSS injection) --
+            function sanitizeInput(str) {
+                const div = document.createElement('div');
+                div.textContent = str;
+                return div.innerHTML;
+            }
+
+            // -- Inline Error Helpers --
+            function setFieldError(fieldId, message) {
+                const field = document.getElementById(fieldId);
+                if (!field) return;
+                field.classList.add('studio-input-error');
+                clearFieldError(fieldId); // remove previous if any
+                const errorSpan = document.createElement('span');
+                errorSpan.className = 'studio-field-error';
+                errorSpan.id = 'error-' + fieldId;
+                errorSpan.textContent = message;
+                field.closest('.form-group').appendChild(errorSpan);
+            }
+
+            function clearFieldError(fieldId) {
+                const field = document.getElementById(fieldId);
+                if (field) field.classList.remove('studio-input-error');
+                const existing = document.getElementById('error-' + fieldId);
+                if (existing) existing.remove();
+            }
+
+            function clearAllErrors() {
+                document.querySelectorAll('.studio-field-error').forEach(el => el.remove());
+                document.querySelectorAll('.studio-input-error').forEach(el => el.classList.remove('studio-input-error'));
+            }
+
+            // -- Real-time: clear error as user types --
+            ['studio-name', 'studio-email', 'studio-phone', 'studio-product', 'studio-details'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('input', () => clearFieldError(id));
+                    el.addEventListener('change', () => clearFieldError(id));
+                }
+            });
+
+            // -- Form Submission --
+            const studioForm = document.getElementById('studio-form');
+            studioForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                clearAllErrors();
+
+                let hasError = false;
+
+                // Grab & sanitize
+                const name = sanitizeInput(document.getElementById('studio-name').value.trim());
+                const email = sanitizeInput(document.getElementById('studio-email').value.trim());
+                const phone = sanitizeInput(document.getElementById('studio-phone').value.trim());
+                const product = document.getElementById('studio-product').value;
+                const details = sanitizeInput(document.getElementById('studio-details').value.trim());
+
+                // Validate Name (letters, spaces, hyphens, accented chars)
+                const nameRegex = /^[A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u00FF\u00D1\u00F1\s'-]{2,60}$/;
+                if (!name) {
+                    setFieldError('studio-name', 'Your name is required.');
+                    hasError = true;
+                } else if (!nameRegex.test(name)) {
+                    setFieldError('studio-name', 'Name contains invalid characters.');
+                    hasError = true;
+                }
+
+                // Validate Email
+                if (!email) {
+                    setFieldError('studio-email', 'Email address is required.');
+                    hasError = true;
+                } else {
+                    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+                    if (!emailRegex.test(email)) {
+                        setFieldError('studio-email', 'Please enter a valid email address.');
+                        hasError = true;
+                    }
+                }
+
+                // Validate Phone (PH format: 09XX or +639XX, 10-13 digits)
+                if (!phone) {
+                    setFieldError('studio-phone', 'Phone number is required.');
+                    hasError = true;
+                } else {
+                    const phoneClean = phone.replace(/[\s\-()]/g, '');
+                    const phoneRegex = /^(\+?63|0)9\d{9}$/;
+                    if (!phoneRegex.test(phoneClean)) {
+                        setFieldError('studio-phone', 'Enter a valid PH phone number (e.g., 09XX XXX XXXX).');
+                        hasError = true;
+                    }
+                }
+
+                // Validate Product selection
+                if (!product) {
+                    setFieldError('studio-product', 'Please select a product to customize.');
+                    hasError = true;
+                }
+
+                // Validate Details (min 10 chars)
+                if (!details) {
+                    setFieldError('studio-details', 'Please describe your request.');
+                    hasError = true;
+                } else if (details.length < 10) {
+                    setFieldError('studio-details', 'Please provide more detail (at least 10 characters).');
+                    hasError = true;
+                }
+
+                // If errors, scroll to first
+                if (hasError) {
+                    const firstError = document.querySelector('.studio-input-error');
+                    if (firstError) {
+                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        firstError.focus();
+                    }
+                    return;
+                }
+
+                // ✅ Validation passed — disable button & show success
+                const submitBtn = document.getElementById('studio-submit-btn');
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Submitting...';
+
+                // Simulate submission delay then show success overlay
+                setTimeout(() => {
+                    const overlay = document.getElementById('studio-success-overlay');
+                    overlay.style.display = 'flex';
+                    requestAnimationFrame(() => {
+                        overlay.classList.add('visible');
+                    });
+
+                    // Reset form
+                    studioForm.reset();
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Submit Request';
+                }, 1200);
+            });
+        });
+    </script>
 </body>
 
 </html>

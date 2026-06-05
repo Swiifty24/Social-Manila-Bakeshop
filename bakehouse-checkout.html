@@ -7,6 +7,9 @@
     <title>Checkout - The Social Manila Bakehouse</title>
     <meta name="description" content="Complete your purchase securely.">
     <link rel="stylesheet" href="style.css">
+    <!-- Leaflet Map CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <style>
         /* Base reset for checkout */
         body {
@@ -475,9 +478,169 @@
         }
 
         /* ---- BTN-PAY disabled state ---- */
+        /* ---- BTN-PAY disabled state ---- */
         .btn-pay:disabled {
             opacity: 0.6;
             cursor: not-allowed;
+        }
+
+        /* ---- CHECKOUT MAP ---- */
+        .checkout-map-wrap {
+            margin-bottom: 20px;
+            border: 1px solid var(--color-border);
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+        #checkout-map {
+            width: 100%;
+            height: 250px;
+            background-color: #e5e5e5;
+            z-index: 1; /* keep beneath form popups */
+        }
+        .map-helper-text {
+            padding: 10px 15px;
+            background: #fafafa;
+            font-size: 13px;
+            color: var(--color-text-muted);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .map-loading {
+            font-size: 12px;
+            color: var(--color-accent);
+            font-weight: 500;
+            display: none;
+        }
+        .leaflet-container {
+            font-family: var(--font-body) !important;
+        }
+
+        /* ---- SUCCESS MODAL ---- */
+        .success-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 100000;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .success-modal-overlay.visible {
+            display: flex;
+            opacity: 1;
+        }
+
+        .success-modal {
+            background: var(--color-white);
+            width: 90%;
+            max-width: 500px;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .success-modal-overlay.visible .success-modal {
+            transform: translateY(0);
+        }
+
+        .success-modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--color-text-muted);
+            transition: color 0.2s;
+            line-height: 1;
+        }
+
+        .success-modal-close:hover {
+            color: var(--color-dark);
+        }
+
+        .success-icon {
+            font-size: 50px;
+            color: #2e7d32;
+            margin-bottom: 15px;
+        }
+
+        .success-modal h2 {
+            font-family: var(--font-heading);
+            font-size: 28px;
+            color: var(--color-dark);
+            margin-bottom: 10px;
+        }
+
+        .success-modal p {
+            font-size: 15px;
+            color: var(--color-text);
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        .success-order-id {
+            background: #fafafa;
+            border: 1px dashed var(--color-border);
+            padding: 10px;
+            font-family: monospace;
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--color-dark);
+            margin-bottom: 30px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .success-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .success-btn {
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .success-btn.primary {
+            background: var(--color-dark);
+            color: #fff;
+            border: 1px solid var(--color-dark);
+        }
+
+        .success-btn.primary:hover {
+            background: #000;
+        }
+
+        .success-btn.secondary {
+            background: #fff;
+            color: var(--color-dark);
+            border: 1px solid var(--color-border);
+        }
+
+        .success-btn.secondary:hover {
+            background: #fafafa;
+            border-color: var(--color-dark);
         }
     </style>
     <!-- EmailJS SDK -->
@@ -534,6 +697,14 @@
                 <!-- DELIVERY -->
                 <section class="checkout-section">
                     <h2 class="checkout-section-title">Delivery</h2>
+
+                    <div class="checkout-map-wrap">
+                        <div class="map-helper-text">
+                            <span>📍 Drag the pin to your exact location to auto-fill address</span>
+                            <span class="map-loading" id="map-loading">Finding address...</span>
+                        </div>
+                        <div id="checkout-map"></div>
+                    </div>
 
                     <div class="form-row">
                         <div class="form-group">
@@ -742,9 +913,126 @@
 
     </div>
 
+    <!-- SUCCESS MODAL -->
+    <div class="success-modal-overlay" id="success-modal-overlay">
+        <div class="success-modal" id="success-modal">
+            <button class="success-modal-close" id="success-modal-close">&times;</button>
+            <div class="success-icon">✓</div>
+            <h2>Success!</h2>
+            <p>Your artisanal pastries are being prepared. Please check your email for the receipt and your live tracking link.</p>
+            <div class="success-order-id" id="modal-order-id">TSMB-XXXXX</div>
+            <div class="success-actions">
+                <a href="bakehouse-menu.html" class="success-btn secondary">Go back to menu</a>
+                <button class="success-btn primary" id="btn-order-again">Order again</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts specifically for populating the checkout Data -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+
+            // 0. Checkout Map & Reverse Geocoding
+            const MAP_CENTER = [14.4793, 121.0198]; // Parañaque
+            
+            const checkoutMap = L.map('checkout-map', {
+                zoomControl: true,
+                attributionControl: false
+            }).setView(MAP_CENTER, 14);
+
+            // Use a light, modern map tile
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                maxZoom: 19
+            }).addTo(checkoutMap);
+
+            const pinIcon = L.divIcon({
+                className: 'custom-map-icon',
+                html: '<div style="background:var(--color-accent);color:white;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid white;box-shadow:0 4px 10px rgba(0,0,0,0.3);font-size:16px;">📍</div>',
+                iconSize: [36, 36],
+                iconAnchor: [18, 36]
+            });
+
+            const marker = L.marker(MAP_CENTER, {
+                icon: pinIcon,
+                draggable: true,
+                zIndexOffset: 1000
+            }).addTo(checkoutMap);
+
+            const mapLoading = document.getElementById('map-loading');
+            
+            function reverseGeocode(lat, lng) {
+                mapLoading.style.display = 'inline-block';
+                // Nominatim API for reverse geocoding
+                const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`;
+                
+                fetch(url, { headers: { 'Accept-Language': 'en-US,en;q=0.9' } })
+                    .then(res => res.json())
+                    .then(data => {
+                        mapLoading.style.display = 'none';
+                        if(data && data.address) {
+                            const addr = data.address;
+                            
+                            // 1. City
+                            let cityVal = addr.city || addr.town || addr.municipality || '';
+                            if(cityVal.includes('City of ')) cityVal = cityVal.replace('City of ', '');
+                            if(cityVal.includes(' City')) cityVal = cityVal.replace(' City', '');
+                            
+                            const citySelect = document.getElementById('city');
+                            if(cityVal) {
+                                Array.from(citySelect.options).forEach(opt => {
+                                    if(opt.value.toLowerCase() === cityVal.toLowerCase() || cityVal.toLowerCase().includes(opt.value.toLowerCase())) {
+                                        citySelect.value = opt.value;
+                                        citySelect.style.color = 'var(--color-text)';
+                                        citySelect.classList.add('has-value');
+                                        if (typeof clearFieldError === 'function') clearFieldError('city');
+                                    }
+                                });
+                            }
+
+                            // 2. Barangay
+                            let brgyVal = addr.suburb || addr.quarter || addr.neighbourhood || addr.village || addr.residential || '';
+                            if(brgyVal.toLowerCase().includes('barangay ')) brgyVal = brgyVal.replace(/barangay /i, '');
+                            const brgyInput = document.getElementById('barangay');
+                            if(brgyVal && brgyInput) {
+                                brgyInput.value = brgyVal;
+                                if (typeof clearFieldError === 'function') clearFieldError('barangay');
+                            }
+
+                            // 3. Street Address
+                            let street = addr.road || addr.street || '';
+                            let bldg = addr.house_number || addr.building || '';
+                            let fullAddr = [];
+                            if(bldg) fullAddr.push(bldg);
+                            if(street) fullAddr.push(street);
+                            if(fullAddr.length === 0 && addr.suburb) fullAddr.push(addr.suburb);
+                            
+                            const addrInput = document.getElementById('address');
+                            if(fullAddr.length > 0 && addrInput) {
+                                addrInput.value = fullAddr.join(', ');
+                                if (typeof clearFieldError === 'function') clearFieldError('address');
+                            }
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Geocoding error:', err);
+                        mapLoading.style.display = 'none';
+                    });
+            }
+
+            marker.on('dragend', function(e) {
+                const pos = marker.getLatLng();
+                reverseGeocode(pos.lat, pos.lng);
+            });
+
+            checkoutMap.on('click', function(e) {
+                marker.setLatLng(e.latlng);
+                reverseGeocode(e.latlng.lat, e.latlng.lng);
+            });
+
+            // Handle hidden map rendering issue on mobile toggle/resize
+            setTimeout(() => {
+                checkoutMap.invalidateSize();
+            }, 500);
 
             // 1. Payment Accordion Logic
             const paymentOptions = document.querySelectorAll('input[name="payment_method"]');
@@ -1034,9 +1322,9 @@
             // 5. EMAIL RECEIPT via EmailJS
             // =============================================
             // ⚠️ SETUP REQUIRED: Replace these 3 values with your own from https://www.emailjs.com
-            const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY';       // EmailJS → Account → Public Key
-            const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID';       // EmailJS → Email Services → Service ID
-            const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';     // EmailJS → Email Templates → Template ID
+            const EMAILJS_PUBLIC_KEY = 'sPv5U_9Vcyil8Wlwi';       // EmailJS → Account → Public Key
+            const EMAILJS_SERVICE_ID = 'service_0t2r89q';       // EmailJS → Email Services → Service ID
+            const EMAILJS_TEMPLATE_ID = 'template_djmonpn';     // EmailJS → Email Templates → Template ID
 
             // Initialize EmailJS
             emailjs.init(EMAILJS_PUBLIC_KEY);
@@ -1062,6 +1350,25 @@
                 // Payment method label
                 const paymentLabels = { card: 'Credit/Debit Card', gcash: 'GCash', paypal: 'PayPal' };
 
+                // Generate absolute tracking URL
+                const baseUrl = window.location.origin + window.location.pathname.replace('bakehouse-checkout.html', '');
+                const trackingLink = `${baseUrl}bakehouse-tracking.html?track=${orderNumber}`;
+
+                // --- SAVE ORDER TO LOCAL STORAGE FOR TRACKING ---
+                const newOrder = {
+                    trackingNumber: orderNumber,
+                    timestamp: Date.now(),
+                    customerName: firstName + ' ' + lastName,
+                    address: `${address}, ${barangay}, ${city}`,
+                    paymentMethod: paymentMethod,
+                    items: cart,
+                    total: total
+                };
+                let existingOrders = JSON.parse(localStorage.getItem('tsmb_orders')) || [];
+                existingOrders.push(newOrder);
+                localStorage.setItem('tsmb_orders', JSON.stringify(existingOrders));
+                // ------------------------------------------------
+
                 // Send via EmailJS
                 emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
                     to_email: email,
@@ -1071,14 +1378,62 @@
                     items_list: itemsHtml,
                     total: '₱' + total.toFixed(2),
                     delivery_address: `${address}, ${barangay}, ${city}`,
-                    payment_method: paymentLabels[paymentMethod] || paymentMethod
+                    payment_method: paymentLabels[paymentMethod] || paymentMethod,
+                    tracking_link: trackingLink
                 }).then(() => {
-                    // Redirect to success page
-                    window.location.href = form.action;
+                    showSuccessModal(orderNumber);
                 }).catch((error) => {
                     console.error('EmailJS Error:', error);
-                    // Still redirect even if email fails — order is placed
-                    window.location.href = form.action;
+                    showSuccessModal(orderNumber);
+                });
+            }
+
+            // =============================================
+            // 6. SUCCESS MODAL LOGIC
+            // =============================================
+            function showSuccessModal(orderNumber) {
+                // Hide processing overlay
+                const processingOverlay = document.getElementById('processing-overlay');
+                if(processingOverlay) {
+                    processingOverlay.classList.remove('visible');
+                    setTimeout(() => processingOverlay.style.display = 'none', 300);
+                }
+
+                // Clear shopping cart
+                localStorage.removeItem('socialManilaCart');
+
+                // Update text
+                document.getElementById('modal-order-id').textContent = orderNumber;
+
+                // Show modal
+                const modalOverlay = document.getElementById('success-modal-overlay');
+                modalOverlay.style.display = 'flex';
+                requestAnimationFrame(() => modalOverlay.classList.add('visible'));
+            }
+
+            const modalOverlay = document.getElementById('success-modal-overlay');
+            const btnClose = document.getElementById('success-modal-close');
+            const btnOrderAgain = document.getElementById('btn-order-again');
+
+            function closeModal() {
+                modalOverlay.classList.remove('visible');
+                setTimeout(() => modalOverlay.style.display = 'none', 300);
+            }
+
+            if(btnClose) btnClose.addEventListener('click', closeModal);
+            
+            if(modalOverlay) {
+                modalOverlay.addEventListener('click', (e) => {
+                    if (e.target === modalOverlay) closeModal();
+                });
+            }
+
+            if(btnOrderAgain) {
+                btnOrderAgain.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    closeModal();
+                    // Reload the page so the form is cleared and cart displays empty
+                    window.location.reload();
                 });
             }
         });

@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Order - The Social Manila Bakehouse</title>
+    <meta name="description" content="Track the status of your order from The Social Manila Bakehouse.">
+    <link rel="stylesheet" href="style.css">
+    <!-- Leaflet Map CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <style>
+        /* Header */
+        .site-header {
+            background-color: var(--color-accent);
+            border-bottom-color: var(--color-accent);
+            padding: 5px 0;
+        }
+
+        .header-inner {
+            height: auto !important;
+            min-height: 70px;
+        }
+
+        .site-header a,
+        .site-header .nav-menu li a,
+        .site-logo a {
+            color: var(--color-white) !important;
+        }
+
+        .site-header .nav-menu li a:after {
+            background-color: var(--color-white) !important;
+        }
+
+        .main-nav.active .nav-menu li a {
+            color: var(--color-text) !important;
+        }
+        .main-nav.active .nav-menu li a:after {
+            background-color: var(--color-accent) !important;
+        }
+
+        .site-header.scrolled {
+            background-color: rgba(166, 35, 25, 0.98);
+        }
+
+        .mobile-toggle span {
+            background-color: var(--color-white);
+        }
+
+        /* ---- TRACKING PAGE ---- */
+        body {
+            background-color: var(--color-bg);
+        }
+
+        .tracking-page {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 60px 20px 80px;
+        }
+
+        .tracking-page-title {
+            font-family: 'Vintage Goods', cursive;
+            font-size: 42px;
+            color: var(--color-dark);
+            text-align: center;
+            margin-bottom: 8px;
+            font-weight: normal;
+            letter-spacing: 1px;
+        }
+
+        .tracking-page-subtitle {
+            text-align: center;
+            font-size: 14px;
+            color: var(--color-text-muted);
+            margin-bottom: 40px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ---- LOOKUP FORM ---- */
+        .tracking-lookup {
+            display: flex;
+            gap: 12px;
+            max-width: 520px;
+            margin: 0 auto 50px;
+        }
+
+        .tracking-lookup input {
+            flex: 1;
+            padding: 16px 18px;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-size: 14px;
+            background: var(--color-white);
+            color: var(--color-text);
+            transition: all 0.2s;
+            box-sizing: border-box;
+        }
+
+        .tracking-lookup input:focus {
+            outline: none;
+            border-color: var(--color-dark);
+            box-shadow: 0 0 0 2px rgba(166, 35, 25, 0.1);
+        }
+
+        .tracking-lookup input::placeholder {
+            color: #999;
+        }
+
+        .tracking-lookup button {
+            padding: 16px 28px;
+            background: var(--color-accent);
+            color: var(--color-white);
+            border: 2px solid var(--color-accent);
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .tracking-lookup button:hover {
+            background: var(--color-white);
+            color: var(--color-accent);
+        }
+
+        .tracking-error {
+            text-align: center;
+            color: #c1251d;
+            font-size: 13px;
+            font-weight: 500;
+            margin-top: -30px;
+            margin-bottom: 30px;
+            animation: fadeSlide 0.3s ease;
+        }
+
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(-6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ---- TRACKING RESULT CARD ---- */
+        .tracking-result {
+            display: none;
+            background: var(--color-white);
+            border-radius: 14px;
+            box-shadow: 0 8px 40px rgba(166, 35, 25, 0.06);
+            border: 1px solid rgba(245, 157, 150, 0.25);
+            overflow: hidden;
+            animation: cardIn 0.4s ease;
+        }
+
+        .tracking-result.visible {
+            display: block;
+        }
+
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .tracking-result-header {
+            padding: 30px 35px;
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .tracking-order-number {
+            font-family: var(--font-body);
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--color-dark);
+            letter-spacing: 0.5px;
+        }
+
+        .tracking-order-number span {
+            font-family: var(--font-body);
+            font-size: 12px;
+            color: var(--color-text-muted);
+            display: block;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .tracking-status-badge {
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .badge-processing {
+            background: #FFF3E0;
+            color: #E65100;
+        }
+
+        .badge-transit {
+            background: #E3F2FD;
+            color: #1565C0;
+        }
+
+        .badge-delivered {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        /* ---- MAP & DRIVER DETAILS ---- */
+        .tracking-map-container {
+            display: none; /* Shown only when map is active */
+            flex-direction: column;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .tracking-map-container.active {
+            display: flex;
+        }
+        #tracking-map {
+            width: 100%;
+            height: 300px;
+            background-color: #e5e5e5;
+            z-index: 1; /* Keep leaflet under modal/header */
+        }
+        .driver-details {
+            display: flex;
+            align-items: center;
+            padding: 20px 35px;
+            background: #fafafa;
+            gap: 15px;
+        }
+        .driver-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 2px solid var(--color-white);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .driver-avatar svg {
+            width: 24px;
+            height: 24px;
+        }
+        .driver-info {
+            flex: 1;
+        }
+        .driver-name {
+            font-family: var(--font-heading);
+            font-size: 18px;
+            color: var(--color-dark);
+            margin-bottom: 2px;
+        }
+        .driver-vehicle {
+            font-size: 13px;
+            color: var(--color-text-muted);
+            margin-bottom: 4px;
+        }
+        .driver-plate {
+            display: inline-block;
+            background: #f0f0f0;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: monospace;
+            font-weight: bold;
+            color: var(--color-text);
+            border: 1px solid #ccc;
+        }
+        .driver-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .driver-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--color-dark);
+            text-decoration: none;
+        }
+        .driver-btn:hover {
+            background: var(--color-accent);
+            color: var(--color-white);
+            border-color: var(--color-accent);
+        }
+        .driver-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .leaflet-container {
+            font-family: var(--font-body) !important;
+        }
+
+        /* ---- TIMELINE ---- */
+        .tracking-timeline {
+            padding: 35px;
+        }
+
+        .timeline-steps {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        /* Vertical line */
+        .timeline-steps::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            background: #e5e5e5;
+        }
+
+        .timeline-step {
+            position: relative;
+            padding-bottom: 32px;
+            padding-left: 20px;
+        }
+
+        .timeline-step:last-child {
+            padding-bottom: 0;
+        }
+
+        /* Dot */
+        .timeline-dot {
+            position: absolute;
+            left: -33px;
+            top: 2px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #e5e5e5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            transition: all 0.4s ease;
+        }
+
+        .timeline-dot svg {
+            display: none;
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Completed step */
+        .timeline-step.completed .timeline-dot {
+            background: var(--color-accent);
+            box-shadow: 0 0 0 4px rgba(166, 35, 25, 0.12);
+        }
+
+        .timeline-step.completed .timeline-dot svg {
+            display: block;
+            stroke: #fff;
+        }
+
+        /* Active step */
+        .timeline-step.active .timeline-dot {
+            background: var(--color-accent);
+            box-shadow: 0 0 0 4px rgba(166, 35, 25, 0.12), 0 0 0 8px rgba(166, 35, 25, 0.05);
+            animation: pulse 2s ease infinite;
+        }
+
+        .timeline-step.active .timeline-dot::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #fff;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 4px rgba(166, 35, 25, 0.12); }
+            50%      { box-shadow: 0 0 0 8px rgba(166, 35, 25, 0.08), 0 0 0 14px rgba(166, 35, 25, 0.03); }
+        }
+
+        /* Pending step */
+        .timeline-step.pending .timeline-dot {
+            background: #e5e5e5;
+        }
+
+        .timeline-step-title {
+            font-family: var(--font-body);
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--color-dark);
+            margin-bottom: 4px;
+        }
+
+        .timeline-step.pending .timeline-step-title {
+            color: #bbb;
+        }
+
+        .timeline-step-time {
+            font-size: 12px;
+            color: var(--color-text-muted);
+            letter-spacing: 0.3px;
+        }
+
+        .timeline-step.pending .timeline-step-time {
+            color: #ccc;
+        }
+
+        .timeline-step-desc {
+            font-size: 13px;
+            color: var(--color-text);
+            margin-top: 6px;
+            line-height: 1.5;
+        }
+
+        .timeline-step.pending .timeline-step-desc {
+            color: #ccc;
+        }
+
+        /* ---- ORDER DETAILS ---- */
+        .tracking-details {
+            padding: 30px 35px;
+            border-top: 1px solid var(--color-border);
+            background: #fafafa;
+        }
+
+        .tracking-details-title {
+            font-family: var(--font-heading);
+            font-size: 18px;
+            color: var(--color-dark);
+            margin-bottom: 18px;
+        }
+
+        .tracking-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 13px;
+            color: var(--color-text);
+            border-bottom: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .tracking-detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .tracking-detail-label {
+            color: var(--color-text-muted);
+            font-weight: 500;
+        }
+
+        .tracking-detail-value {
+            font-weight: 600;
+            text-align: right;
+            max-width: 60%;
+        }
+
+        .tracking-items-list {
+            margin-top: 15px;
+        }
+
+        .tracking-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            font-size: 13px;
+            border-bottom: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .tracking-item:last-child {
+            border-bottom: none;
+        }
+
+        .tracking-item-name {
+            font-weight: 500;
+            color: var(--color-text);
+        }
+
+        .tracking-item-qty {
+            color: var(--color-text-muted);
+            font-size: 12px;
+        }
+
+        .tracking-item-price {
+            font-weight: 600;
+            color: var(--color-dark);
+        }
+
+        /* ---- EMPTY STATE ---- */
+        .tracking-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--color-text-muted);
+        }
+
+        .tracking-empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.4;
+        }
+
+        .tracking-empty p {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* ---- RECENT ORDERS ---- */
+        .recent-orders {
+            margin-top: 50px;
+        }
+
+        .recent-orders-title {
+            font-family: var(--font-heading);
+            font-size: 20px;
+            color: var(--color-dark);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .recent-order-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 22px;
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .recent-order-card:hover {
+            border-color: var(--color-accent);
+            box-shadow: 0 4px 16px rgba(166, 35, 25, 0.06);
+            transform: translateY(-1px);
+        }
+
+        .recent-order-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .recent-order-id {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--color-dark);
+        }
+
+        .recent-order-date {
+            font-size: 12px;
+            color: var(--color-text-muted);
+        }
+
+        .recent-order-arrow {
+            color: var(--color-accent);
+            font-size: 18px;
+        }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 600px) {
+            .tracking-page-title {
+                font-size: 32px;
+            }
+            .tracking-lookup {
+                flex-direction: column;
+            }
+            .tracking-result-header {
+                padding: 22px 20px;
+            }
+            .tracking-timeline {
+                padding: 25px 20px;
+            }
+            .tracking-details {
+                padding: 22px 20px;
+            }
+            .driver-details {
+                padding: 20px;
+                flex-wrap: wrap;
+            }
+            .timeline-steps {
+                padding-left: 35px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="site-header" id="site-header">
+        <div class="header-inner">
+            <nav class="main-nav left-nav" id="left-nav">
+                <ul class="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="bakehouse-menu.html">Menu</a></li>
+                    <li><a href="bakehouse-studio.html">Co-Baking Studio</a></li>
+                </ul>
+            </nav>
+            <div class="site-logo">
+                <a href="index.html">
+                    <img src="SocialManilaBakehouse_Logos/TSMB - White.png" alt="The Social Manila Bakehouse"
+                        class="header-logo-img" style="height: 55px;">
+                </a>
+            </div>
+            <nav class="main-nav right-nav" id="right-nav">
+                <ul class="nav-menu">
+                    <li><a href="bakehouse-tracking.html">Track Order</a></li>
+                    <li><a href="bakehouse-about.html">About Us</a></li>
+                    <li><a href="#" aria-label="Cart" class="cart-toggle-btn">Cart (<span
+                                class="cart-count">0</span>)</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-toggle" id="mobile-toggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- TRACKING PAGE -->
+    <main class="tracking-page">
+        <h1 class="tracking-page-title">Track Your Order</h1>
+        <p class="tracking-page-subtitle">Enter your tracking number to see the latest delivery status.</p>
+
+        <!-- Lookup -->
+        <div class="tracking-lookup">
+            <input type="text" id="tracking-input" placeholder="e.g. TSMB-M5X7K9R2" autocomplete="off">
+            <button type="button" id="tracking-search-btn">Track</button>
+        </div>
+
+        <!-- Error message -->
+        <div class="tracking-error" id="tracking-error" style="display: none;"></div>
+
+        <!-- Result Card -->
+        <div class="tracking-result" id="tracking-result">
+            <!-- Header -->
+            <div class="tracking-result-header">
+                <div class="tracking-order-number">
+                    <span>Tracking Number</span>
+                    <div id="result-order-number">—</div>
+                </div>
+                <div class="tracking-status-badge badge-processing" id="result-status-badge">Processing</div>
+            </div>
+
+            <!-- Map Container -->
+            <div class="tracking-map-container" id="tracking-map-container">
+                <div id="tracking-map"></div>
+                <div class="driver-details">
+                    <div class="driver-avatar">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    </div>
+                    <div class="driver-info">
+                        <div class="driver-name" id="driver-name">Juan Dela Cruz</div>
+                        <div class="driver-vehicle" id="driver-vehicle">Honda Click 125i (Red)</div>
+                        <div class="driver-plate" id="driver-plate">XYZ 9876</div>
+                    </div>
+                    <div class="driver-actions">
+                        <button class="driver-btn" aria-label="Call Driver">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                        </button>
+                        <button class="driver-btn" aria-label="Message Driver">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeline -->
+            <div class="tracking-timeline">
+                <div class="timeline-steps" id="timeline-steps">
+                    <div class="timeline-step" data-step="0">
+                        <div class="timeline-dot">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                        <div class="timeline-step-title">Order Confirmed</div>
+                        <div class="timeline-step-time" id="time-step-0">—</div>
+                        <div class="timeline-step-desc">Your order has been received and confirmed.</div>
+                    </div>
+                    <div class="timeline-step" data-step="1">
+                        <div class="timeline-dot">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                        <div class="timeline-step-title">Preparing Your Pastries</div>
+                        <div class="timeline-step-time" id="time-step-1">—</div>
+                        <div class="timeline-step-desc">Our bakers are crafting your artisanal pastries with care.</div>
+                    </div>
+                    <div class="timeline-step" data-step="2">
+                        <div class="timeline-dot">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                        <div class="timeline-step-title">Quality Check</div>
+                        <div class="timeline-step-time" id="time-step-2">—</div>
+                        <div class="timeline-step-desc">Final quality inspection and packaging.</div>
+                    </div>
+                    <div class="timeline-step" data-step="3">
+                        <div class="timeline-dot">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                        <div class="timeline-step-title">Out for Delivery</div>
+                        <div class="timeline-step-time" id="time-step-3">—</div>
+                        <div class="timeline-step-desc">Your order is on its way to your doorstep.</div>
+                    </div>
+                    <div class="timeline-step" data-step="4">
+                        <div class="timeline-dot">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                        <div class="timeline-step-title">Delivered</div>
+                        <div class="timeline-step-time" id="time-step-4">—</div>
+                        <div class="timeline-step-desc">Enjoy your pastries! Thank you for choosing The Social Manila Bakehouse.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Details -->
+            <div class="tracking-details">
+                <div class="tracking-details-title">Order Details</div>
+                <div class="tracking-detail-row">
+                    <span class="tracking-detail-label">Customer</span>
+                    <span class="tracking-detail-value" id="result-customer">—</span>
+                </div>
+                <div class="tracking-detail-row">
+                    <span class="tracking-detail-label">Delivery Address</span>
+                    <span class="tracking-detail-value" id="result-address">—</span>
+                </div>
+                <div class="tracking-detail-row">
+                    <span class="tracking-detail-label">Payment Method</span>
+                    <span class="tracking-detail-value" id="result-payment">—</span>
+                </div>
+                <div class="tracking-detail-row">
+                    <span class="tracking-detail-label">Order Date</span>
+                    <span class="tracking-detail-value" id="result-date">—</span>
+                </div>
+                <div class="tracking-detail-row">
+                    <span class="tracking-detail-label">Est. Delivery</span>
+                    <span class="tracking-detail-value" id="result-eta">—</span>
+                </div>
+
+                <div class="tracking-items-list" id="result-items">
+                    <!-- Injected by JS -->
+                </div>
+
+                <div class="tracking-detail-row" style="margin-top: 10px; padding-top: 12px; border-top: 1px solid var(--color-border);">
+                    <span class="tracking-detail-label" style="font-size: 15px;">Total</span>
+                    <span class="tracking-detail-value" id="result-total" style="font-size: 16px; color: var(--color-accent);">—</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Orders -->
+        <div class="recent-orders" id="recent-orders">
+            <div class="recent-orders-title">Your Recent Orders</div>
+            <div id="recent-orders-list">
+                <!-- Injected by JS -->
+            </div>
+        </div>
+
+        <!-- Empty state if no orders -->
+        <div class="tracking-empty" id="tracking-empty" style="display: none;">
+            <div class="tracking-empty-icon">📦</div>
+            <p>No orders found yet.<br>Place an order from our <a href="bakehouse-menu.html" style="color: var(--color-accent); font-weight: 600;">menu</a> to get started!</p>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer" style="padding: 15px 0 5px; background-color: var(--color-white); border-top: 1px solid var(--color-border); color: var(--color-text);">
+        <div style="padding: 10px 40px; max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
+            <div style="flex: 1; display: flex; justify-content: flex-start;">
+                <a href="index.html" style="display: flex; align-items: center; text-decoration: none;">
+                    <img src="SocialManilaBakehouse_Logos/TSMB - Red.png" alt="The Social Manila Bakehouse" style="height: 75px;">
+                </a>
+            </div>
+            <div style="flex: 1; text-align: center;">
+                <p style="font-family: var(--font-body); font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--color-dark); font-weight: 700; margin: 0 0 6px;">Join The Social Manila Community</p>
+                <form action="#" method="post" style="display: flex; max-width: 280px; margin: 0 auto;" onsubmit="return false;">
+                    <input type="email" placeholder="Enter your email" aria-label="Email"
+                        style="flex: 1; padding: 7px 10px; border: 1px solid var(--color-border); border-right: none; font-family: var(--font-body); font-size: 12px; background: var(--color-bg); color: var(--color-text); outline: none;">
+                    <button type="submit"
+                        style="padding: 7px 14px; background-color: var(--color-accent); color: var(--color-white); border: 2px solid var(--color-accent); font-family: var(--font-body); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; white-space: nowrap; transition: 0.3s;"
+                        onmouseover="this.style.backgroundColor='white'; this.style.color='var(--color-accent)'; this.style.borderColor='var(--color-accent)';"
+                        onmouseout="this.style.backgroundColor='var(--color-accent)'; this.style.color='var(--color-white)'; this.style.borderColor='var(--color-accent)';"
+                    >Join</button>
+                </form>
+            </div>
+            <nav style="flex: 1; display: flex; gap: 20px; justify-content: flex-end; align-items: center;">
+                <a href="index.html" style="font-family: var(--font-body); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-text); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--color-dark)'" onmouseout="this.style.color='var(--color-text)'">Home</a>
+                <a href="bakehouse-menu.html" style="font-family: var(--font-body); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-text); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--color-dark)'" onmouseout="this.style.color='var(--color-text)'">Menu</a>
+                <a href="bakehouse-studio.html" style="font-family: var(--font-body); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-text); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--color-dark)'" onmouseout="this.style.color='var(--color-text)'">Co-Baking Studio</a>
+                <a href="bakehouse-about.html" style="font-family: var(--font-body); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-text); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--color-dark)'" onmouseout="this.style.color='var(--color-text)'">About Us</a>
+            </nav>
+        </div>
+        <div style="border-top: 1px solid var(--color-border); padding: 8px 40px; text-align: center; margin-top: 5px;">
+            <p style="font-family: var(--font-body); font-size: 11px; color: var(--color-text-muted); margin: 0;">&copy; 2026 The Social Manila Bakehouse. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- CART DRAWER -->
+    <div class="cart-overlay" id="cart-overlay"></div>
+    <div class="cart-drawer" id="cart-drawer">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button class="cart-close" id="cart-close">&times;</button>
+        </div>
+        <div class="cart-body" id="cart-body">
+            <p class="cart-empty-msg">Your cart is currently empty.</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total-row">
+                <span>Total</span>
+                <span id="cart-total-price">₱0.00</span>
+            </div>
+            <button class="checkout-btn">Checkout</button>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+
+    <!-- TRACKING LOGIC -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // ---- Delivery stage simulation intervals (in minutes) ----
+            // Each stage advances after this many minutes from order time
+            const STAGE_MINUTES = [0, 5, 15, 30, 60]; // Confirmed, Preparing, QC, Out for Delivery, Delivered
+            const STAGE_LABELS = ['Order Confirmed', 'Preparing Your Pastries', 'Quality Check', 'Out for Delivery', 'Delivered'];
+            const PAYMENT_LABELS = { card: 'Credit/Debit Card', gcash: 'GCash', paypal: 'PayPal' };
+
+            const searchBtn = document.getElementById('tracking-search-btn');
+            const searchInput = document.getElementById('tracking-input');
+            const errorEl = document.getElementById('tracking-error');
+            const resultEl = document.getElementById('tracking-result');
+            const recentOrdersEl = document.getElementById('recent-orders');
+            const recentListEl = document.getElementById('recent-orders-list');
+            const emptyEl = document.getElementById('tracking-empty');
+
+            // Map variables
+            let trackingMap = null;
+            let riderMarker = null;
+            let routePolyline = null;
+            let mapAnimationInterval = null;
+
+            const STORE_COORD = [14.5547, 121.0244]; // Approximate Makati location
+
+            // Load all orders
+            function getOrders() {
+                return JSON.parse(localStorage.getItem('tsmb_orders')) || [];
+            }
+
+            function findOrder(trackingNumber) {
+                return getOrders().find(o => o.trackingNumber === trackingNumber.trim().toUpperCase());
+            }
+
+            // Calculate current stage based on elapsed time
+            function getCurrentStage(orderTimestamp) {
+                const elapsed = (Date.now() - orderTimestamp) / (1000 * 60); // minutes
+                let stage = 0;
+                for (let i = STAGE_MINUTES.length - 1; i >= 0; i--) {
+                    if (elapsed >= STAGE_MINUTES[i]) {
+                        stage = i;
+                        break;
+                    }
+                }
+                return stage;
+            }
+
+            // Format timestamp
+            function formatTime(ts) {
+                return new Date(ts).toLocaleString('en-PH', {
+                    month: 'short', day: 'numeric', year: 'numeric',
+                    hour: '2-digit', minute: '2-digit'
+                });
+            }
+
+            // Display tracking result
+            function displayOrder(order) {
+                errorEl.style.display = 'none';
+                resultEl.classList.add('visible');
+
+                // Order number
+                document.getElementById('result-order-number').textContent = order.trackingNumber;
+
+                // Current stage
+                const currentStage = getCurrentStage(order.timestamp);
+                const isDelivered = currentStage >= 4;
+
+                // Status badge
+                const badge = document.getElementById('result-status-badge');
+                badge.className = 'tracking-status-badge';
+                if (isDelivered) {
+                    badge.textContent = 'Delivered';
+                    badge.classList.add('badge-delivered');
+                } else if (currentStage >= 3) {
+                    badge.textContent = 'In Transit';
+                    badge.classList.add('badge-transit');
+                } else {
+                    badge.textContent = 'Processing';
+                    badge.classList.add('badge-processing');
+                }
+
+                // ---- Map Tracking Logic ----
+                if (mapAnimationInterval) {
+                    clearInterval(mapAnimationInterval);
+                }
+
+                const mapContainer = document.getElementById('tracking-map-container');
+                if (currentStage >= 1) { // Show map once preparing
+                    mapContainer.classList.add('active');
+
+                    // Hash order tracking number to create a pseudo-random but consistent customer coordinate
+                    let hash = 0;
+                    for (let i = 0; i < order.trackingNumber.length; i++) {
+                        hash = order.trackingNumber.charCodeAt(i) + ((hash << 5) - hash);
+                    }
+                    const rng = function() {
+                        hash = Math.sin(hash) * 10000;
+                        return hash - Math.floor(hash);
+                    };
+                    
+                    // Customer location +/- 2km from store
+                    const custLat = STORE_COORD[0] + (rng() - 0.5) * 0.04;
+                    const custLng = STORE_COORD[1] + (rng() - 0.5) * 0.04;
+                    const CUSTOMER_COORD = [custLat, custLng];
+
+                    if (!trackingMap) {
+                        trackingMap = L.map('tracking-map', {
+                            zoomControl: false,
+                            attributionControl: false
+                        });
+                        // Use a light, modern map tile
+                        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                            maxZoom: 19
+                        }).addTo(trackingMap);
+                    }
+
+                    // Clear previous layers
+                    trackingMap.eachLayer((layer) => {
+                        if (layer instanceof L.Marker || layer instanceof L.Polyline) {
+                            trackingMap.removeLayer(layer);
+                        }
+                    });
+
+                    const storeIcon = L.divIcon({
+                        className: 'custom-map-icon',
+                        html: '<div style="background:var(--color-dark);color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid white;box-shadow:0 2px 5px rgba(0,0,0,0.3);font-size:14px;">🏪</div>',
+                        iconSize: [32, 32],
+                        iconAnchor: [16, 16]
+                    });
+                    
+                    const custIcon = L.divIcon({
+                        className: 'custom-map-icon',
+                        html: '<div style="background:var(--color-accent);color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid white;box-shadow:0 2px 5px rgba(0,0,0,0.3);font-size:14px;">📍</div>',
+                        iconSize: [32, 32],
+                        iconAnchor: [16, 32]
+                    });
+
+                    L.marker(STORE_COORD, {icon: storeIcon, zIndexOffset: 10}).addTo(trackingMap);
+                    L.marker(CUSTOMER_COORD, {icon: custIcon, zIndexOffset: 10}).addTo(trackingMap);
+
+                    // Draw route
+                    routePolyline = L.polyline([STORE_COORD, CUSTOMER_COORD], {
+                        color: 'var(--color-accent)',
+                        weight: 4,
+                        dashArray: '10, 10',
+                        opacity: 0.6
+                    }).addTo(trackingMap);
+
+                    // Rider Marker
+                    const riderIcon = L.divIcon({
+                        className: 'custom-map-icon',
+                        html: '<div style="background:white;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid var(--color-accent);box-shadow:0 4px 10px rgba(0,0,0,0.2);font-size:18px;z-index:1000;">🛵</div>',
+                        iconSize: [38, 38],
+                        iconAnchor: [19, 19]
+                    });
+
+                    riderMarker = L.marker(STORE_COORD, {icon: riderIcon, zIndexOffset: 100}).addTo(trackingMap);
+
+                    // Animate or set rider position
+                    if (currentStage === 3) { // Out for Delivery
+                        const outTime = order.timestamp + STAGE_MINUTES[3] * 60 * 1000;
+                        const deliveredTime = order.timestamp + STAGE_MINUTES[4] * 60 * 1000;
+                        
+                        // Initial position
+                        const now = Date.now();
+                        let progress = (now - outTime) / (deliveredTime - outTime);
+                        progress = Math.max(0, Math.min(1, progress));
+                        
+                        const curLat = STORE_COORD[0] + (CUSTOMER_COORD[0] - STORE_COORD[0]) * progress;
+                        const curLng = STORE_COORD[1] + (CUSTOMER_COORD[1] - STORE_COORD[1]) * progress;
+                        riderMarker.setLatLng([curLat, curLng]);
+                        
+                        mapAnimationInterval = setInterval(() => {
+                            const currentNow = Date.now();
+                            if (currentNow >= deliveredTime) {
+                                riderMarker.setLatLng(CUSTOMER_COORD);
+                                clearInterval(mapAnimationInterval);
+                                handleSearch(); // refresh to delivered state
+                                return;
+                            }
+                            
+                            let p = (currentNow - outTime) / (deliveredTime - outTime);
+                            p = Math.max(0, Math.min(1, p));
+                            
+                            riderMarker.setLatLng([
+                                STORE_COORD[0] + (CUSTOMER_COORD[0] - STORE_COORD[0]) * p,
+                                STORE_COORD[1] + (CUSTOMER_COORD[1] - STORE_COORD[1]) * p
+                            ]);
+                        }, 2000);
+                        
+                    } else if (currentStage >= 4) {
+                        riderMarker.setLatLng(CUSTOMER_COORD);
+                    } else {
+                        riderMarker.setLatLng(STORE_COORD);
+                    }
+
+                    // Fix sizing issues since div was initially display:none
+                    setTimeout(() => {
+                        trackingMap.invalidateSize();
+                        trackingMap.fitBounds([STORE_COORD, CUSTOMER_COORD], { padding: [50, 50] });
+                    }, 100);
+
+                } else {
+                    mapContainer.classList.remove('active');
+                }
+
+                // Timeline steps
+                const steps = document.querySelectorAll('.timeline-step');
+                steps.forEach((step, i) => {
+                    step.className = 'timeline-step';
+                    const timeEl = document.getElementById('time-step-' + i);
+
+                    if (i < currentStage) {
+                        step.classList.add('completed');
+                        const stageTime = new Date(order.timestamp + STAGE_MINUTES[i] * 60 * 1000);
+                        timeEl.textContent = formatTime(stageTime);
+                    } else if (i === currentStage) {
+                        step.classList.add('active');
+                        const stageTime = new Date(order.timestamp + STAGE_MINUTES[i] * 60 * 1000);
+                        timeEl.textContent = formatTime(stageTime);
+                    } else {
+                        step.classList.add('pending');
+                        const estTime = new Date(order.timestamp + STAGE_MINUTES[i] * 60 * 1000);
+                        timeEl.textContent = 'Est. ' + formatTime(estTime);
+                    }
+                });
+
+                // Order details
+                document.getElementById('result-customer').textContent = order.customerName || '—';
+                document.getElementById('result-address').textContent = order.address || '—';
+                document.getElementById('result-payment').textContent = PAYMENT_LABELS[order.paymentMethod] || order.paymentMethod || '—';
+                document.getElementById('result-date').textContent = formatTime(order.timestamp);
+
+                // ETA
+                const etaTime = new Date(order.timestamp + STAGE_MINUTES[4] * 60 * 1000);
+                document.getElementById('result-eta').textContent = isDelivered ? 'Delivered ✓' : formatTime(etaTime);
+
+                // Items
+                const itemsEl = document.getElementById('result-items');
+                itemsEl.innerHTML = '';
+                if (order.items && order.items.length) {
+                    order.items.forEach(item => {
+                        const div = document.createElement('div');
+                        div.className = 'tracking-item';
+                        div.innerHTML = `
+                            <div>
+                                <span class="tracking-item-name">${item.name}</span>
+                                <span class="tracking-item-qty"> × ${item.qty}</span>
+                            </div>
+                            <span class="tracking-item-price">₱${(item.price * item.qty).toFixed(2)}</span>
+                        `;
+                        itemsEl.appendChild(div);
+                    });
+                }
+
+                // Total
+                document.getElementById('result-total').textContent = '₱' + (order.total || 0).toFixed(2);
+
+                // Scroll to result
+                resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            // Search handler
+            function handleSearch() {
+                const query = searchInput.value.trim();
+                if (!query) {
+                    errorEl.textContent = 'Please enter a tracking number.';
+                    errorEl.style.display = 'block';
+                    resultEl.classList.remove('visible');
+                    return;
+                }
+                const order = findOrder(query);
+                if (!order) {
+                    errorEl.textContent = 'No order found for "' + query + '". Please check your tracking number.';
+                    errorEl.style.display = 'block';
+                    resultEl.classList.remove('visible');
+                    return;
+                }
+                displayOrder(order);
+            }
+
+            searchBtn.addEventListener('click', handleSearch);
+            searchInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') handleSearch();
+            });
+            // Clear error on typing
+            searchInput.addEventListener('input', () => {
+                errorEl.style.display = 'none';
+            });
+
+            // ---- Recent Orders List ----
+            function renderRecentOrders() {
+                const orders = getOrders();
+                if (orders.length === 0) {
+                    recentOrdersEl.style.display = 'none';
+                    emptyEl.style.display = 'block';
+                    return;
+                }
+
+                recentOrdersEl.style.display = 'block';
+                emptyEl.style.display = 'none';
+                recentListEl.innerHTML = '';
+
+                // Show most recent first, max 5
+                const recent = orders.slice().reverse().slice(0, 5);
+                recent.forEach(order => {
+                    const stage = getCurrentStage(order.timestamp);
+                    const statusText = stage >= 4 ? 'Delivered' : STAGE_LABELS[stage];
+                    const card = document.createElement('div');
+                    card.className = 'recent-order-card';
+                    card.innerHTML = `
+                        <div class="recent-order-info">
+                            <span class="recent-order-id">${order.trackingNumber}</span>
+                            <span class="recent-order-date">${formatTime(order.timestamp)} · ${statusText}</span>
+                        </div>
+                        <span class="recent-order-arrow">→</span>
+                    `;
+                    card.addEventListener('click', () => {
+                        searchInput.value = order.trackingNumber;
+                        displayOrder(order);
+                    });
+                    recentListEl.appendChild(card);
+                });
+            }
+
+            renderRecentOrders();
+
+            // ---- Auto-load from URL param ----
+            const urlParams = new URLSearchParams(window.location.search);
+            const trackParam = urlParams.get('track');
+            if (trackParam) {
+                searchInput.value = trackParam;
+                handleSearch();
+            }
+        });
+    </script>
+</body>
+
+</html>
